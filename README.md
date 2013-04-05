@@ -1,4 +1,4 @@
 Cinder-Pusher
 =============
 
-Pusher implementation for Cinder
+boost::asio implementation for Cinder
