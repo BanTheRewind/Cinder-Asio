@@ -14,7 +14,7 @@ TcpClientRef TcpClient::create()
 }
 
 TcpClient::TcpClient()
-	: Client()
+: Client()
 {
 }
 

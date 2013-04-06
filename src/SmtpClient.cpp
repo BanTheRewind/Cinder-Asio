@@ -1,9 +1,5 @@
 #include "SmtpClient.h"
 
-#include "cinder/app/App.h"
-#include "boost/bind.hpp"
-#include "cinder/Utilities.h"
-
 using namespace ci;
 using namespace std;
 
