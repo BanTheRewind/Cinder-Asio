@@ -6,7 +6,13 @@ public:
 	void draw();
 	void setup();
 	void update();
+private:
 };
+
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
 
 void ClientApp::draw()
 {
