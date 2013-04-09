@@ -27,15 +27,17 @@ UdpClient::~UdpClient()
 
 void UdpClient::connect( const string& host, uint16_t port )
 {
+	mHost = host;
+	mPort = port;
 	try {
 		// Resolve host
-		boost::asio::ip::udp::resolver::query query( host, toString( port ) );
+		boost::asio::ip::udp::resolver::query query( mHost, toString( mPort ) );
 		boost::asio::ip::udp::resolver resolver( mIoService );
 		boost::asio::ip::udp::resolver::iterator destination = resolver.resolve( query );
 		while ( destination != boost::asio::ip::udp::resolver::iterator() ) {
 			mEndpoint = *destination++;
 		}
-		mSocket = std::shared_ptr<udp::socket>( new udp::socket( mIoService ) );
+		mSocket = UdpSocketRef( new udp::socket( mIoService ) );
 		
 		// Convert address to V4 IP
 		boost::asio::ip::address_v4 ip;
@@ -49,18 +51,16 @@ void UdpClient::connect( const string& host, uint16_t port )
 		mConnected = true;
 
 	} catch ( const std::exception& ex ) {
-		OutputDebugStringA( ex.what() );
-		OutputDebugStringA( "\n" );
+		throw ExcConnection( ex.what() );
 	}
 }
 
 void UdpClient::onSend( const string& message, const boost::system::error_code& error, 
 	std::size_t bytesTransferred )
 {
-	OutputDebugStringA( ( error.message() + "\n" ).c_str() );
 }
 
-void UdpClient::send( uint_fast8_t *buffer, size_t count ) 
+void UdpClient::sendImpl( uint_fast8_t* buffer, size_t count )
 {
 	if ( mSocket ) {
 		mSocket->async_send( boost::asio::buffer( buffer, count ), 

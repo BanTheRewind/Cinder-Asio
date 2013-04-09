@@ -21,6 +21,6 @@ void FtpClient::connect( const string& host, uint16_t port )
 {
 }
 
-void FtpClient::send( uint_fast8_t *buffer, size_t count ) 
+void FtpClient::sendImpl( uint_fast8_t* buffer, size_t count )
 {
 }

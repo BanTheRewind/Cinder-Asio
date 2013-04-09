@@ -9,8 +9,20 @@ WebSocketClientRef WebSocketClient::create()
 }
 
 WebSocketClient::WebSocketClient()
-	: Client()
+: HttpClient()
 {
+	mMethod			= "GET";
+	mHttpVersion	= HttpVersion::HTTP_1_1;
+	
+	setHeaderField( "Host",						"mHost" );
+	setHeaderField( "Upgrade",					"WebSocket" );
+	setHeaderField( "Connection",				"Upgrade" );
+	setHeaderField( "Sec-WebSocket-Key",		"" );
+	setHeaderField( "Origin",					"http://" + mHost );
+	setHeaderField( "Sec-WebSocket-Protocol",	mPath );
+	setHeaderField( "Sec-WebSocket-Version",	"13" );
+	
+	concatenateHeader();
 }
 
 WebSocketClient::~WebSocketClient()
@@ -19,8 +31,6 @@ WebSocketClient::~WebSocketClient()
 
 void WebSocketClient::connect( const string& host, uint16_t port )
 {
-}
-
-void WebSocketClient::send( uint_fast8_t *buffer, size_t count ) 
-{
+	HttpClient::connect( host, port );
+	setHeaderField( "Host",	mHost );
 }

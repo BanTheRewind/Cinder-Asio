@@ -11,8 +11,8 @@ public:
 	~FtpClient();
 	
 	void					connect( const std::string& host = "localhost", uint16_t port = 21 );
-
-	void					send( uint_fast8_t* buffer, size_t count );
 protected:
 	FtpClient();
+	
+	void					sendImpl( uint_fast8_t* buffer, size_t count );
 };

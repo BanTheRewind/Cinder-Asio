@@ -21,6 +21,6 @@ void SmtpClient::connect( const string& host, uint16_t port )
 {
 }
 
-void SmtpClient::send( uint_fast8_t *buffer, size_t count ) 
+void SmtpClient::sendImpl( uint_fast8_t* buffer, size_t count )
 {
 }

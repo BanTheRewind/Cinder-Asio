@@ -11,8 +11,8 @@ public:
 	~SmtpClient();
 	
 	void					connect( const std::string& host = "localhost", uint16_t port = 25 );
-
-	void					send( uint_fast8_t* buffer, size_t count );
 protected:
 	SmtpClient();
+	
+	void					sendImpl( uint_fast8_t* buffer, size_t count );
 };

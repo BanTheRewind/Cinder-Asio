@@ -6,6 +6,7 @@
 
 using boost::asio::ip::tcp;
 using namespace ci;
+using namespace ci::app;
 using namespace std;
 
 TcpClientRef TcpClient::create()
@@ -27,15 +28,17 @@ TcpClient::~TcpClient()
 
 void TcpClient::connect( const string& host, uint16_t port )
 {
+	mHost = host;
+	mPort = port;
 	try {
 		// Resolve host
-		boost::asio::ip::tcp::resolver::query query( host, toString( port ) );
+		boost::asio::ip::tcp::resolver::query query( mHost, toString( mPort ) );
 		boost::asio::ip::tcp::resolver resolver( mIoService );
 		boost::asio::ip::tcp::resolver::iterator destination = resolver.resolve( query );
 		while ( destination != boost::asio::ip::tcp::resolver::iterator() ) {
 			mEndpoint = *destination++;
 		}
-		mSocket = std::shared_ptr<tcp::socket>( new tcp::socket( mIoService ) );
+		mSocket = TcpSocketRef( new tcp::socket( mIoService ) );
 		
 		// Convert address to V4 IP
 		boost::asio::ip::address_v4 ip;
@@ -47,20 +50,17 @@ void TcpClient::connect( const string& host, uint16_t port )
 		mSocket->connect( mEndpoint );
 		mIoService.run();
 		mConnected = true;
-
 	} catch ( const std::exception& ex ) {
-		OutputDebugStringA( ex.what() );
-		OutputDebugStringA( "\n" );
+		throw ExcConnection( ex.what() );
 	}
 }
 
 void TcpClient::onSend( const string& message, const boost::system::error_code& error, 
 	std::size_t bytesTransferred )
 {
-	OutputDebugStringA( ( error.message() + "\n" ).c_str() );
 }
 
-void TcpClient::send( uint_fast8_t *buffer, size_t count ) 
+void TcpClient::sendImpl( uint_fast8_t* buffer, size_t count )
 {
 	if ( mSocket ) {
 		mSocket->async_send( boost::asio::buffer( buffer, count ), 

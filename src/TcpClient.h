@@ -2,25 +2,27 @@
 
 #include "Client.h"
 
-typedef std::shared_ptr<class TcpClient>			TcpClientRef;
+typedef std::shared_ptr<class TcpClient>	TcpClientRef;
 
 class TcpClient : public Client
 {
 public:
-	static TcpClientRef								create();
+	static TcpClientRef				create();
 	~TcpClient();
 	
-	void											connect( const std::string& host = "localhost", uint16_t port = 2000 );
-
-	void											send( uint_fast8_t* buffer, size_t count );
+	virtual void					connect( const std::string& host = "localhost", uint16_t port = 2000 );
 protected:
+	typedef std::shared_ptr<boost::asio::ip::tcp::socket>	TcpSocketRef;
+	
 	TcpClient();
-	void											onSend( const std::string& message, 
-		const boost::system::error_code& error, std::size_t bytesTransferred );
+	void							onSend( const std::string& message,
+										   const boost::system::error_code& error,
+										   std::size_t bytesTransferred );
 
-	std::string										mBuffer;
-	boost::asio::ip::tcp::endpoint					mEndpoint;
-	boost::asio::io_service							mIoService;
-	std::shared_ptr<boost::asio::ip::tcp::socket>	mSocket;
-
+	void							sendImpl( uint_fast8_t* buffer, size_t count );
+	
+	std::string						mBuffer;
+	boost::asio::ip::tcp::endpoint	mEndpoint;
+	boost::asio::io_service			mIoService;
+	TcpSocketRef					mSocket;
 };

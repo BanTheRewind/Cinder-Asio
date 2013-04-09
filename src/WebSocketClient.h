@@ -1,18 +1,24 @@
 #pragma once
 
-#include "Client.h"
+#include "HttpClient.h"
 
 typedef std::shared_ptr<class WebSocketClient>	WebSocketClientRef;
 
-class WebSocketClient : public Client
+class WebSocketClient : public HttpClient
 {
 public:
 	static WebSocketClientRef	create();
 	~WebSocketClient();
 	
-	void					connect( const std::string& host = "localhost", uint16_t port = 80 );
-
-	void					send( uint_fast8_t* buffer, size_t count );
+	void						connect( const std::string& host = "localhost", uint16_t port = 80 );
+	
+	const std::string&					getKey() const;
+	const std::vector<std::string>&		getProtocols() const;
+	const std::string&					getVersion() const;
 protected:
 	WebSocketClient();
+	
+	std::string					mKey;
+	std::vector<std::string>	mProtocols;
+	std::string					mVersion;
 };
