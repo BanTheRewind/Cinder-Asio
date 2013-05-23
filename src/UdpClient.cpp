@@ -1,70 +1,90 @@
 #include "UdpClient.h"
 
-#include "cinder/app/App.h"
-#include "boost/bind.hpp"
 #include "cinder/Utilities.h"
 
-using boost::asio::ip::udp;
 using namespace ci;
 using namespace std;
+using boost::asio::ip::udp;
 
-UdpClientRef UdpClient::create()
+UdpClientRef UdpClient::create( boost::asio::io_service& io )
 {
-	return UdpClientRef( new UdpClient() );
+	return UdpClientRef( new UdpClient( io ) )->shared_from_this();
 }
 
-UdpClient::UdpClient()
-: Client()
+UdpClient::UdpClient( boost::asio::io_service& io )
+: Client( io )
 {
+	mSocket = UdpSocketRef( new udp::socket( io ) );
 }
 
-UdpClient::~UdpClient()
+void UdpClient::connect( const string& host, uint16_t port )
+{
+	connect( host, toString( port ) );
+}
+
+void UdpClient::connect( const string& host, const string& protocol )
+{
+	udp::resolver::query query( host, protocol );
+	mResolver = UdpResolverRef( new udp::resolver( mStrand.get_io_service() ) );
+	mResolver->async_resolve( query, mStrand.wrap( boost::bind( &UdpClient::onResolve, shared_from_this(),
+											   boost::asio::placeholders::error,
+											   boost::asio::placeholders::iterator ) ) );
+}
+
+void UdpClient::disconnect()
 {
 	if ( mSocket && mSocket->is_open() ) {
 		mSocket->close();
 	}
 }
 
-void UdpClient::connect( const string& host, uint16_t port )
+void UdpClient::read()
 {
-	mHost = host;
-	mPort = port;
-	try {
-		// Resolve host
-		boost::asio::ip::udp::resolver::query query( mHost, toString( mPort ) );
-		boost::asio::ip::udp::resolver resolver( mIoService );
-		boost::asio::ip::udp::resolver::iterator destination = resolver.resolve( query );
-		while ( destination != boost::asio::ip::udp::resolver::iterator() ) {
-			mEndpoint = *destination++;
-		}
-		mSocket = UdpSocketRef( new udp::socket( mIoService ) );
-		
-		// Convert address to V4 IP
-		boost::asio::ip::address_v4 ip;
-		ip = boost::asio::ip::address_v4::from_string( mEndpoint.address().to_string() );
-		mEndpoint.address( ip );
+	/*mSocket->async_receive( mResponse, boost::asio::transfer_at_least( 1 ),
+							boost::bind( &UdpClient::onRead, shared_from_this(),
+										boost::asio::placeholders::error,
+										boost::asio::placeholders::bytes_transferred ) );*/
+}
 
-		// Open socket
-		mSocket->open( mEndpoint.protocol() );
-		mSocket->connect( mEndpoint );
-		mIoService.run();
-		mConnected = true;
-
-	} catch ( const std::exception& ex ) {
-		throw ExcConnection( ex.what() );
+void UdpClient::wait( size_t millis, bool repeat )
+{
+	Connection::wait( millis, repeat );
+	if ( mTimerInterval > 0 ) {
+		mTimer.async_wait( 
+			mStrand.wrap( boost::bind( &UdpClient::onWait, shared_from_this(), 
+			boost::asio::placeholders::error ) ) );
 	}
 }
 
-void UdpClient::onSend( const string& message, const boost::system::error_code& error, 
-	std::size_t bytesTransferred )
+void UdpClient::write( const Buffer& buffer )
 {
+	ostream stream( &mRequest );
+	stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	/*mSocket->async_send( mRequest, boost::bind( &UdpClient::onWrite, shared_from_this(),
+	 boost::asio::placeholders::error,
+	 boost::asio::placeholders::bytes_transferred ) );
+	*/
+	mRequest.consume( mRequest.size() );
 }
 
-void UdpClient::sendImpl( uint_fast8_t* buffer, size_t count )
+void UdpClient::onConnect( const boost::system::error_code& err )
 {
-	if ( mSocket ) {
-		mSocket->async_send( boost::asio::buffer( buffer, count ), 
-			boost::bind(& UdpClient::onSend, this, "", boost::asio::placeholders::error, count ) 
-			);
+	if ( err ) {
+		mSignalError( err.message(), 0 );
+	} else {
+		mSignalConnect();
+	}
+}
+
+void UdpClient::onResolve( const boost::system::error_code& err,
+						  udp::resolver::iterator iter )
+{
+	if ( err ) {
+		mSignalError( err.message(), 0 );
+	} else {
+		mSignalResolve();
+		boost::asio::async_connect( *mSocket, iter,
+								  mStrand.wrap( boost::bind( &UdpClient::onConnect, shared_from_this(),
+											   boost::asio::placeholders::error ) ) );
 	}
 }
