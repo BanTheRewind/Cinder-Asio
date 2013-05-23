@@ -1,70 +1,113 @@
 #include "TcpClient.h"
 
-#include "cinder/app/App.h"
-#include "boost/bind.hpp"
 #include "cinder/Utilities.h"
 
-using boost::asio::ip::tcp;
 using namespace ci;
 using namespace std;
+using boost::asio::ip::tcp;
 
-TcpClientRef TcpClient::create()
+TcpClientRef TcpClient::create( boost::asio::io_service& io )
 {
-	return TcpClientRef( new TcpClient() );
+	return TcpClientRef( new TcpClient( io ) )->shared_from_this();
 }
 
-TcpClient::TcpClient()
-: Client()
+TcpClient::TcpClient( boost::asio::io_service& io )
+: Client( io )
 {
+	mSocket = TcpSocketRef( new tcp::socket( io ) );
 }
 
 TcpClient::~TcpClient()
+{
+	disconnect();
+}
+
+void TcpClient::connect( const string& host, uint16_t port )
+{
+	connect( host, toString( port ) );
+}
+
+void TcpClient::connect( const string& host, const string& protocol )
+{
+	mHost		= host;
+	mProtocol	= protocol;
+
+	tcp::resolver::query query( mHost, mProtocol );
+	mResolver = TcpResolverRef( new tcp::resolver( mStrand.get_io_service() ) );
+	mResolver->async_resolve( query, 
+		mStrand.wrap( boost::bind( &TcpClient::onResolve, shared_from_this(), 
+			boost::asio::placeholders::error, boost::asio::placeholders::iterator ) ) );
+}
+
+void TcpClient::disconnect()
 {
 	if ( mSocket && mSocket->is_open() ) {
 		mSocket->close();
 	}
 }
 
-void TcpClient::connect( const string& host, uint16_t port )
+void TcpClient::read()
 {
-	try {
-		// Resolve host
-		boost::asio::ip::tcp::resolver::query query( host, toString( port ) );
-		boost::asio::ip::tcp::resolver resolver( mIoService );
-		boost::asio::ip::tcp::resolver::iterator destination = resolver.resolve( query );
-		while ( destination != boost::asio::ip::tcp::resolver::iterator() ) {
-			mEndpoint = *destination++;
-		}
-		mSocket = std::shared_ptr<tcp::socket>( new tcp::socket( mIoService ) );
-		
-		// Convert address to V4 IP
-		boost::asio::ip::address_v4 ip;
-		ip = boost::asio::ip::address_v4::from_string( mEndpoint.address().to_string() );
-		mEndpoint.address( ip );
+	boost::asio::async_read( *mSocket, mResponse, boost::asio::transfer_at_least( 1 ), 
+		mStrand.wrap( boost::bind( &TcpClient::onRead, shared_from_this(), 
+			boost::asio::placeholders::error, 
+			boost::asio::placeholders::bytes_transferred ) ) );
+}
 
-		// Open socket
-		mSocket->open( mEndpoint.protocol() );
-		mSocket->connect( mEndpoint );
-		mIoService.run();
-		mConnected = true;
+void TcpClient::read( const std::string& until )
+{
+	boost::asio::async_read_until( *mSocket, mResponse, until, 
+		mStrand.wrap( boost::bind( &TcpClient::onRead, shared_from_this(), 
+		boost::asio::placeholders::error, 
+		boost::asio::placeholders::bytes_transferred ) ) );
+}
 
-	} catch ( const std::exception& ex ) {
-		OutputDebugStringA( ex.what() );
-		OutputDebugStringA( "\n" );
+void TcpClient::read( size_t bufferSize )
+{
+	mSocket->async_read_some( mResponse.prepare( bufferSize ), 
+		mStrand.wrap( boost::bind( &TcpClient::onRead, shared_from_this(), 
+			boost::asio::placeholders::error, 
+			boost::asio::placeholders::bytes_transferred ) ) );
+}
+
+void TcpClient::wait( size_t millis, bool repeat )
+{
+	Connection::wait( millis, repeat );
+	if ( mTimerInterval > 0 ) {
+		mTimer.async_wait( 
+			mStrand.wrap( boost::bind( &TcpClient::onWait, shared_from_this(), 
+			boost::asio::placeholders::error ) ) );
 	}
 }
 
-void TcpClient::onSend( const string& message, const boost::system::error_code& error, 
-	std::size_t bytesTransferred )
+void TcpClient::write( const Buffer& buffer )
 {
-	OutputDebugStringA( ( error.message() + "\n" ).c_str() );
+	ostream stream( &mRequest );
+	stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	boost::asio::async_write( *mSocket, mRequest, 
+		mStrand.wrap( boost::bind( &TcpClient::onWrite, shared_from_this(), 
+			boost::asio::placeholders::error, 
+			boost::asio::placeholders::bytes_transferred ) ) );
+	mRequest.consume( mRequest.size() );
 }
 
-void TcpClient::send( uint_fast8_t *buffer, size_t count ) 
+void TcpClient::onConnect( const boost::system::error_code& err )
 {
-	if ( mSocket ) {
-		mSocket->async_send( boost::asio::buffer( buffer, count ), 
-			boost::bind(& TcpClient::onSend, this, "", boost::asio::placeholders::error, count ) 
-			);
+	if ( err ) {
+		mSignalError( err.message(), 0 );
+	} else {
+		mSignalConnect();
+	}
+}
+
+void TcpClient::onResolve( const boost::system::error_code& err,
+						  tcp::resolver::iterator iter )
+{
+	if ( err ) {
+		mSignalError( err.message(), 0 );
+	} else {
+		mSignalResolve();
+		boost::asio::async_connect( *mSocket, iter, mStrand.wrap( boost::bind( &TcpClient::onConnect, shared_from_this(),
+																boost::asio::placeholders::error ) ) );
 	}
 }

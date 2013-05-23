@@ -2,25 +2,31 @@
 
 #include "Client.h"
 
-typedef std::shared_ptr<class UdpClient>	UdpClientRef;
+typedef std::shared_ptr<class UdpClient>				UdpClientRef;
+typedef std::shared_ptr<boost::asio::ip::udp::resolver>	UdpResolverRef;
+typedef std::shared_ptr<boost::asio::ip::udp::socket>	UdpSocketRef;
 
-class UdpClient : public Client
+class UdpClient : public Client, public std::enable_shared_from_this<UdpClient>
 {
 public:
-	static UdpClientRef								create();
-	~UdpClient();
+	static UdpClientRef	create( boost::asio::io_service& io );
 	
-	void											connect( const std::string& host = "localhost", uint16_t port = 2000 );
+	virtual void		connect( const std::string& host, uint16_t port );
+	virtual void		connect( const std::string& host, const std::string& protocol );
+	virtual void		disconnect();
 	
-	void											send( uint_fast8_t* buffer, size_t count );
-private:
-	UdpClient();
-	void											onSend( const std::string& message, 
-		const boost::system::error_code& error, std::size_t bytesTransferred );
+	virtual void		read();
+	
+	virtual void		wait( size_t millis, bool repeat = false );
 
-	std::string										mBuffer;
-	boost::asio::ip::udp::endpoint					mEndpoint;
-	boost::asio::io_service							mIoService;
-	std::shared_ptr<boost::asio::ip::udp::socket>	mSocket;
+	virtual void		write( const ci::Buffer& buffer );
+protected:
+	UdpClient( boost::asio::io_service& io );
+	
+	virtual void		onConnect( const boost::system::error_code& err );
+	virtual void		onResolve( const boost::system::error_code& err,
+								  boost::asio::ip::udp::resolver::iterator iter );
 
+	UdpResolverRef		mResolver;
+	UdpSocketRef		mSocket;
 };
