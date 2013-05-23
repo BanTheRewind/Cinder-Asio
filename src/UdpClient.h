@@ -16,7 +16,7 @@ public:
 	virtual void		disconnect();
 	
 	virtual void		read();
-	
+
 	virtual void		wait( size_t millis, bool repeat = false );
 
 	virtual void		write( const ci::Buffer& buffer );

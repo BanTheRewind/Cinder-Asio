@@ -29,10 +29,7 @@ void TcpClient::connect( const string& host, uint16_t port )
 
 void TcpClient::connect( const string& host, const string& protocol )
 {
-	mHost		= host;
-	mProtocol	= protocol;
-
-	tcp::resolver::query query( mHost, mProtocol );
+	tcp::resolver::query query( host, protocol );
 	mResolver = TcpResolverRef( new tcp::resolver( mStrand.get_io_service() ) );
 	mResolver->async_resolve( query, 
 		mStrand.wrap( boost::bind( &TcpClient::onResolve, shared_from_this(), 
@@ -54,9 +51,9 @@ void TcpClient::read()
 			boost::asio::placeholders::bytes_transferred ) ) );
 }
 
-void TcpClient::read( const std::string& until )
+void TcpClient::read( const std::string& delim )
 {
-	boost::asio::async_read_until( *mSocket, mResponse, until, 
+	boost::asio::async_read_until( *mSocket, mResponse, delim, 
 		mStrand.wrap( boost::bind( &TcpClient::onRead, shared_from_this(), 
 		boost::asio::placeholders::error, 
 		boost::asio::placeholders::bytes_transferred ) ) );

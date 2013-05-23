@@ -6,7 +6,7 @@ using namespace ci;
 using namespace std;
 
 Connection::Connection( boost::asio::io_service& io )
-: mProtocol( "" ), mStrand( io ), mTimer( io ), mTimerInterval( 0 ), mTimerRepeat( false )
+: mStrand( io ), mTimer( io ), mTimerInterval( 0 ), mTimerRepeat( false )
 {
 }
 

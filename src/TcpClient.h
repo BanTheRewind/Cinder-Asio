@@ -17,7 +17,7 @@ public:
 	virtual void		disconnect();
 	
 	virtual void		read();
-	virtual void		read( const std::string& until );
+	virtual void		read( const std::string& delim );
 	virtual void		read( size_t bufferSize );
 	
 	virtual void		wait( size_t millis, bool repeat = false );

@@ -40,10 +40,10 @@ void UdpClient::disconnect()
 
 void UdpClient::read()
 {
-	/*mSocket->async_receive( mResponse, boost::asio::transfer_at_least( 1 ),
-							boost::bind( &UdpClient::onRead, shared_from_this(),
-										boost::asio::placeholders::error,
-										boost::asio::placeholders::bytes_transferred ) );*/
+	/*mSocket->async_receive( mResponse, 
+		mStrand.wrap( boost::bind( &UdpClient::onRead, shared_from_this(), 
+			boost::asio::placeholders::error, 
+			boost::asio::placeholders::bytes_transferred ) ) );*/
 }
 
 void UdpClient::wait( size_t millis, bool repeat )
@@ -60,10 +60,10 @@ void UdpClient::write( const Buffer& buffer )
 {
 	ostream stream( &mRequest );
 	stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
-	/*mSocket->async_send( mRequest, boost::bind( &UdpClient::onWrite, shared_from_this(),
-	 boost::asio::placeholders::error,
-	 boost::asio::placeholders::bytes_transferred ) );
-	*/
+	/*mSocket->async_send( mRequest, 
+		mStrand.wrap( boost::bind( &UdpClient::onWrite, shared_from_this(), 
+			boost::asio::placeholders::error, 
+			boost::asio::placeholders::bytes_transferred ) ) );*/
 	mRequest.consume( mRequest.size() );
 }
 

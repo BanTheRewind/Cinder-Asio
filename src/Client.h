@@ -9,9 +9,7 @@ public:
 	virtual void	connect( const std::string& host, const std::string& protocol ) = 0;
 protected:
 	Client( boost::asio::io_service& io )
-	: Connection( io ), mHost( "" )
+	: Connection( io )
 	{
 	}
-	
-	std::string		mHost;
 };

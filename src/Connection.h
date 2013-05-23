@@ -93,7 +93,6 @@ protected:
 	boost::asio::strand			mStrand;
 	boost::asio::deadline_timer	mTimer;
 	
-	std::string					mProtocol;
 	size_t						mTimerInterval;
 	bool						mTimerRepeat;
 	
