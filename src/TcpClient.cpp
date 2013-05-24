@@ -45,10 +45,11 @@ void TcpClient::disconnect()
 
 void TcpClient::read()
 {
-	boost::asio::async_read( *mSocket, mResponse, boost::asio::transfer_at_least( 1 ), 
-		mStrand.wrap( boost::bind( &TcpClient::onRead, shared_from_this(), 
+	boost::asio::async_read( *mSocket, mResponse, 
+		boost::asio::transfer_at_least( 1 ), 
+		boost::bind( &TcpClient::onRead, shared_from_this(), 
 			boost::asio::placeholders::error, 
-			boost::asio::placeholders::bytes_transferred ) ) );
+			boost::asio::placeholders::bytes_transferred ) );
 }
 
 void TcpClient::read( const std::string& delim )

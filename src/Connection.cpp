@@ -1,5 +1,6 @@
 #include "Connection.h"
 
+#include "cinder/app/App.h"
 #include "cinder/Utilities.h"
 
 using namespace ci;
@@ -36,13 +37,14 @@ void Connection::onRead( const boost::system::error_code& err, size_t bytesTrans
 			mSignalError( err.message(), bytesTransferred );
 		}
 	} else {
-		char* data = new char[ bytesTransferred ];
+		char* data = new char[ bytesTransferred + 1 ];
+		data[ bytesTransferred ] = 0;
 		istream stream( &mResponse );
 		stream.read( data, bytesTransferred );
 		mSignalRead( Buffer( data, bytesTransferred ) );
 		delete [] data;
 	}
-	mResponse.consume( bytesTransferred );
+	mResponse.consume( mResponse.size() );
 }
 
 void Connection::onWait( const boost::system::error_code& err )
