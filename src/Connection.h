@@ -24,6 +24,14 @@ public:
 		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalConnect.connect( std::bind( callback, callbackObject ) ) ) ) ) );
 		return id;
 	}
+
+	template<typename T, typename Y>
+	inline uint32_t			addDisconnectCallback( T callback, Y *callbackObject )
+	{
+		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
+		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalDisconnect.connect( std::bind( callback, callbackObject ) ) ) ) ) );
+		return id;
+	}
 	
 	template<typename T, typename Y>
 	inline uint32_t			addErrorCallback( T callback, Y *callbackObject )
@@ -82,6 +90,7 @@ protected:
 	typedef std::map<uint32_t, CallbackRef>	CallbackList;
 
 	virtual void				onConnect( const boost::system::error_code& err ) = 0;
+	virtual void				onDisconnect( const boost::system::error_code& err );
 	virtual void				onRead( const boost::system::error_code& err,
 									   size_t bytesTransferred );
 	virtual void				onWait( const boost::system::error_code& err );
@@ -98,6 +107,7 @@ protected:
 	
 	CallbackList											mCallbacks;
 	boost::signals2::signal<void ()>						mSignalConnect;
+	boost::signals2::signal<void ()>						mSignalDisconnect;
 	boost::signals2::signal<void ()>						mSignalResolve;
 	boost::signals2::signal<void ( std::string, size_t )>	mSignalError;
 	boost::signals2::signal<void ( ci::Buffer )>			mSignalRead;

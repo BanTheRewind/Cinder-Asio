@@ -17,6 +17,7 @@ private:
 	void						send();
 	
 	void						onConnect();
+	void						onDisconnect();
 	void						onError( std::string error, size_t bytesTransferred );
 	void						onRead( ci::Buffer buffer );
 	void						onReadComplete();
@@ -48,6 +49,11 @@ void HttpClientApp::onConnect()
 	console() << "Connected." << endl;
 	mResponse.clear();
 	mClient->write( Buffer( &mRequest[ 0 ], mRequest.size() ) );
+}
+
+void HttpClientApp::onDisconnect()
+{
+	console() << "Disconnected." << endl;
 }
 
 void HttpClientApp::onError( string error, size_t bytesTransferred )
@@ -114,6 +120,7 @@ void HttpClientApp::setup()
 	
 	mClient = TcpClient::create( io_service() );
 	mClient->addConnectCallback( &HttpClientApp::onConnect, this );
+	mClient->addDisconnectCallback( &HttpClientApp::onDisconnect, this );
 	mClient->addErrorCallback( &HttpClientApp::onError, this );
 	mClient->addReadCallback( &HttpClientApp::onRead, this );
 	mClient->addReadCompleteCallback( &HttpClientApp::onReadComplete, this );

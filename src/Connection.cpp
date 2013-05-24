@@ -28,6 +28,15 @@ void Connection::removeCallback( uint32_t id )
 	}
 }
 
+void Connection::onDisconnect( const boost::system::error_code& err )
+{
+	if ( err ) {
+		mSignalError( err.message(), 0 );
+	} else {
+		mSignalDisconnect();
+	}
+}
+
 void Connection::onRead( const boost::system::error_code& err, size_t bytesTransferred )
 {
 	if ( err ) {

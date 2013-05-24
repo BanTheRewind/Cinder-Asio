@@ -39,7 +39,18 @@ void TcpClient::connect( const string& host, const string& protocol )
 void TcpClient::disconnect()
 {
 	if ( mSocket && mSocket->is_open() ) {
-		mSocket->close();
+		boost::system::error_code err;
+		mSocket->shutdown( boost::asio::socket_base::shutdown_both, err );
+		if ( err ) {
+			mSignalError( err.message(), 0 );
+		} else { 
+			mSocket->close( err );
+			if ( err ) {
+				mSignalError( err.message(), 0 );
+			} else {
+				mSignalDisconnect();
+			}
+		}
 	}
 }
 

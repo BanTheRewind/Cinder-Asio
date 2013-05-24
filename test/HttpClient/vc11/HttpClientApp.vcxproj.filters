@@ -16,6 +16,9 @@
     <Filter Include="Blocks\Cinder-Asio">
       <UniqueIdentifier>{04862b34-f4de-4713-b6a9-05c481111dd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{efa5588e-22c4-46b6-ab94-84395aaff046}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\TcpClient.cpp">
