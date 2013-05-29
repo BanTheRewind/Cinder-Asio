@@ -72,6 +72,9 @@
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
     </Link>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../../../../../include</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -102,16 +105,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\Connection.cpp" />
+    <ClCompile Include="..\..\..\src\ClientInterface.cpp" />
+    <ClCompile Include="..\..\..\src\DispatcherInterface.cpp" />
+    <ClCompile Include="..\..\..\src\ServerInterface.cpp" />
+    <ClCompile Include="..\..\..\src\SessionInterface.cpp" />
     <ClCompile Include="..\..\..\src\TcpClient.cpp" />
+    <ClCompile Include="..\..\..\src\TcpServer.cpp" />
+    <ClCompile Include="..\..\..\src\TcpSession.cpp" />
     <ClCompile Include="..\..\..\src\UdpClient.cpp" />
+    <ClCompile Include="..\..\..\src\UdpSession.cpp" />
+    <ClCompile Include="..\..\..\src\WaitTimer.cpp" />
     <ClCompile Include="..\src\HttpClientApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\Client.h" />
-    <ClInclude Include="..\..\..\src\Connection.h" />
+    <Image Include="..\resources\cinder_app_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\ClientInterface.h" />
+    <ClInclude Include="..\..\..\src\DispatcherInterface.h" />
+    <ClInclude Include="..\..\..\src\ServerInterface.h" />
+    <ClInclude Include="..\..\..\src\SessionInterface.h" />
     <ClInclude Include="..\..\..\src\TcpClient.h" />
+    <ClInclude Include="..\..\..\src\TcpServer.h" />
+    <ClInclude Include="..\..\..\src\TcpSession.h" />
     <ClInclude Include="..\..\..\src\UdpClient.h" />
+    <ClInclude Include="..\..\..\src\UdpSession.h" />
+    <ClInclude Include="..\..\..\src\WaitTimer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
