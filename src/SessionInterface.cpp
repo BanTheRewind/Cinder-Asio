@@ -33,7 +33,6 @@ void SessionInterface::onClose( const boost::system::error_code& err )
 	}
 }
 
-
 void SessionInterface::onRead( const boost::system::error_code& err, size_t bytesTransferred )
 {
 	if ( err ) {
