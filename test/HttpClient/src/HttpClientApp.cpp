@@ -74,7 +74,6 @@ void HttpClientApp::onConnect( TcpSessionRef session )
 	mSession->addReadCompleteCallback( &HttpClientApp::onReadComplete, this );
 	mSession->addWriteCallback( &HttpClientApp::onWrite, this );
 	mSession->write( TcpSession::stringToBuffer( mRequest ) );
-	//mSession->write( Buffer( &mRequest[ 0 ], mRequest.size() ) );
 }
 
 void HttpClientApp::onError( string err, size_t bytesTransferred )
@@ -88,7 +87,7 @@ void HttpClientApp::onError( string err, size_t bytesTransferred )
 void HttpClientApp::onRead( ci::Buffer buffer )
 {
 	mText		= toString( buffer.getDataSize() ) + " bytes read";
-	mResponse	 += TcpSession::bufferToString( buffer );
+	mResponse	+= TcpSession::bufferToString( buffer );
 	mSession->read();
 }
 
@@ -134,10 +133,10 @@ void HttpClientApp::setup()
 	mTextSize	= Vec2f( getWindowSize() );
 
 	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 150 ) );
-	mParams->addParam( "Frame rate",	&mFrameRate,						"", true );
-	mParams->addParam( "Full screen",	&mFullScreen,						"key=f" );
+	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
+	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
 	mParams->addParam( "Host",			&mHost );
-	mParams->addParam( "Port",			&mPort,								"min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
+	mParams->addParam( "Port",			&mPort,							"min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
 	mParams->addButton( "Write", bind(	&HttpClientApp::write, this ),	"key=w" );
 	mParams->addButton( "Quit", bind(	&HttpClientApp::quit, this ),	"key=q" );
 	
@@ -173,6 +172,11 @@ void HttpClientApp::update()
 
 void HttpClientApp::write()
 {
+	// This sample is meant to work with only one session at a time
+	if ( mSession && mSession->getSocket()->is_open() ) {
+		return;
+	}
+		
 	mText = "Connecting to:\n" + mHost + ":" + toString( mPort );
 	
 	mClient->connect( mHost, (uint16_t)mPort );		

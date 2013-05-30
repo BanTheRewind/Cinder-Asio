@@ -15,7 +15,7 @@ public:
 	~UdpSession();
 	
 	virtual void			close();
-
+	
 	virtual void			read();
 	virtual void			read( size_t bufferSize );
 	virtual void			write( const ci::Buffer& buffer );

@@ -12,7 +12,7 @@ public:
 	~SessionInterface();
 
 	virtual void			close() = 0;
-
+	
 	virtual void			read() = 0;
 	virtual void			write( const ci::Buffer& buffer ) = 0;	
 

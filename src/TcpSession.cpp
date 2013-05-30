@@ -24,16 +24,11 @@ void TcpSession::close()
 {
 	if ( mSocket && mSocket->is_open() ) {
 		boost::system::error_code err;
-		mSocket->shutdown( boost::asio::socket_base::shutdown_both, err );
+		mSocket->close( err );
 		if ( err ) {
 			mSignalError( err.message(), 0 );
-		} else { 
-			mSocket->close( err );
-			if ( err ) {
-				mSignalError( err.message(), 0 );
-			} else {
-				mSignalClose();
-			}
+		} else {
+			mSignalClose();
 		}
 	}
 }

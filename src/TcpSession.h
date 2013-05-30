@@ -15,7 +15,7 @@ public:
 	~TcpSession();
 	
 	virtual void			close();
-
+	
 	virtual void			read();
 	virtual void			read( const std::string& delim );
 	virtual void			read( size_t bufferSize );
