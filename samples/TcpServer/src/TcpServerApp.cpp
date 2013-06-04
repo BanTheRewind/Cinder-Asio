@@ -12,12 +12,11 @@ public:
 	void						setup();
 	void						update();
 private:
+	void						accept();
 	TcpServerRef				mServer;
 	TcpSessionRef				mSession;
 	int32_t						mPort;
-	std::string					mRequest;
-	std::string					mResponse;
-	void						write();
+	int32_t						mPortPrev;
 	
 	void						onCancel();
 	void						onClose();
@@ -44,6 +43,16 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+void TcpServerApp::accept()
+{
+	if ( mServer ) {
+		mServer->accept( (uint16_t)mPort );
+	
+		mText = "Listening on port: " + toString( mPort );
+		console() << mText << endl;
+	}
+}
+
 void TcpServerApp::draw()
 {
 	gl::clear( Colorf::black() );
@@ -59,25 +68,30 @@ void TcpServerApp::draw()
 void TcpServerApp::onCancel()
 {
 	mText = "Canceled";
+	console() << mText << endl;
+	
+	accept();
 }
 
 void TcpServerApp::onClose()
 {
 	mText = "Disconnected";
+	console() << mText << endl;
 }
 
 void TcpServerApp::onAccept( TcpSessionRef session )
 {
 	mText = "Connected";
-	mResponse.clear();
-
+	console() << mText << endl;
+	
 	mSession = session;
 	mSession->addCloseCallback( &TcpServerApp::onClose, this );
 	mSession->addErrorCallback( &TcpServerApp::onError, this );
 	mSession->addReadCallback( &TcpServerApp::onRead, this );
 	mSession->addReadCompleteCallback( &TcpServerApp::onReadComplete, this );
 	mSession->addWriteCallback( &TcpServerApp::onWrite, this );
-	mSession->write( TcpSession::stringToBuffer( mRequest ) );
+	
+	mSession->read();
 }
 
 void TcpServerApp::onError( string err, size_t bytesTransferred )
@@ -86,28 +100,30 @@ void TcpServerApp::onError( string err, size_t bytesTransferred )
 	if ( !err.empty() ) {
 		mText += ": " + err;
 	}
+	console() << mText << endl;
 }
 
 void TcpServerApp::onRead( ci::Buffer buffer )
 {
-	mText		= toString( buffer.getDataSize() ) + " bytes read";
-	mResponse	+= TcpSession::bufferToString( buffer );
-	mSession->read();
+	mText = toString( buffer.getDataSize() ) + " bytes read";
+	console() << mText << endl;
+	
+	string response	= TcpSession::bufferToString( buffer );
+	console() << response << endl;
+	
+	mSession->write( TcpSession::stringToBuffer( response ) );
 }
 
 void TcpServerApp::onReadComplete()
 {
-	mText = "Read complete";
-	if ( !mResponse.empty() ) {
-		console() << mResponse << endl;
-		mText += ": " + toString( mResponse.size() ) + " bytes";
-	}
 	mSession->close();
+	mServer->cancel();
 }
 
 void TcpServerApp::onWrite( size_t bytesTransferred )
 {
 	mText = toString( bytesTransferred ) + " bytes written";
+	console() << mText << endl;
 	
 	mSession->read();
 }
@@ -118,7 +134,7 @@ void TcpServerApp::setup()
 	mFullScreen	= false;
 	
 	mPort		= 2000;
-	mRequest	= "Hello, client!";
+	mPortPrev	= mPort;
 	
 	gl::enable( GL_TEXTURE_2D );
 	
@@ -132,8 +148,6 @@ void TcpServerApp::setup()
 	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
 	mParams->addParam( "Port",			&mPort,
 					  "min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
-	mParams->addParam( "Request",		&mRequest								);
-	mParams->addButton( "Write", bind(	&TcpServerApp::write, this ),	"key=w" );
 	mParams->addButton( "Quit", bind(	&TcpServerApp::quit, this ),	"key=q" );
 	
 	mServer = TcpServer::create( io_service() );
@@ -141,9 +155,7 @@ void TcpServerApp::setup()
 	mServer->addCancelCallback( &TcpServerApp::onCancel, this );
 	mServer->addErrorCallback( &TcpServerApp::onError, this );
 	
-	mText = "Listening on port: " + toString( mPort );
-	
-	mServer->accept( (uint16_t)mPort );
+	accept();
 }
 
 void TcpServerApp::update()
@@ -153,6 +165,11 @@ void TcpServerApp::update()
 	if ( mFullScreen != isFullScreen() ) {
 		setFullScreen( mFullScreen );
 		mFullScreen = isFullScreen();
+	}
+	
+	if ( mPortPrev != mPort ) {
+		mServer->cancel();
+		mPortPrev = mPort;
 	}
 
 	if ( mTextPrev != mText ) {
@@ -167,14 +184,6 @@ void TcpServerApp::update()
 			mTextSize.y	= tbox.measure().y;
 			mTexture	= gl::Texture( tbox.render() );
 		}
-	}
-}
-
-void TcpServerApp::write()
-{
-	// This sample is meant to work with only one session at a time
-	if ( mSession && mSession->getSocket()->is_open() ) {
-		return;
 	}
 }
 

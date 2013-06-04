@@ -23,7 +23,9 @@ TcpServer::~TcpServer()
 
 void TcpServer::accept( uint16_t port )
 {
-	mAcceptor = TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port) ) );
+	if ( !mAcceptor ) {
+		mAcceptor = TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port ) ) );
+	}
 	TcpSessionRef session( new TcpSession( mIoService ) );
 	mAcceptor->async_accept( *session->mSocket, 
 		mStrand.wrap( boost::bind( &TcpServer::onAccept, shared_from_this(), 
@@ -32,12 +34,14 @@ void TcpServer::accept( uint16_t port )
 
 void TcpServer::cancel()
 {
-	boost::system::error_code err;
-	mAcceptor->cancel( err );
-	if ( err ) {
-		mSignalError( err.message(), 0 );
-	} else {
-		mSignalCancel();
+	if ( mAcceptor && mAcceptor->is_open() ) {
+		boost::system::error_code err;
+		mAcceptor->cancel( err );
+		if ( err ) {
+			mSignalError( err.message(), 0 );
+		} else {
+			mSignalCancel();
+		}
 	}
 }
 

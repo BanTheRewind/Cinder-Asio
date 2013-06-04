@@ -17,14 +17,12 @@ private:
 	std::string					mHost;
 	int32_t						mPort;
 	std::string					mRequest;
-	std::string					mResponse;
 	void						write();
 	
 	void						onClose();
 	void						onConnect( TcpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
 	void						onRead( ci::Buffer buffer );
-	void						onReadComplete();
 	void						onResolve();
 	void						onWrite( size_t bytesTransferred );
 	
@@ -60,18 +58,18 @@ void TcpClientApp::draw()
 void TcpClientApp::onClose()
 {
 	mText = "Disconnected";
+	console() << mText << endl;
 }
 
 void TcpClientApp::onConnect( TcpSessionRef session )
 {
 	mText = "Connected";
-	mResponse.clear();
+	console() << mText << endl;
 
 	mSession = session;
 	mSession->addCloseCallback( &TcpClientApp::onClose, this );
 	mSession->addErrorCallback( &TcpClientApp::onError, this );
 	mSession->addReadCallback( &TcpClientApp::onRead, this );
-	mSession->addReadCompleteCallback( &TcpClientApp::onReadComplete, this );
 	mSession->addWriteCallback( &TcpClientApp::onWrite, this );
 	mSession->write( TcpSession::stringToBuffer( mRequest ) );
 }
@@ -82,33 +80,30 @@ void TcpClientApp::onError( string err, size_t bytesTransferred )
 	if ( !err.empty() ) {
 		mText += ": " + err;
 	}
+	console() << mText << endl;
 }
 
 void TcpClientApp::onRead( ci::Buffer buffer )
 {
 	mText		= toString( buffer.getDataSize() ) + " bytes read";
-	mResponse	+= TcpSession::bufferToString( buffer );
-	mSession->read();
-}
-
-void TcpClientApp::onReadComplete()
-{
-	mText = "Read complete";
-	if ( !mResponse.empty() ) {
-		console() << mResponse << endl;
-		mText += ": " + toString( mResponse.size() ) + " bytes";
-	}
+	console() << mText << endl;
+	
+	string response	= TcpSession::bufferToString( buffer );
+	console() << response << endl;
+	
 	mSession->close();
 }
 
 void TcpClientApp::onResolve()
 {
 	mText = "Endpoint resolved";
+	console() << mText << endl;
 }
 
 void TcpClientApp::onWrite( size_t bytesTransferred )
 {
 	mText = toString( bytesTransferred ) + " bytes written";
+	console() << mText << endl;
 	
 	mSession->read();
 }
@@ -120,7 +115,7 @@ void TcpClientApp::setup()
 	
 	mHost		= "localhost";
 	mPort		= 2000;
-	mRequest	= "Hello, server!";
+	mRequest	= "echo";
 	
 	gl::enable( GL_TEXTURE_2D );
 	
@@ -177,6 +172,7 @@ void TcpClientApp::write()
 	}
 		
 	mText = "Connecting to:\n" + mHost + ":" + toString( mPort );
+	console() << mText << endl;
 	
 	mClient->connect( mHost, (uint16_t)mPort );		
 }
