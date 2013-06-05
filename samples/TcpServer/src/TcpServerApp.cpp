@@ -77,6 +77,8 @@ void TcpServerApp::onClose()
 {
 	mText = "Disconnected";
 	console() << mText << endl;
+	
+	accept();
 }
 
 void TcpServerApp::onAccept( TcpSessionRef session )
@@ -85,7 +87,6 @@ void TcpServerApp::onAccept( TcpSessionRef session )
 	console() << mText << endl;
 	
 	mSession = session;
-	mSession->addCloseCallback( &TcpServerApp::onClose, this );
 	mSession->addErrorCallback( &TcpServerApp::onError, this );
 	mSession->addReadCallback( &TcpServerApp::onRead, this );
 	mSession->addReadCompleteCallback( &TcpServerApp::onReadComplete, this );
@@ -138,12 +139,12 @@ void TcpServerApp::setup()
 	
 	gl::enable( GL_TEXTURE_2D );
 	
-	mFont		= Font( "Georgia", 60 );
+	mFont		= Font( "Georgia", 50 );
 	mText		= "";
 	mTextPrev	= mText;
 	mTextSize	= Vec2f( getWindowSize() );
 
-	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 150 ) );
+	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 110 ) );
 	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
 	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
 	mParams->addParam( "Port",			&mPort,
@@ -168,7 +169,7 @@ void TcpServerApp::update()
 	}
 	
 	if ( mPortPrev != mPort ) {
-		mServer->cancel();
+		mServer->close();
 		mPortPrev = mPort;
 	}
 

@@ -119,7 +119,7 @@ void TcpClientApp::setup()
 	
 	gl::enable( GL_TEXTURE_2D );
 	
-	mFont		= Font( "Georgia", 60 );
+	mFont		= Font( "Georgia", 50 );
 	mText		= "";
 	mTextPrev	= mText;
 	mTextSize	= Vec2f( getWindowSize() );

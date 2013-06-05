@@ -13,6 +13,7 @@ public:
 
 	virtual void		accept( uint16_t port );
 	virtual void		cancel();
+	virtual void		close();
 	
 	template<typename T, typename Y>
 	inline uint32_t		addAcceptCallback( T callback, Y* callbackObject )
