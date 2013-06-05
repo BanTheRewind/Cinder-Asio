@@ -5,6 +5,18 @@
 
 #include "TcpClient.h"
 
+/*
+ * This application demonstrates how to create a basic TCP
+ * echo client. This is meant to communicate with the TcpServer
+ * sample running on the same machine. This sample only handles a
+ * single session.
+ *
+ * To communicate with a host, you must create a client and add a
+ * connect event callback. Once connected, the client will pass a 
+ * session object through the callback. Use the session to communicate
+ * by adding callbacks to it. Close the session when you no longer 
+ * need it.
+ */ 
 class TcpClientApp : public ci::app::AppBasic 
 {
 public:
@@ -66,12 +78,19 @@ void TcpClientApp::onConnect( TcpSessionRef session )
 	mText = "Connected";
 	console() << mText << endl;
 
+	// Get the session from the argument and add callbacks to it.
 	mSession = session;
 	mSession->addCloseCallback( &TcpClientApp::onClose, this );
 	mSession->addErrorCallback( &TcpClientApp::onError, this );
 	mSession->addReadCallback( &TcpClientApp::onRead, this );
 	mSession->addWriteCallback( &TcpClientApp::onWrite, this );
-	mSession->write( TcpSession::stringToBuffer( mRequest ) );
+
+	// Write data is packaged as a ci::Buffer. This allows 
+	// you to send any kind of data. Because it's more common to
+	// work with strings, the session object has convenience methods
+	// for converting between std::string and ci::Buffer.
+	Buffer buffer = TcpSession::stringToBuffer( mRequest );
+	mSession->write( buffer );
 }
 
 void TcpClientApp::onError( string err, size_t bytesTransferred )
@@ -88,9 +107,15 @@ void TcpClientApp::onRead( ci::Buffer buffer )
 	mText		= toString( buffer.getDataSize() ) + " bytes read";
 	console() << mText << endl;
 	
+	// Responses are passed in the read callback as ci::Buffer. Use
+	// a convenience method on the session object to convert it to
+	// a std::string.
 	string response	= TcpSession::bufferToString( buffer );
 	console() << response << endl;
 	
+	// Closing the connection after reading mimics the behavior
+	// of a HTTP client. To keep the connection open and continue
+	// communicating with the server, comment the line below.
 	mSession->close();
 }
 
@@ -105,6 +130,8 @@ void TcpClientApp::onWrite( size_t bytesTransferred )
 	mText = toString( bytesTransferred ) + " bytes written";
 	console() << mText << endl;
 	
+	// After successfully send your request to the server, you 
+	// should expect a response. Start reading immediately.
 	mSession->read();
 }
 
@@ -113,11 +140,11 @@ void TcpClientApp::setup()
 	mFrameRate	= 0.0f;
 	mFullScreen	= false;
 	
+	gl::enable( GL_TEXTURE_2D );
+	
 	mHost		= "localhost";
 	mPort		= 2000;
 	mRequest	= "echo";
-	
-	gl::enable( GL_TEXTURE_2D );
 	
 	mFont		= Font( "Georgia", 50 );
 	mText		= "";
@@ -134,7 +161,13 @@ void TcpClientApp::setup()
 	mParams->addButton( "Write", bind(	&TcpClientApp::write, this ),	"key=w" );
 	mParams->addButton( "Quit", bind(	&TcpClientApp::quit, this ),	"key=q" );
 	
+	// Initialize a client by passing a boost::asio::io_service to it.
+	// ci::App already has one that it polls on update, so we'll use that.
+	// You can use your own io_service, but you will have to manage it 
+	// manually (ie , call poll(), poll_one(), run(), etc).
 	mClient = TcpClient::create( io_service() );
+
+	// Add callbacks to work with the client asynchronously.
 	mClient->addConnectCallback( &TcpClientApp::onConnect, this );
 	mClient->addErrorCallback( &TcpClientApp::onError, this );
 	mClient->addResolveCallback( &TcpClientApp::onResolve, this );
@@ -144,11 +177,13 @@ void TcpClientApp::update()
 {
 	mFrameRate = getFrameRate();
 	
+	// Toggle full screen.
 	if ( mFullScreen != isFullScreen() ) {
 		setFullScreen( mFullScreen );
 		mFullScreen = isFullScreen();
 	}
 
+	// Update text.
 	if ( mTextPrev != mText ) {
 		mTextPrev = mText;
 		if ( mText.empty() ) {
@@ -174,6 +209,8 @@ void TcpClientApp::write()
 	mText = "Connecting to:\n" + mHost + ":" + toString( mPort );
 	console() << mText << endl;
 	
+	// Before we can write, we need to esablish a connection 
+	// and create a session. Check out the onConnect method.
 	mClient->connect( mHost, (uint16_t)mPort );		
 }
 
