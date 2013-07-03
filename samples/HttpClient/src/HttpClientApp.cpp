@@ -23,7 +23,6 @@ private:
 	
 	HttpRequest					mHttpRequest;
 	HttpResponse				mHttpResponse;
-	std::string					mResponse;
 	
 	void						write();
 	
@@ -71,11 +70,10 @@ void HttpClientApp::onClose()
 
 void HttpClientApp::onConnect( TcpSessionRef session )
 {
-	mText = "Connected";
+	mHttpResponse	= HttpResponse();
+	mSession		= session;
+	mText			= "Connected";
 	
-	mHttpResponse = HttpResponse();
-	
-	mSession = session;
 	mSession->addCloseCallback( &HttpClientApp::onClose, this );
 	mSession->addErrorCallback( &HttpClientApp::onError, this );
 	mSession->addReadCallback( &HttpClientApp::onRead, this );
@@ -95,19 +93,13 @@ void HttpClientApp::onError( string err, size_t bytesTransferred )
 void HttpClientApp::onRead( ci::Buffer buffer )
 {
 	mText		= toString( buffer.getDataSize() ) + " bytes read";
-	mResponse	+= TcpSession::bufferToString( buffer );
+	mHttpResponse.append( buffer );
 	mSession->read();
 }
 
 void HttpClientApp::onReadComplete()
 {
 	mText = "Read complete";
-	
-	try {
-		mHttpResponse.parseResponse( mResponse );
-	} catch ( HttpResponse::ExcKeyValuePairInvalid ex ) {
-		console() << ex.what() << endl;
-	}
 	
 	console() << mHttpResponse << endl;
 	
@@ -123,7 +115,7 @@ void HttpClientApp::onWrite( size_t bytesTransferred )
 {
 	mText = toString( bytesTransferred ) + " bytes written";
 	
-	mSession->read( "\r\n" );
+	mSession->read( "\r\n\r\n" );
 }
 
 void HttpClientApp::setup()
