@@ -64,15 +64,17 @@ void HttpClientApp::onClose()
 
 void HttpClientApp::onConnect( TcpSessionRef session )
 {
+	console() << "onConnect()" << std::endl;
+
 	mText = "Connected";
 	mResponse.clear();
 
 	mSession = session;
-	mSession->addCloseCallback( &HttpClientApp::onClose, this );
-	mSession->addErrorCallback( &HttpClientApp::onError, this );
-	mSession->addReadCallback( &HttpClientApp::onRead, this );
-	mSession->addReadCompleteCallback( &HttpClientApp::onReadComplete, this );
-	mSession->addWriteCallback( &HttpClientApp::onWrite, this );
+	mSession->connectCloseEventHandler( &HttpClientApp::onClose, this );
+	mSession->connectErrorEventHandler( &HttpClientApp::onError, this );
+	mSession->connectReadEventHandler( &HttpClientApp::onRead, this );
+	mSession->connectReadCompleteEventHandler( &HttpClientApp::onReadComplete, this );
+	mSession->connectWriteEventHandler( &HttpClientApp::onWrite, this );
 	mSession->write( TcpSession::stringToBuffer( mRequest ) );
 }
 
@@ -114,7 +116,9 @@ void HttpClientApp::onWrite( size_t bytesTransferred )
 }
 
 void HttpClientApp::setup()
-{	
+{
+	std::cout << "setup()" << std::endl;
+
 	mFrameRate	= 0.0f;
 	mFullScreen	= false;
 	
@@ -141,9 +145,10 @@ void HttpClientApp::setup()
 	mParams->addButton( "Quit", bind(	&HttpClientApp::quit, this ),	"key=q" );
 	
 	mClient = TcpClient::create( io_service() );
-	mClient->addConnectCallback( &HttpClientApp::onConnect, this );
-	mClient->addErrorCallback( &HttpClientApp::onError, this );
-	mClient->addResolveCallback( &HttpClientApp::onResolve, this );
+	mClient->connectConnectEventHandler( &HttpClientApp::onConnect, this );
+	//mClient->connectConnectEventHandler( [ & ]( TcpSessionRef session ) { onConnect( session ); } );
+	mClient->connectErrorEventHandler( &HttpClientApp::onError, this );
+	mClient->connectResolveEventHandler( &HttpClientApp::onResolve, this );
 }
 
 void HttpClientApp::update()

@@ -16,37 +16,38 @@ public:
 	virtual void			read() = 0;
 	virtual void			write( const ci::Buffer& buffer ) = 0;	
 
-	template<typename T, typename Y>
-	inline uint32_t			addCloseCallback( T callback, Y* callbackObject )
+	template< typename T, typename Y >
+	inline void				connectCloseEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
-		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalClose.connect( std::bind( callback, callbackObject ) ) ) ) ) );
-		return id;
+		mCloseEventHandler		= std::bind( eventHandler, eventHandlerObject );
 	}
 
-	template<typename T, typename Y>
-	inline uint32_t			addReadCallback( T callback, Y* callbackObject )
+	void					connectCloseEventHandler( const std::function< void() >& eventHandler );
+
+	template< typename T, typename Y >
+	inline void				connectReadEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
-		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalRead.connect( std::bind( callback, callbackObject, std::placeholders::_1 ) ) ) ) ) );
-		return id;
-	}
-	
-	template<typename T, typename Y>
-	inline uint32_t			addReadCompleteCallback( T callback, Y* callbackObject )
-	{
-		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
-		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalReadComplete.connect( std::bind( callback, callbackObject ) ) ) ) ) );
-		return id;
+		mReadEventHandler		= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
 	}
 
-	template<typename T, typename Y>
-	inline uint32_t			addWriteCallback( T callback, Y* callbackObject )
+	void					connectReadEventHandler( const std::function< void( ci::Buffer ) >& eventHandler );
+
+	template< typename T, typename Y >
+	inline void				connectReadCompleteEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
-		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalWrite.connect( std::bind( callback, callbackObject, std::placeholders::_1 ) ) ) ) ) );
-		return id;
+		mReadCompleteEventHandler		= std::bind( eventHandler, eventHandlerObject );
 	}
+
+	void					connectReadCompleteEventHandler( const std::function< void() >& eventHandler );
+
+	template< typename T, typename Y >
+	inline void				connectWriteEventHandler( T eventHandler, Y* eventHandlerObject )
+	{
+		mWriteEventHandler		= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
+	}
+
+	void					connectWriteEventHandler( const std::function< void( size_t ) >& eventHandler );
+
 protected:
 	SessionInterface( boost::asio::io_service& io );
 
@@ -58,9 +59,9 @@ protected:
 	
 	boost::asio::streambuf	mRequest;
 	boost::asio::streambuf	mResponse;
-	
-	boost::signals2::signal<void ()>				mSignalClose;
-	boost::signals2::signal<void ( ci::Buffer )>	mSignalRead;
-	boost::signals2::signal<void ()>				mSignalReadComplete;
-	boost::signals2::signal<void ( size_t )>		mSignalWrite;
+
+	std::function< void() >					mCloseEventHandler;
+	std::function< void( ci::Buffer ) >		mReadEventHandler;
+	std::function< void() >					mReadCompleteEventHandler;
+	std::function< void ( size_t ) >		mWriteEventHandler;
 };

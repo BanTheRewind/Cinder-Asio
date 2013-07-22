@@ -27,26 +27,27 @@ SessionInterface::~SessionInterface()
 void SessionInterface::onClose( const boost::system::error_code& err )
 {
 	if ( err ) {
-		mSignalError( err.message(), 0 );
+		mErrorEventHandler( err.message(), 0 );
 	} else {
-		mSignalClose();
+		mCloseEventHandler();
 	}
 }
+
 
 void SessionInterface::onRead( const boost::system::error_code& err, size_t bytesTransferred )
 {
 	if ( err ) {
 		if ( err == boost::asio::error::eof ) {
-			mSignalReadComplete();
+			mReadCompleteEventHandler();
 		} else {
-			mSignalError( err.message(), bytesTransferred );
+			mErrorEventHandler( err.message(), bytesTransferred );
 		}
 	} else {
 		char* data = new char[ bytesTransferred + 1 ];
 		data[ bytesTransferred ] = 0;
 		istream stream( &mResponse );
 		stream.read( data, bytesTransferred );
-		mSignalRead( Buffer( data, bytesTransferred ) );
+		mReadEventHandler( Buffer( data, bytesTransferred ) );
 		delete [] data;
 	}
 	mResponse.consume( mResponse.size() );
@@ -55,8 +56,28 @@ void SessionInterface::onRead( const boost::system::error_code& err, size_t byte
 void SessionInterface::onWrite( const boost::system::error_code& err, size_t bytesTransferred )
 {
 	if ( err ) {
-		mSignalError( err.message(), bytesTransferred );
+		mErrorEventHandler( err.message(), bytesTransferred );
 	} else {
-		mSignalWrite( bytesTransferred );
+		mWriteEventHandler( bytesTransferred );
 	}
+}
+
+void SessionInterface::connectCloseEventHandler( const std::function< void() >& eventHandler )
+{
+	mCloseEventHandler				= eventHandler;
+}
+
+void SessionInterface::connectReadEventHandler( const std::function< void( ci::Buffer ) >& eventHandler )
+{
+	mReadEventHandler				= eventHandler;
+}
+
+void SessionInterface::connectReadCompleteEventHandler( const std::function< void() >& eventHandler )
+{
+	mReadCompleteEventHandler		= eventHandler;
+}
+
+void SessionInterface::connectWriteEventHandler( const std::function< void( size_t ) >& eventHandler )
+{
+	mWriteEventHandler				= eventHandler;
 }

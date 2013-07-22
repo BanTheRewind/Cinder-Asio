@@ -13,13 +13,14 @@ public:
 	virtual void	connect( const std::string& host, uint16_t port );
 	virtual void	connect( const std::string& host, const std::string& protocol );
 
-	template<typename T, typename Y>
-	inline uint32_t		addConnectCallback( T callback, Y* callbackObject )
+	template< typename T, typename Y >
+	inline void		connectConnectEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
-		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalConnect.connect( std::bind( callback, callbackObject, std::placeholders::_1 ) ) ) ) ) );
-		return id;
+		mConnectEventHandler		= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
 	}
+
+	void			connectConnectEventHandler( const std::function< void( TcpSessionRef ) >& eventHandler );
+
 protected:
 	typedef std::shared_ptr<boost::asio::ip::tcp::resolver>	TcpResolverRef;
 
@@ -31,5 +32,5 @@ protected:
 
 	TcpResolverRef	mResolver;
 
-	boost::signals2::signal<void ( TcpSessionRef )>	mSignalConnect;
+	std::function< void( TcpSessionRef ) >		mConnectEventHandler;
 };
