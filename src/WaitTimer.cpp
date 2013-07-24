@@ -17,7 +17,7 @@ void WaitTimer::wait( size_t micros, bool repeat )
 	mTimerInterval	= micros;
 	mTimerRepeat	= repeat;
 	if ( mTimerInterval > 0 ) {
-		mTimer.expires_from_now( boost::posix_time::microsec( mTimerInterval ) );
+		mTimer.expires_from_now( boost::posix_time::microseconds( mTimerInterval ) );
 		mTimer.async_wait( 
 			mStrand.wrap( boost::bind( &WaitTimer::onWait, shared_from_this(), 
 			boost::asio::placeholders::error ) ) );
