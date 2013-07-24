@@ -26,9 +26,9 @@ void TcpSession::close()
 		boost::system::error_code err;
 		mSocket->close( err );
 		if ( err ) {
-			mSignalError( err.message(), 0 );
+			mErrorEventHandler( err.message(), 0 );
 		} else {
-			mSignalClose();
+			mCloseEventHandler();
 		}
 	}
 }

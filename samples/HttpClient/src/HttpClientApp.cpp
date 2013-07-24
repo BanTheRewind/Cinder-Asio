@@ -3,6 +3,10 @@
 #include "cinder/params/Params.h"
 #include "cinder/Text.h"
 
+#include "boost/algorithm/string.hpp"
+
+#include "HttpRequest.h"
+#include "HttpResponse.h"
 #include "TcpClient.h"
 
 class HttpClientApp : public ci::app::AppBasic 
@@ -16,8 +20,10 @@ private:
 	TcpSessionRef				mSession;
 	std::string					mHost;
 	int32_t						mPort;
-	std::string					mRequest;
-	std::string					mResponse;
+	
+	HttpRequest					mHttpRequest;
+	HttpResponse				mHttpResponse;
+	
 	void						write();
 	
 	void						onClose();
@@ -64,18 +70,16 @@ void HttpClientApp::onClose()
 
 void HttpClientApp::onConnect( TcpSessionRef session )
 {
-	console() << "onConnect()" << std::endl;
-
-	mText = "Connected";
-	mResponse.clear();
-
-	mSession = session;
-	mSession->connectCloseEventHandler( &HttpClientApp::onClose, this );
-	mSession->connectErrorEventHandler( &HttpClientApp::onError, this );
-	mSession->connectReadEventHandler( &HttpClientApp::onRead, this );
-	mSession->connectReadCompleteEventHandler( &HttpClientApp::onReadComplete, this );
-	mSession->connectWriteEventHandler( &HttpClientApp::onWrite, this );
-	mSession->write( TcpSession::stringToBuffer( mRequest ) );
+	mHttpResponse	= HttpResponse();
+	mSession		= session;
+	mText			= "Connected";
+	
+	mSession->addCloseCallback( &HttpClientApp::onClose, this );
+	mSession->addErrorCallback( &HttpClientApp::onError, this );
+	mSession->addReadCallback( &HttpClientApp::onRead, this );
+	mSession->addReadCompleteCallback( &HttpClientApp::onReadComplete, this );
+	mSession->addWriteCallback( &HttpClientApp::onWrite, this );
+	mSession->write( mHttpRequest.toBuffer() );
 }
 
 void HttpClientApp::onError( string err, size_t bytesTransferred )
@@ -89,17 +93,16 @@ void HttpClientApp::onError( string err, size_t bytesTransferred )
 void HttpClientApp::onRead( ci::Buffer buffer )
 {
 	mText		= toString( buffer.getDataSize() ) + " bytes read";
-	mResponse	+= TcpSession::bufferToString( buffer );
+	mHttpResponse.append( buffer );
 	mSession->read();
 }
 
 void HttpClientApp::onReadComplete()
 {
 	mText = "Read complete";
-	if ( !mResponse.empty() ) {
-		console() << mResponse << endl;
-		mText += ": " + toString( mResponse.size() ) + " bytes";
-	}
+	
+	console() << mHttpResponse << endl;
+	
 	mSession->close();
 }
 
@@ -112,29 +115,28 @@ void HttpClientApp::onWrite( size_t bytesTransferred )
 {
 	mText = toString( bytesTransferred ) + " bytes written";
 	
-	mSession->read();
+	mSession->read( "\r\n\r\n" );
 }
 
 void HttpClientApp::setup()
 {
-	std::cout << "setup()" << std::endl;
-
-	mFrameRate	= 0.0f;
-	mFullScreen	= false;
-	
-	mHost		= "libcinder.org";
-	mPort		= 80;
-	
-	mRequest = "GET / HTTP/1.0\r\n";
-	mRequest += "Host: " + mHost + "\r\n";
-	mRequest += "Accept: */*\r\n";
-	mRequest += "Connection: close\r\n\r\n";
 	gl::enable( GL_TEXTURE_2D );
 	
-	mFont		= Font( "Georgia", 60 );
-	mText		= "";
-	mTextPrev	= mText;
-	mTextSize	= Vec2f( getWindowSize() );
+	mFrameRate		= 0.0f;
+	mFullScreen		= false;
+	
+	mHost			= "libcinder.org";
+	mPort			= 80;
+	
+	mHttpRequest	= HttpRequest( "GET", "/", HttpVersion::HTTP_1_0 );
+	mHttpRequest.setHeader( "Host", mHost );
+	mHttpRequest.setHeader( "Accept", "*/*" );
+	mHttpRequest.setHeader( "Connection", "close" );
+	
+	mFont			= Font( "Georgia", 60 );
+	mText			= "";
+	mTextPrev		= mText;
+	mTextSize		= Vec2f( getWindowSize() );
 
 	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 150 ) );
 	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
@@ -144,11 +146,10 @@ void HttpClientApp::setup()
 	mParams->addButton( "Write", bind(	&HttpClientApp::write, this ),	"key=w" );
 	mParams->addButton( "Quit", bind(	&HttpClientApp::quit, this ),	"key=q" );
 	
-	mClient = TcpClient::create( io_service() );
-	mClient->connectConnectEventHandler( &HttpClientApp::onConnect, this );
-	//mClient->connectConnectEventHandler( [ & ]( TcpSessionRef session ) { onConnect( session ); } );
-	mClient->connectErrorEventHandler( &HttpClientApp::onError, this );
-	mClient->connectResolveEventHandler( &HttpClientApp::onResolve, this );
+	mClient			= TcpClient::create( io_service() );
+	mClient->addConnectCallback( &HttpClientApp::onConnect, this );
+	mClient->addErrorCallback( &HttpClientApp::onError, this );
+	mClient->addResolveCallback( &HttpClientApp::onResolve, this );
 }
 
 void HttpClientApp::update()

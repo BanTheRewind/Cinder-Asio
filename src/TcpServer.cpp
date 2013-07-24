@@ -18,15 +18,12 @@ TcpServer::TcpServer( boost::asio::io_service& io )
 
 TcpServer::~TcpServer()
 {
-	close();
+	cancel();
 }
 
 void TcpServer::accept( uint16_t port )
 {
-	if ( mAcceptor ) {
-		close();
-	}
-	mAcceptor = TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port ) ) );
+	mAcceptor = TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port) ) );
 	TcpSessionRef session( new TcpSession( mIoService ) );
 	mAcceptor->async_accept( *session->mSocket, 
 		mStrand.wrap( boost::bind( &TcpServer::onAccept, shared_from_this(), 
@@ -35,35 +32,20 @@ void TcpServer::accept( uint16_t port )
 
 void TcpServer::cancel()
 {
-	if ( mAcceptor && mAcceptor->is_open() ) {
-		boost::system::error_code err;
-		mAcceptor->cancel( err );
-		if ( err ) {
-			mSignalError( err.message(), 0 );
-		} else {
-			mSignalCancel();
-		}
-	}
-}
-
-void TcpServer::close()
-{
-	if ( mAcceptor && mAcceptor->is_open() ) {
-		boost::system::error_code err;
-		mAcceptor->close( err );
-		if ( err ) {
-			mSignalError( err.message(), 0 );
-		} else {
-			mSignalClose();
-		}
+	boost::system::error_code err;
+	mAcceptor->cancel( err );
+	if ( err ) {
+		mErrorEventHandler( err.message(), 0 );
+	} else {
+		mCancelEventHandler();
 	}
 }
 
 void TcpServer::onAccept( TcpSessionRef session, const boost::system::error_code& err )
 {
 	if ( err ) {
-		mSignalError( err.message(), 0 );
+		mErrorEventHandler( err.message(), 0 );
 	} else {
-		mSignalAccept( session );
+		mAcceptEventHandler( session );
 	}
 }

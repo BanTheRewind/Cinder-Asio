@@ -26,13 +26,13 @@ void UdpSession::close()
 		boost::system::error_code err;
 		mSocket->shutdown( boost::asio::socket_base::shutdown_both, err );
 		if ( err ) {
-			mSignalError( err.message(), 0 );
+			mErrorEventHandler( err.message(), 0 );
 		} else { 
 			mSocket->close( err );
 			if ( err ) {
-				mSignalError( err.message(), 0 );
+				mErrorEventHandler( err.message(), 0 );
 			} else {
-				mSignalClose();
+				mCloseEventHandler();
 			}
 		}
 	}

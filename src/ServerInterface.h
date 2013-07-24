@@ -7,27 +7,26 @@ class ServerInterface : public DispatcherInterface
 public:
 	virtual void		accept( uint16_t port ) = 0;
 	virtual void		cancel() = 0;
-	virtual void		close() = 0;
 
-	template<typename T, typename Y>
-	inline uint32_t		addCancelCallback( T callback, Y* callbackObject )
+	template< typename T, typename Y >
+	inline void			connectAcceptEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
-		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalCancel.connect( std::bind( callback, callbackObject ) ) ) ) ) );
-		return id;
+		mAcceptEventHandler			= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
 	}
-	
-	template<typename T, typename Y>
-	inline uint32_t		addCloseCallback( T callback, Y* callbackObject )
+
+	void				connectAcceptEventHandler( const std::function< void( std::shared_ptr< class SessionInterface > ) >& eventHandler );
+
+	template< typename T, typename Y >
+	inline void			connectCancelEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		uint32_t id = mCallbacks.empty() ? 0 : mCallbacks.rbegin()->first + 1;
-		mCallbacks.insert( std::make_pair( id, CallbackRef( new Callback( mSignalClose.connect( std::bind( callback, callbackObject ) ) ) ) ) );
-		return id;
+		mCancelEventHandler			= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
 	}
+
+	void				connectCancelEventHandler( const std::function< void() >& eventHandler );
+
 protected:
 	ServerInterface( boost::asio::io_service& io );
 
-	boost::signals2::signal<void ( std::shared_ptr<class SessionInterface> )>	mSignalAccept;
-	boost::signals2::signal<void ()>	mSignalCancel;
-	boost::signals2::signal<void ()>	mSignalClose;
+	std::function< void( std::shared_ptr< class SessionInterface > ) >		mAcceptEventHandler;
+	std::function< void() >		mCancelEventHandler;
 };

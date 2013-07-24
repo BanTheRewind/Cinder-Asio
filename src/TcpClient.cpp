@@ -33,9 +33,9 @@ void TcpClient::connect( const string& host, const string& protocol )
 void TcpClient::onConnect( TcpSessionRef session, const boost::system::error_code& err )
 {
 	if ( err ) {
-		mSignalError( err.message(), 0 );
+		mErrorEventHandler( err.message(), 0 );
 	} else {
-		mSignalConnect( session );
+		mConnectEventHandler( session );
 	}
 }
 
@@ -43,11 +43,16 @@ void TcpClient::onResolve( const boost::system::error_code& err,
 						  tcp::resolver::iterator iter )
 {
 	if ( err ) {
-		mSignalError( err.message(), 0 );
+		mErrorEventHandler( err.message(), 0 );
 	} else {
-		mSignalResolve();
+		mResolveEventHandler();
 		TcpSessionRef session( new TcpSession( mIoService ) );
 		boost::asio::async_connect( *session->mSocket, iter, mStrand.wrap( boost::bind( &TcpClient::onConnect, 
 			shared_from_this(), session, boost::asio::placeholders::error ) ) );
 	}
+}
+
+void TcpClient::connectConnectEventHandler( const std::function< void( TcpSessionRef ) >& eventHandler )
+{
+	mConnectEventHandler		= eventHandler;
 }
