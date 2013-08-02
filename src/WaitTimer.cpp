@@ -34,7 +34,7 @@ void WaitTimer::onWait( const boost::system::error_code& err )
 	}
 }
 
-void WaitTimer::connectWaitEventHandler( const std::function< void() >& eventHandler )
+void WaitTimer::connectWaitEventHandler( const std::function<void()>& eventHandler )
 {
-	mWaitEventHandler				= eventHandler;
+	mWaitEventHandler = eventHandler;
 }

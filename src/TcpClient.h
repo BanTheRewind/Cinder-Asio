@@ -16,10 +16,10 @@ public:
 	template< typename T, typename Y >
 	inline void		connectConnectEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mConnectEventHandler		= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
+		connectConnectEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
 
-	void			connectConnectEventHandler( const std::function< void( TcpSessionRef ) >& eventHandler );
+	void			connectConnectEventHandler( const std::function<void( TcpSessionRef )>& eventHandler );
 
 protected:
 	typedef std::shared_ptr<boost::asio::ip::tcp::resolver>	TcpResolverRef;
@@ -32,5 +32,5 @@ protected:
 
 	TcpResolverRef	mResolver;
 
-	std::function< void( TcpSessionRef ) >		mConnectEventHandler;
+	std::function<void( TcpSessionRef )>	mConnectEventHandler;
 };

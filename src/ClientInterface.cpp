@@ -5,7 +5,7 @@ ClientInterface::ClientInterface( boost::asio::io_service& io )
 {
 }
 
-void ClientInterface::connectResolveEventHandler( const std::function< void() >& eventHandler )
+void ClientInterface::connectResolveEventHandler( const std::function<void()>& eventHandler )
 {
-	mResolveEventHandler		= eventHandler;
+	mResolveEventHandler = eventHandler;
 }

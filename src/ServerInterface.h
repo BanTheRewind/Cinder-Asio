@@ -11,22 +11,19 @@ public:
 	template< typename T, typename Y >
 	inline void			connectAcceptEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mAcceptEventHandler			= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
+		connectAcceptEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
-
-	void				connectAcceptEventHandler( const std::function< void( std::shared_ptr< class SessionInterface > ) >& eventHandler );
+	void				connectAcceptEventHandler( const std::function<void( std::shared_ptr<class SessionInterface> )>& eventHandler );
 
 	template< typename T, typename Y >
 	inline void			connectCancelEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mCancelEventHandler			= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
+		connectCancelEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
-
-	void				connectCancelEventHandler( const std::function< void() >& eventHandler );
-
+	void				connectCancelEventHandler( const std::function<void()>& eventHandler );
 protected:
 	ServerInterface( boost::asio::io_service& io );
 
-	std::function< void( std::shared_ptr< class SessionInterface > ) >		mAcceptEventHandler;
-	std::function< void() >		mCancelEventHandler;
+	std::function<void( std::shared_ptr<class SessionInterface> )>	mAcceptEventHandler;
+	std::function<void()>											mCancelEventHandler;
 };

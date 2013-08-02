@@ -14,10 +14,10 @@ public:
 	template< typename T, typename Y >
 	inline void							connectWaitEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mWaitEventHandler				= std::bind( eventHandler, eventHandlerObject );
+		connectWaitEventHandler( std::bind( eventHandler, eventHandlerObject ) );
 	}
 
-	void								connectWaitEventHandler( const std::function< void() >& eventHandler );
+	void								connectWaitEventHandler( const std::function<void()>& eventHandler );
 
 protected:
 	WaitTimer( boost::asio::io_service& io );
@@ -28,5 +28,5 @@ protected:
 
 	virtual void						onWait( const boost::system::error_code& err );
 
-	std::function< void() >				mWaitEventHandler;
+	std::function<void()>				mWaitEventHandler;
 };

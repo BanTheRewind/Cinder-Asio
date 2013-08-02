@@ -52,7 +52,7 @@ void TcpClient::onResolve( const boost::system::error_code& err,
 	}
 }
 
-void TcpClient::connectConnectEventHandler( const std::function< void( TcpSessionRef ) >& eventHandler )
+void TcpClient::connectConnectEventHandler( const std::function<void( TcpSessionRef )>& eventHandler )
 {
-	mConnectEventHandler		= eventHandler;
+	mConnectEventHandler = eventHandler;
 }

@@ -62,22 +62,22 @@ void SessionInterface::onWrite( const boost::system::error_code& err, size_t byt
 	}
 }
 
-void SessionInterface::connectCloseEventHandler( const std::function< void() >& eventHandler )
+void SessionInterface::connectCloseEventHandler( const std::function<void()>& eventHandler )
 {
-	mCloseEventHandler				= eventHandler;
+	mCloseEventHandler = eventHandler;
 }
 
-void SessionInterface::connectReadEventHandler( const std::function< void( ci::Buffer ) >& eventHandler )
+void SessionInterface::connectReadEventHandler( const std::function<void( ci::Buffer )>& eventHandler )
 {
-	mReadEventHandler				= eventHandler;
+	mReadEventHandler = eventHandler;
 }
 
-void SessionInterface::connectReadCompleteEventHandler( const std::function< void() >& eventHandler )
+void SessionInterface::connectReadCompleteEventHandler( const std::function<void()>& eventHandler )
 {
-	mReadCompleteEventHandler		= eventHandler;
+	mReadCompleteEventHandler = eventHandler;
 }
 
-void SessionInterface::connectWriteEventHandler( const std::function< void( size_t ) >& eventHandler )
+void SessionInterface::connectWriteEventHandler( const std::function<void( size_t )>& eventHandler )
 {
-	mWriteEventHandler				= eventHandler;
+	mWriteEventHandler = eventHandler;
 }

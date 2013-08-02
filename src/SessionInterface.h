@@ -19,35 +19,30 @@ public:
 	template< typename T, typename Y >
 	inline void				connectCloseEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mCloseEventHandler		= std::bind( eventHandler, eventHandlerObject );
+		connectCloseEventHandler( std::bind( eventHandler, eventHandlerObject ) );
 	}
-
-	void					connectCloseEventHandler( const std::function< void() >& eventHandler );
+	void					connectCloseEventHandler( const std::function<void ()>& eventHandler );
 
 	template< typename T, typename Y >
 	inline void				connectReadEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mReadEventHandler		= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
+		connectReadEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
-
-	void					connectReadEventHandler( const std::function< void( ci::Buffer ) >& eventHandler );
+	void					connectReadEventHandler( const std::function<void( ci::Buffer )>& eventHandler );
 
 	template< typename T, typename Y >
 	inline void				connectReadCompleteEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mReadCompleteEventHandler		= std::bind( eventHandler, eventHandlerObject );
+		connectReadCompleteEventHandler( std::bind( eventHandler, eventHandlerObject ) );
 	}
-
-	void					connectReadCompleteEventHandler( const std::function< void() >& eventHandler );
+	void					connectReadCompleteEventHandler( const std::function<void ()>& eventHandler );
 
 	template< typename T, typename Y >
 	inline void				connectWriteEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mWriteEventHandler		= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
+		connectWriteEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
-
-	void					connectWriteEventHandler( const std::function< void( size_t ) >& eventHandler );
-
+	void					connectWriteEventHandler( const std::function<void( size_t )>& eventHandler );
 protected:
 	SessionInterface( boost::asio::io_service& io );
 
@@ -60,8 +55,8 @@ protected:
 	boost::asio::streambuf	mRequest;
 	boost::asio::streambuf	mResponse;
 
-	std::function< void() >					mCloseEventHandler;
-	std::function< void( ci::Buffer ) >		mReadEventHandler;
-	std::function< void() >					mReadCompleteEventHandler;
-	std::function< void ( size_t ) >		mWriteEventHandler;
+	std::function<void()>				mCloseEventHandler;
+	std::function<void( ci::Buffer )>	mReadEventHandler;
+	std::function<void()>				mReadCompleteEventHandler;
+	std::function<void( size_t )>		mWriteEventHandler;
 };
