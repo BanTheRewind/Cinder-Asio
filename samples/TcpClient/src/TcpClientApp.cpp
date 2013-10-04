@@ -80,10 +80,10 @@ void TcpClientApp::onConnect( TcpSessionRef session )
 
 	// Get the session from the argument and add callbacks to it.
 	mSession = session;
-	mSession->addCloseCallback( &TcpClientApp::onClose, this );
-	mSession->addErrorCallback( &TcpClientApp::onError, this );
-	mSession->addReadCallback( &TcpClientApp::onRead, this );
-	mSession->addWriteCallback( &TcpClientApp::onWrite, this );
+	mSession->connectCloseEventHandler( &TcpClientApp::onClose, this );
+	mSession->connectErrorEventHandler( &TcpClientApp::onError, this );
+	mSession->connectReadEventHandler( &TcpClientApp::onRead, this );
+	mSession->connectWriteEventHandler( &TcpClientApp::onWrite, this );
 
 	// Write data is packaged as a ci::Buffer. This allows 
 	// you to send any kind of data. Because it's more common to
@@ -168,9 +168,9 @@ void TcpClientApp::setup()
 	mClient = TcpClient::create( io_service() );
 
 	// Add callbacks to work with the client asynchronously.
-	mClient->addConnectCallback( &TcpClientApp::onConnect, this );
-	mClient->addErrorCallback( &TcpClientApp::onError, this );
-	mClient->addResolveCallback( &TcpClientApp::onResolve, this );
+	mClient->connectConnectEventHandler( &TcpClientApp::onConnect, this );
+	mClient->connectErrorEventHandler( &TcpClientApp::onError, this );
+	mClient->connectResolveEventHandler( &TcpClientApp::onResolve, this );
 }
 
 void TcpClientApp::update()

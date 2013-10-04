@@ -49,3 +49,8 @@ void TcpServer::onAccept( TcpSessionRef session, const boost::system::error_code
 		mAcceptEventHandler( session );
 	}
 }
+
+void TcpServer::connectAcceptEventHandler( const std::function<void( TcpSessionRef )>& eventHandler )
+{
+	mAcceptEventHandler = eventHandler;
+}

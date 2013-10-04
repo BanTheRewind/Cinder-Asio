@@ -105,10 +105,13 @@ void TcpServerApp::onAccept( TcpSessionRef session )
 	
 	// Get the session from the argument and add callbacks to it.
 	mSession = session;
-	mSession->addErrorCallback( &TcpServerApp::onError, this );
-	mSession->addReadCallback( &TcpServerApp::onRead, this );
-	mSession->addReadCompleteCallback( &TcpServerApp::onReadComplete, this );
-	mSession->addWriteCallback( &TcpServerApp::onWrite, this );
+	mSession->connectErrorEventHandler( &TcpServerApp::onError, this );
+	mSession->connectReadEventHandler( &TcpServerApp::onRead, this );
+	mSession->connectReadCompleteEventHandler( &TcpServerApp::onReadComplete, this );
+	mSession->connectWriteEventHandler( &TcpServerApp::onWrite, this );
+	mSession->connectCloseEventHandler([&] {
+		console() << "Session closed" << endl;
+	} );
 	
 	// Start reading data from the client. 
 	mSession->read();
@@ -195,9 +198,9 @@ void TcpServerApp::setup()
 	mServer = TcpServer::create( io_service() );
 
 	// Add callbacks to work with the server asynchronously.
-	mServer->addAcceptCallback( &TcpServerApp::onAccept, this );
-	mServer->addCancelCallback( &TcpServerApp::onCancel, this );
-	mServer->addErrorCallback( &TcpServerApp::onError, this );
+	mServer->connectAcceptEventHandler( &TcpServerApp::onAccept, this );
+	mServer->connectCancelEventHandler( &TcpServerApp::onCancel, this );
+	mServer->connectErrorEventHandler( &TcpServerApp::onError, this );
 	
 	// Start listening
 	accept();
@@ -217,7 +220,7 @@ void TcpServerApp::update()
 	// automatically reset the server to listen on the new port.
 	// See the onClose method.
 	if ( mPortPrev != mPort ) {
-		mServer->close();
+		mServer->cancel();
 		mPortPrev = mPort;
 	}
 

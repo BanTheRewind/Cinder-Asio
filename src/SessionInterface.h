@@ -60,3 +60,4 @@ protected:
 	std::function<void()>				mReadCompleteEventHandler;
 	std::function<void( size_t )>		mWriteEventHandler;
 };
+ 
