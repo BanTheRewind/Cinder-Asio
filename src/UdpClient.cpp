@@ -54,5 +54,5 @@ void UdpClient::onResolve( const boost::system::error_code& err,
 
 void UdpClient::connectConnectEventHandler( const std::function< void( UdpSessionRef ) >& eventHandler )
 {
-	mConnectEventHandler		= eventHandler;
+	mConnectEventHandler = eventHandler;
 }

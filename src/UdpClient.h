@@ -16,7 +16,7 @@ public:
 	template< typename T, typename Y >
 	inline void		connectConnectEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
-		mConnectEventHandler		= std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 );
+		connectConnectEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
 
 	void			connectConnectEventHandler( const std::function< void( UdpSessionRef ) >& eventHandler );
@@ -32,5 +32,5 @@ protected:
 
 	UdpResolverRef	mResolver;
 
-	std::function< void( UdpSessionRef ) >		mConnectEventHandler;
+	std::function< void( UdpSessionRef ) >	mConnectEventHandler;
 };
