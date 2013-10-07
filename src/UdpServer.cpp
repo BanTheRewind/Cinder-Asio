@@ -1,4 +1,5 @@
 #include "UdpServer.h"
+#include "cinder/app/App.h"
 
 using namespace ci;
 using namespace std;
@@ -12,7 +13,7 @@ UdpServerRef UdpServer::create( boost::asio::io_service& io )
 UdpServer::UdpServer( boost::asio::io_service& io )
 : ServerInterface( io )
 {
-	
+	fill( begin( mData ), end( mData ), 0 );
 }
 
 UdpServer::~UdpServer()
@@ -22,6 +23,8 @@ UdpServer::~UdpServer()
 
 void UdpServer::accept( uint16_t port )
 {
+	app::console() << "UdpServer accept: " << port << endl;
+
 	mSocket		= UdpSocketRef( new udp::socket( mIoService, udp::endpoint( udp::v4(), port ) ) );
 	
 	read();
@@ -37,10 +40,10 @@ void UdpServer::cancel()
 		} else {
 			mSocket->close( err );
 			if ( err ) {
-				cout << "ERROR: " << err.message() << endl;
+				app::console() << "ERROR: " << err.message() << endl;
 				mErrorEventHandler( err.message(), 0 );
 			} else {
-				cout << "Socket closed" << endl;
+				app::console() << "Socket closed" << endl;
 			}
 		}
 	}
@@ -60,19 +63,21 @@ void UdpServer::read()
 	);
 }
 
-void UdpServer::process()
+void UdpServer::process( size_t numBytes )
 {
-	cout << "process() " << endl;
+	string s( reinterpret_cast<char*>( &mData[ 0 ] ), numBytes );
+	app::console() << "process() " << s << endl;
 }
 
 void UdpServer::onReceiveFrom( const boost::system::error_code& err, size_t bytesReceived )
 {
 	if ( err == boost::asio::error::eof ) {
-		cout << "onReceiveFrom: EOF" << endl;
+		app::console() << "onReceiveFrom: EOF" << endl;
 	} else if ( !err && bytesReceived > 0 ) {
-		process();
+		app::console() << "onReceiveFrom bytesReceived: " << bytesReceived << endl;
+		process( bytesReceived );
 		read();
 	} else {
-		cout << "ERROR: " << err.message() << endl;
+		app::console() << "ERROR: " << err.message() << endl;
 	}
 }
