@@ -3,8 +3,7 @@
 #include "ServerInterface.h"
 #include "UdpSession.h"
 
-typedef std::shared_ptr<class UdpServer>				UdpServerRef;
-typedef std::shared_ptr<boost::asio::ip::udp::socket>	UdpSocketRef;
+typedef std::shared_ptr<class UdpServer>			UdpServerRef;
 
 class UdpServer : public ServerInterface, public std::enable_shared_from_this<UdpServer>
 {
@@ -25,14 +24,6 @@ public:
 protected:
 	UdpServer( boost::asio::io_service& io );
 
-	void			read();
-	void			process( size_t numBytes );
-	void			onReceiveFrom( const boost::system::error_code& err, size_t bytesReceived );
-	
-	enum { kMaxLength = 1024 };
-	
-	UdpSocketRef					mSocket;
-	uint8_t							mData[ kMaxLength ];
-	boost::asio::ip::udp::endpoint	mSenderEndPoint;
+	std::function<void( UdpSessionRef )>	mAcceptEventHandler;
 };
 	
