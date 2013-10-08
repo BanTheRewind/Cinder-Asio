@@ -6,7 +6,8 @@ WaitTimerRef WaitTimer::create( boost::asio::io_service& io )
 }
 
 WaitTimer::WaitTimer( boost::asio::io_service& io )
-	: DispatcherInterface( io ), mTimer( io ), mTimerInterval( 0 ), mTimerRepeat( false )
+	: DispatcherInterface( io ), mTimer( io ), mTimerInterval( 0 ), mTimerRepeat( false ), 
+	mWaitEventHandler( nullptr )
 {
 }
 
@@ -25,9 +26,13 @@ void WaitTimer::wait( size_t millis, bool repeat )
 void WaitTimer::onWait( const boost::system::error_code& err )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mWaitEventHandler();
+		if ( mWaitEventHandler != 0 ) {
+			mWaitEventHandler();
+		}
 		if ( mTimerRepeat ) {
 			wait( mTimerInterval, true );
 		}

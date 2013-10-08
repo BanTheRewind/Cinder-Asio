@@ -10,7 +10,7 @@ TcpSessionRef TcpSession::create( boost::asio::io_service& io )
 }
 
 TcpSession::TcpSession( boost::asio::io_service& io )
-: SessionInterface( io )
+	: SessionInterface( io )
 {
 	mSocket = TcpSocketRef( new tcp::socket( io ) );
 }
@@ -26,9 +26,13 @@ void TcpSession::close()
 		boost::system::error_code err;
 		mSocket->close( err );
 		if ( err ) {
-			mErrorEventHandler( err.message(), 0 );
+			if ( mErrorEventHandler != nullptr ) {
+				mErrorEventHandler( err.message(), 0 );
+			}
 		} else {
-			mCloseEventHandler();
+			if ( mCloseEventHandler != nullptr ) {
+				mCloseEventHandler();
+			}
 		}
 	}
 }

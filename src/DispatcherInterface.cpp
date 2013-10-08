@@ -1,7 +1,7 @@
 #include "DispatcherInterface.h"
 
 DispatcherInterface::DispatcherInterface( boost::asio::io_service& io )
-	: mIoService( io ), mStrand( io )
+	: mErrorEventHandler( nullptr ), mIoService( io ), mStrand( io )
 {
 }
 

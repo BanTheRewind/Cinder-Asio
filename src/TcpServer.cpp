@@ -12,7 +12,7 @@ TcpServerRef TcpServer::create( boost::asio::io_service& io )
 }
 
 TcpServer::TcpServer( boost::asio::io_service& io )
-: ServerInterface( io )
+	: ServerInterface( io ), mAcceptEventHandler( nullptr )
 {
 }
 
@@ -35,18 +35,26 @@ void TcpServer::cancel()
 	boost::system::error_code err;
 	mAcceptor->cancel( err );
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mCancelEventHandler();
+		if ( mCancelEventHandler != nullptr ) {
+			mCancelEventHandler();
+		}
 	}
 }
 
 void TcpServer::onAccept( TcpSessionRef session, const boost::system::error_code& err )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mAcceptEventHandler( session );
+		if ( mAcceptEventHandler != nullptr ) {
+			mAcceptEventHandler( session );
+		}
 	}
 }
 

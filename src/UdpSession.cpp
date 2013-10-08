@@ -10,7 +10,7 @@ UdpSessionRef UdpSession::create( boost::asio::io_service& io )
 }
 
 UdpSession::UdpSession( boost::asio::io_service& io )
-: SessionInterface( io )
+	: SessionInterface( io )
 {
 	mSocket = UdpSocketRef( new udp::socket( io ) );
 }
@@ -26,13 +26,19 @@ void UdpSession::close()
 		boost::system::error_code err;
 		mSocket->shutdown( boost::asio::socket_base::shutdown_both, err );
 		if ( err ) {
-			mErrorEventHandler( err.message(), 0 );
+			if ( mErrorEventHandler != nullptr ) {
+				mErrorEventHandler( err.message(), 0 );
+			}
 		} else { 
 			mSocket->close( err );
 			if ( err ) {
-				mErrorEventHandler( err.message(), 0 );
+				if ( mErrorEventHandler != nullptr ) {
+					mErrorEventHandler( err.message(), 0 );
+				}
 			} else {
-				mCloseEventHandler();
+				if ( mCloseEventHandler != nullptr ) {
+					mCloseEventHandler();
+				}
 			}
 		}
 	}

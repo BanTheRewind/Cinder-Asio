@@ -12,7 +12,7 @@ TcpClientRef TcpClient::create( boost::asio::io_service& io )
 }
 
 TcpClient::TcpClient( boost::asio::io_service& io )
-	: ClientInterface( io )
+	: ClientInterface( io ), mConnectEventHandler( nullptr )
 {
 }
 
@@ -33,9 +33,13 @@ void TcpClient::connect( const string& host, const string& protocol )
 void TcpClient::onConnect( TcpSessionRef session, const boost::system::error_code& err )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mConnectEventHandler( session );
+		if ( mConnectEventHandler != nullptr ) {
+			mConnectEventHandler( session );
+		}
 	}
 }
 
@@ -43,9 +47,13 @@ void TcpClient::onResolve( const boost::system::error_code& err,
 						  tcp::resolver::iterator iter )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mResolveEventHandler();
+		if ( mResolveEventHandler != nullptr ) {
+			mResolveEventHandler();
+		}
 		TcpSessionRef session( new TcpSession( mIoService ) );
 		boost::asio::async_connect( *session->mSocket, iter, mStrand.wrap( boost::bind( &TcpClient::onConnect, 
 			shared_from_this(), session, boost::asio::placeholders::error ) ) );

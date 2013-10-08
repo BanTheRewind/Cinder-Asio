@@ -14,7 +14,8 @@ Buffer SessionInterface::stringToBuffer( string& value )
 }
 
 SessionInterface::SessionInterface( boost::asio::io_service& io )
-: DispatcherInterface( io )
+	: DispatcherInterface( io ), mCloseEventHandler( nullptr ), mReadEventHandler( nullptr ), 
+	mReadCompleteEventHandler( nullptr ), mWriteEventHandler( nullptr )
 {
 }
 
@@ -27,9 +28,13 @@ SessionInterface::~SessionInterface()
 void SessionInterface::onClose( const boost::system::error_code& err )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mCloseEventHandler();
+		if ( mCloseEventHandler != nullptr ) {
+			mCloseEventHandler();
+		}
 	}
 }
 
@@ -38,17 +43,23 @@ void SessionInterface::onRead( const boost::system::error_code& err, size_t byte
 {
 	if ( err ) {
 		if ( err == boost::asio::error::eof ) {
-			mReadCompleteEventHandler();
+			if ( mReadCompleteEventHandler != nullptr ) {
+				mReadCompleteEventHandler();
+			}
 		} else {
-			mErrorEventHandler( err.message(), bytesTransferred );
+			if ( mErrorEventHandler != nullptr ) {
+				mErrorEventHandler( err.message(), bytesTransferred );
+			}
 		}
 	} else {
-		char* data = new char[ bytesTransferred + 1 ];
-		data[ bytesTransferred ] = 0;
-		istream stream( &mResponse );
-		stream.read( data, bytesTransferred );
-		mReadEventHandler( Buffer( data, bytesTransferred ) );
-		delete [] data;
+		if ( mReadEventHandler != nullptr ) {
+			char* data = new char[ bytesTransferred + 1 ];
+			data[ bytesTransferred ] = 0;
+			istream stream( &mResponse );
+			stream.read( data, bytesTransferred );
+			mReadEventHandler( Buffer( data, bytesTransferred ) );
+			delete [] data;
+		}
 	}
 	mResponse.consume( mResponse.size() );
 }
@@ -56,9 +67,13 @@ void SessionInterface::onRead( const boost::system::error_code& err, size_t byte
 void SessionInterface::onWrite( const boost::system::error_code& err, size_t bytesTransferred )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), bytesTransferred );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), bytesTransferred );
+		}
 	} else {
-		mWriteEventHandler( bytesTransferred );
+		if ( mWriteEventHandler != nullptr ) {
+			mWriteEventHandler( bytesTransferred );
+		}
 	}
 }
 

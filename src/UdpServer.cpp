@@ -11,7 +11,7 @@ UdpServerRef UdpServer::create( boost::asio::io_service& io )
 }
 
 UdpServer::UdpServer( boost::asio::io_service& io )
-: ServerInterface( io )
+	: ServerInterface( io ), mAcceptEventHandler( nullptr )
 {
 }
 
@@ -22,28 +22,34 @@ UdpServer::~UdpServer()
 
 void UdpServer::accept( uint16_t port )
 {
-	app::console() << "UdpServer accept: " << port << endl;
-
 	UdpSessionRef session = UdpSession::create( mIoService );
 
 	boost::system::error_code errCode;
 	session->mSocket->open( boost::asio::ip::udp::v4(), errCode );
 	
 	if ( errCode ) {
-		mErrorEventHandler( errCode.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( errCode.message(), 0 );
+		}
 	} else {
 		session->mSocket->bind( udp::endpoint( udp::v4(), port ), errCode );
 		if ( errCode ) {
-			mErrorEventHandler( errCode.message(), 0 );
+			if ( mErrorEventHandler != nullptr ) {
+				mErrorEventHandler( errCode.message(), 0 );
+			}
 		} else {
-			mAcceptEventHandler( session );
+			if ( mAcceptEventHandler != nullptr ) {
+				mAcceptEventHandler( session );
+			}
 		}
 	}
 }
 
 void UdpServer::cancel()
 {
-	mCancelEventHandler();
+	if ( mCancelEventHandler != nullptr ) {
+		mCancelEventHandler();
+	}
 }
 
 void UdpServer::connectAcceptEventHandler( const std::function<void( UdpSessionRef )>& eventHandler )

@@ -28,5 +28,5 @@ protected:
 	void				onAccept( TcpSessionRef session, const boost::system::error_code& err );
 	
 	TcpAcceptorRef		mAcceptor;
-	std::function<void( TcpSessionRef )>		mAcceptEventHandler;
+	std::function<void( TcpSessionRef )>	mAcceptEventHandler;
 };

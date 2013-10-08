@@ -12,7 +12,7 @@ UdpClientRef UdpClient::create( boost::asio::io_service& io )
 }
 
 UdpClient::UdpClient( boost::asio::io_service& io )
-	: ClientInterface( io )
+	: ClientInterface( io ), mConnectEventHandler( nullptr )
 {
 }
 
@@ -33,9 +33,13 @@ void UdpClient::connect( const string& host, const string& protocol )
 void UdpClient::onConnect( UdpSessionRef session, const boost::system::error_code& err )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mConnectEventHandler( session );
+		if ( mConnectEventHandler != nullptr ) {
+			mConnectEventHandler( session );
+		}
 	}
 }
 
@@ -43,9 +47,13 @@ void UdpClient::onResolve( const boost::system::error_code& err,
 						  udp::resolver::iterator iter )
 {
 	if ( err ) {
-		mErrorEventHandler( err.message(), 0 );
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
 	} else {
-		mResolveEventHandler();
+		if ( mResolveEventHandler != nullptr ) {
+			mResolveEventHandler();
+		}
 		UdpSessionRef session( new UdpSession( mIoService ) );
 		boost::asio::async_connect( *session->mSocket, iter, mStrand.wrap( boost::bind( &UdpClient::onConnect, 
 			shared_from_this(), session, boost::asio::placeholders::error ) ) );
