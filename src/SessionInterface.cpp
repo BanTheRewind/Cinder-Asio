@@ -39,7 +39,7 @@ void SessionInterface::onRead( const boost::system::error_code& err, size_t byte
 		}
 	} else {
 		if ( mReadEventHandler != nullptr ) {
-			char* data = new char[ bytesTransferred + 1 ];
+			char* data = new char[ bytesTransferred + 1 ]();
 			data[ bytesTransferred ] = 0;
 			istream stream( &mResponse );
 			stream.read( data, bytesTransferred );
