@@ -17,7 +17,6 @@ UdpServer::UdpServer( boost::asio::io_service& io )
 
 UdpServer::~UdpServer()
 {
-	cancel();
 }
 
 void UdpServer::accept( uint16_t port )
@@ -42,13 +41,6 @@ void UdpServer::accept( uint16_t port )
 				mAcceptEventHandler( session );
 			}
 		}
-	}
-}
-
-void UdpServer::cancel()
-{
-	if ( mCancelEventHandler != nullptr ) {
-		mCancelEventHandler();
 	}
 }
 

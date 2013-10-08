@@ -11,17 +11,8 @@ public:
 
 	~SessionInterface();
 
-	virtual void			close() = 0;
-	
 	virtual void			read() = 0;
 	virtual void			write( const ci::Buffer& buffer ) = 0;	
-
-	template< typename T, typename Y >
-	inline void				connectCloseEventHandler( T eventHandler, Y* eventHandlerObject )
-	{
-		connectCloseEventHandler( std::bind( eventHandler, eventHandlerObject ) );
-	}
-	void					connectCloseEventHandler( const std::function<void ()>& eventHandler );
 
 	template< typename T, typename Y >
 	inline void				connectReadEventHandler( T eventHandler, Y* eventHandlerObject )
@@ -55,7 +46,6 @@ protected:
 	boost::asio::streambuf	mRequest;
 	boost::asio::streambuf	mResponse;
 
-	std::function<void()>				mCloseEventHandler;
 	std::function<void( ci::Buffer )>	mReadEventHandler;
 	std::function<void()>				mReadCompleteEventHandler;
 	std::function<void( size_t )>		mWriteEventHandler;

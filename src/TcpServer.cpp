@@ -12,7 +12,7 @@ TcpServerRef TcpServer::create( boost::asio::io_service& io )
 }
 
 TcpServer::TcpServer( boost::asio::io_service& io )
-	: ServerInterface( io ), mAcceptEventHandler( nullptr )
+	: ServerInterface( io ), mAcceptEventHandler( nullptr ), mCancelEventHandler( nullptr )
 {
 }
 
@@ -45,6 +45,16 @@ void TcpServer::cancel()
 	}
 }
 
+void TcpServer::connectAcceptEventHandler( const std::function<void( TcpSessionRef )>& eventHandler )
+{
+	mAcceptEventHandler = eventHandler;
+}
+
+void TcpServer::connectCancelEventHandler( const std::function<void()>& eventHandler )
+{
+	mCancelEventHandler = eventHandler;
+}
+
 void TcpServer::onAccept( TcpSessionRef session, const boost::system::error_code& err )
 {
 	if ( err ) {
@@ -56,9 +66,4 @@ void TcpServer::onAccept( TcpSessionRef session, const boost::system::error_code
 			mAcceptEventHandler( session );
 		}
 	}
-}
-
-void TcpServer::connectAcceptEventHandler( const std::function<void( TcpSessionRef )>& eventHandler )
-{
-	mAcceptEventHandler = eventHandler;
 }

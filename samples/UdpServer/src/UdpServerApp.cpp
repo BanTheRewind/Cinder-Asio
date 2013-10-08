@@ -85,13 +85,6 @@ void UdpServerApp::setupUdp()
 		} 
 	);
 
-	mServer->connectCancelEventHandler( 
-		[&]() {
-			mText = "UdpServer Cancelled";
-			console() << mText << endl;
-		}
-	);
-
 	mServer->connectAcceptEventHandler(
 		[&]( UdpSessionRef session ) {
 			mSession = session;
@@ -118,13 +111,6 @@ void UdpServerApp::setupUdp()
 				}
 			);
 
-			mSession->connectCloseEventHandler(
-				[&]() {
-					mText = "UdpSession Closed";
-					console() << mText << endl;
-				}
-			);
-
 			mSession->read();
 		}
 	);
@@ -137,8 +123,6 @@ void UdpServerApp::update()
 	mFrameRate = getFrameRate();
 
 	if ( mPortPrev != mPort ) {
-		mSession->close();
-		mServer->cancel();
 		mServer->accept( mPort );
 
 		mPortPrev = mPort;

@@ -14,8 +14,6 @@ public:
 	static UdpSessionRef	create( boost::asio::io_service& io );
 	~UdpSession();
 	
-	virtual void			close();
-	
 	virtual void			read();
 	virtual void			read( size_t bufferSize );
 	virtual void			write( const ci::Buffer& buffer );

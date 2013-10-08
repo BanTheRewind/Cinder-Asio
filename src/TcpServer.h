@@ -18,8 +18,15 @@ public:
 	}
 	void				connectAcceptEventHandler( const std::function<void( TcpSessionRef )>& eventHandler );
 
+	template< typename T, typename Y >
+	inline void			connectCancelEventHandler( T eventHandler, Y* eventHandlerObject )
+	{
+		connectCancelEventHandler( std::bind( eventHandler, eventHandlerObject ) );
+	}
+	void				connectCancelEventHandler( const std::function<void()>& eventHandler );
+
 	virtual void		accept( uint16_t port );
-	virtual void		cancel();
+	void				cancel();
 protected:
 	typedef std::shared_ptr<boost::asio::ip::tcp::acceptor>	TcpAcceptorRef;
 
@@ -29,4 +36,5 @@ protected:
 	
 	TcpAcceptorRef		mAcceptor;
 	std::function<void( TcpSessionRef )>	mAcceptEventHandler;
+	std::function<void()>					mCancelEventHandler;
 };

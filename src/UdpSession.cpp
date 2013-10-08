@@ -17,31 +17,6 @@ UdpSession::UdpSession( boost::asio::io_service& io )
 
 UdpSession::~UdpSession()
 {
-	close();
-}
-
-void UdpSession::close()
-{
-	if ( mSocket && mSocket->is_open() ) {
-		boost::system::error_code err;
-		mSocket->shutdown( boost::asio::socket_base::shutdown_both, err );
-		if ( err ) {
-			if ( mErrorEventHandler != nullptr ) {
-				mErrorEventHandler( err.message(), 0 );
-			}
-		} else { 
-			mSocket->close( err );
-			if ( err ) {
-				if ( mErrorEventHandler != nullptr ) {
-					mErrorEventHandler( err.message(), 0 );
-				}
-			} else {
-				if ( mCloseEventHandler != nullptr ) {
-					mCloseEventHandler();
-				}
-			}
-		}
-	}
 }
 
 void UdpSession::read()

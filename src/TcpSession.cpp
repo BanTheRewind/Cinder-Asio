@@ -77,3 +77,8 @@ const TcpSocketRef& TcpSession::getSocket() const
 {
 	return mSocket;
 }
+
+void SessionInterface::connectCloseEventHandler( const std::function<void()>& eventHandler )
+{
+	mCloseEventHandler = eventHandler;
+}

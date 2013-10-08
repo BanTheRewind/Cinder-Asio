@@ -47,10 +47,10 @@ void UdpClientApp::draw()
 {
 	gl::clear( Colorf::black() );
 
-	//if ( mTexture ) {
-	//	gl::enableAlphaBlending();
-	//	gl::draw( mTexture, getWindowCenter() - mTextSize * 0.5f );
-	//}
+	if ( mTexture ) {
+		gl::enableAlphaBlending();
+		gl::draw( mTexture, getWindowCenter() - mTextSize * 0.5f );
+	}
 
 	mParams->draw();
 }
@@ -149,7 +149,6 @@ void UdpClientApp::update()
 	if ( mPortPrev != mPort ||
 		mHostPrev != mHost
 	) {
-		mSession->close();
 		mClient->connect( mHost, mPort );
 
 		mPortPrev = mPort;

@@ -14,7 +14,7 @@ public:
 	static TcpSessionRef	create( boost::asio::io_service& io );
 	~TcpSession();
 	
-	virtual void			close();
+	void					close();
 	
 	virtual void			read();
 	virtual void			read( const std::string& delim );
@@ -23,10 +23,19 @@ public:
 	virtual void			write( const ci::Buffer& buffer );
 
 	const TcpSocketRef&		getSocket() const;
+
+	template< typename T, typename Y >
+	inline void				connectCloseEventHandler( T eventHandler, Y* eventHandlerObject )
+	{
+		connectCloseEventHandler( std::bind( eventHandler, eventHandlerObject ) );
+	}
+	void					connectCloseEventHandler( const std::function<void ()>& eventHandler );
 protected:
 	TcpSession( boost::asio::io_service& io );
 
 	TcpSocketRef			mSocket;
+
+	std::function<void()>	mCloseEventHandler;
 
 	friend class			TcpClient;
 	friend class			TcpServer;

@@ -77,11 +77,6 @@ void SessionInterface::onWrite( const boost::system::error_code& err, size_t byt
 	}
 }
 
-void SessionInterface::connectCloseEventHandler( const std::function<void()>& eventHandler )
-{
-	mCloseEventHandler = eventHandler;
-}
-
 void SessionInterface::connectReadEventHandler( const std::function<void( ci::Buffer )>& eventHandler )
 {
 	mReadEventHandler = eventHandler;
