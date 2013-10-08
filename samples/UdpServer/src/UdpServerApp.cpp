@@ -92,6 +92,7 @@ void UdpServerApp::setupUdp()
 				[&]( Buffer buffer ) {
 					mText = "UdpSession read " + toString( buffer.getDataSize() ) + " bytes";
 					console() << mText << endl;
+					console() << UdpSession::bufferToString( buffer ) << endl;
 					mSession->read();
 				}
 			);

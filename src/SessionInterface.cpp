@@ -41,6 +41,7 @@ void SessionInterface::onRead( const boost::system::error_code& err, size_t byte
 		if ( mReadEventHandler != nullptr ) {
 			char* data = new char[ bytesTransferred + 1 ]();
 			data[ bytesTransferred ] = 0;
+			mResponse.commit( bytesTransferred );
 			istream stream( &mResponse );
 			stream.read( data, bytesTransferred );
 			mReadEventHandler( Buffer( data, bytesTransferred ) );
