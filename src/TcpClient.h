@@ -20,7 +20,6 @@ public:
 	}
 
 	void			connectConnectEventHandler( const std::function<void( TcpSessionRef )>& eventHandler );
-
 protected:
 	typedef std::shared_ptr<boost::asio::ip::tcp::resolver>	TcpResolverRef;
 

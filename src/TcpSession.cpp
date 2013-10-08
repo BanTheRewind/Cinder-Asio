@@ -10,7 +10,7 @@ TcpSessionRef TcpSession::create( boost::asio::io_service& io )
 }
 
 TcpSession::TcpSession( boost::asio::io_service& io )
-	: SessionInterface( io )
+	: SessionInterface( io ), mCloseEventHandler( nullptr )
 {
 	mSocket = TcpSocketRef( new tcp::socket( io ) );
 }
@@ -78,7 +78,20 @@ const TcpSocketRef& TcpSession::getSocket() const
 	return mSocket;
 }
 
-void SessionInterface::connectCloseEventHandler( const std::function<void()>& eventHandler )
+void TcpSession::connectCloseEventHandler( const std::function<void()>& eventHandler )
 {
 	mCloseEventHandler = eventHandler;
+}
+
+void TcpSession::onClose( const boost::system::error_code& err )
+{
+	if ( err ) {
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
+	} else {
+		if ( mCloseEventHandler != nullptr ) {
+			mCloseEventHandler();
+		}
+	}
 }

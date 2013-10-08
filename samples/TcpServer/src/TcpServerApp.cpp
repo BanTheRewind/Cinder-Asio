@@ -112,7 +112,7 @@ void TcpServerApp::onAccept( TcpSessionRef session )
 	mSession->connectCloseEventHandler([&] {
 		console() << "Session closed" << endl;
 	} );
-	
+
 	// Start reading data from the client. 
 	mSession->read();
 }

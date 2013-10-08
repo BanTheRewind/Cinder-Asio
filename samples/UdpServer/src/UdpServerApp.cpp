@@ -33,7 +33,6 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
-
 using namespace ci;
 using namespace ci::app;
 using namespace std;
@@ -112,6 +111,11 @@ void UdpServerApp::setupUdp()
 			);
 
 			mSession->read();
+
+			//mSession->getSocket()->set_option( boost::asio::ip::udp::socket::keep_alive( true ) );
+			//mSession->getSocket()->set_option( boost::asio::ip::udp::socket::broadcast( true ) );
+			//mSession->getSocket()->set_option( boost::asio::ip::udp::socket::reuse_address( true ) );
+
 		}
 	);
 

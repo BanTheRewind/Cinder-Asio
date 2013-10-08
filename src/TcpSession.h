@@ -33,6 +33,8 @@ public:
 protected:
 	TcpSession( boost::asio::io_service& io );
 
+	virtual void			onClose( const boost::system::error_code& err );
+
 	TcpSocketRef			mSocket;
 
 	std::function<void()>	mCloseEventHandler;

@@ -37,12 +37,12 @@ public:
 protected:
 	SessionInterface( boost::asio::io_service& io );
 
-	virtual void			onClose( const boost::system::error_code& err );
 	virtual void			onRead( const boost::system::error_code& err,
 								   size_t bytesTransferred );
 	virtual void			onWrite( const boost::system::error_code& err,
 									size_t bytesTransferred );
 	
+	size_t					mBufferSize;
 	boost::asio::streambuf	mRequest;
 	boost::asio::streambuf	mResponse;
 

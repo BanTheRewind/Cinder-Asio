@@ -14,7 +14,7 @@ Buffer SessionInterface::stringToBuffer( string& value )
 }
 
 SessionInterface::SessionInterface( boost::asio::io_service& io )
-	: DispatcherInterface( io ), mCloseEventHandler( nullptr ), mReadEventHandler( nullptr ), 
+	: DispatcherInterface( io ), mBufferSize( 0 ), mReadEventHandler( nullptr ), 
 	mReadCompleteEventHandler( nullptr ), mWriteEventHandler( nullptr )
 {
 }
@@ -24,20 +24,6 @@ SessionInterface::~SessionInterface()
 	mRequest.consume( mRequest.size() );
 	mResponse.consume( mResponse.size() );
 }
-
-void SessionInterface::onClose( const boost::system::error_code& err )
-{
-	if ( err ) {
-		if ( mErrorEventHandler != nullptr ) {
-			mErrorEventHandler( err.message(), 0 );
-		}
-	} else {
-		if ( mCloseEventHandler != nullptr ) {
-			mCloseEventHandler();
-		}
-	}
-}
-
 
 void SessionInterface::onRead( const boost::system::error_code& err, size_t bytesTransferred )
 {
@@ -59,6 +45,10 @@ void SessionInterface::onRead( const boost::system::error_code& err, size_t byte
 			stream.read( data, bytesTransferred );
 			mReadEventHandler( Buffer( data, bytesTransferred ) );
 			delete [] data;
+		}
+		if ( mReadCompleteEventHandler != nullptr && 
+			mBufferSize > 0 && bytesTransferred < mBufferSize ) {
+			mReadCompleteEventHandler();
 		}
 	}
 	mResponse.consume( mResponse.size() );

@@ -26,6 +26,7 @@ void UdpSession::read()
 
 void UdpSession::read( size_t bufferSize )
 {
+	mBufferSize = bufferSize;
 	mSocket->async_receive( mResponse.prepare( bufferSize ), 
 		boost::bind( &UdpSession::onRead, shared_from_this(), 
 			boost::asio::placeholders::error, 

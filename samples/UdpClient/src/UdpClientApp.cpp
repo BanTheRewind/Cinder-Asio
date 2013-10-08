@@ -107,13 +107,6 @@ void UdpClientApp::setupUdp()
 
 			mSession = session;
 
-			mSession->connectCloseEventHandler(
-				[&]() {
-					mText = "Session closed";
-					console() << mText << endl;
-				}
-			);
-
 			mSession->connectReadCompleteEventHandler(
 				[&]() {
 					mText = "Session read complete";
@@ -178,3 +171,4 @@ void UdpClientApp::write()
 }
 
 CINDER_APP_BASIC( UdpClientApp, RendererGl )
+ 
