@@ -18,8 +18,7 @@ public:
 	}
 	void				connectAcceptEventHandler( const std::function<void( UdpSessionRef )>& eventHandler );
 	
-	virtual void	accept( uint16_t port );
-	
+	virtual void		accept( uint16_t port );
 protected:
 	UdpServer( boost::asio::io_service& io );
 
