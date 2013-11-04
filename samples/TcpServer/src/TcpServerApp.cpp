@@ -1,7 +1,43 @@
+/*
+* 
+* Copyright (c) 2013, Wieden+Kennedy, 
+* Stephen Schieberl, Michael Latzoni
+* All rights reserved.
+* 
+* Redistribution and use in source and binary forms, with or 
+* without modification, are permitted provided that the following 
+* conditions are met:
+* 
+* Redistributions of source code must retain the above copyright 
+* notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright 
+* notice, this list of conditions and the following disclaimer in 
+* the documentation and/or other materials provided with the 
+* distribution.
+* 
+* Neither the name of the Ban the Rewind nor the names of its 
+* contributors may be used to endorse or promote products 
+* derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+* COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+* ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+* 
+*/
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/params/Params.h"
-#include "cinder/Text.h"
 
 #include "TcpServer.h"
 
@@ -14,7 +50,7 @@
  * To communicate with a client, you must create a server and add a
  * connect event callback. Once connected, the server will pass a 
  * session object through the callback. Use the session to communicate
- * by adding callbacks to it. Close the session when you no longer 
+ * by setting callbacks on it. Close the session when you no longer 
  * need it.
  */ 
 class TcpServerApp : public ci::app::AppBasic 
@@ -30,25 +66,24 @@ private:
 	int32_t						mPort;
 	int32_t						mPortPrev;
 	
+	void						onAccept( TcpSessionRef session );
 	void						onCancel();
 	void						onClose();
-	void						onAccept( TcpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
 	void						onRead( ci::Buffer buffer );
 	void						onReadComplete();
 	void						onWrite( size_t bytesTransferred );
 	
 	ci::Font					mFont;
-	std::string					mText;
-	std::string					mTextPrev;
-	ci::Vec2f					mTextSize;
-	ci::gl::Texture				mTexture;
+	std::vector<std::string>	mText;
+	ci::gl::TextureRef			mTexture;
 
 	float						mFrameRate;
 	bool						mFullScreen;
 	ci::params::InterfaceGlRef	mParams;
 };
 
+#include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
 using namespace ci;
@@ -63,81 +98,78 @@ void TcpServerApp::accept()
 		// in through the onAccept method.
 		mServer->accept( (uint16_t)mPort );
 	
-		mText = "Listening on port: " + toString( mPort );
-		console() << mText << endl;
+		mText.push_back( "Listening on port: " + toString( mPort ) );
 	}
 }
 
 void TcpServerApp::draw()
 {
+	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
+	gl::setMatricesWindow( getWindowSize() );
+
 	
 	if ( mTexture ) {
-		gl::enableAlphaBlending();
-		gl::draw( mTexture, getWindowCenter() - mTextSize * 0.5f );
+		gl::draw( mTexture, Vec2i( 250, 20 ) );
 	}
 
 	mParams->draw();
 }
 
+void TcpServerApp::onAccept( TcpSessionRef session )
+{
+	mText.push_back( "Connected" );
+	
+	// Get the session from the argument and set callbacks.
+	// Note that you can use lambdas.
+	mSession = session;
+	mSession->connectCloseEventHandler( [ & ]() {
+		mText.push_back(  "Session closed" );
+	} );
+	mSession->connectErrorEventHandler( &TcpServerApp::onError, this );
+	mSession->connectReadCompleteEventHandler( &TcpServerApp::onReadComplete, this );
+	mSession->connectReadEventHandler( &TcpServerApp::onRead, this );
+	mSession->connectWriteEventHandler( &TcpServerApp::onWrite, this );
+	
+	// Start reading data from the client. 
+	mSession->read();
+}
+
 void TcpServerApp::onCancel()
 {
-	mText = "Canceled";
-	console() << mText << endl;
-	
+	mText.push_back( "Canceled" );
+
 	// Automatically listen on cancel.
 	accept();
 }
 
 void TcpServerApp::onClose()
 {
-	mText = "Disconnected";
-	console() << mText << endl;
+	mText.push_back( "Disconnected" );
 	
 	// Automatically listen on close.
 	accept();
 }
 
-void TcpServerApp::onAccept( TcpSessionRef session )
-{
-	mText = "Connected";
-	console() << mText << endl;
-	
-	// Get the session from the argument and add callbacks to it.
-	mSession = session;
-	mSession->connectErrorEventHandler( &TcpServerApp::onError, this );
-	mSession->connectReadEventHandler( &TcpServerApp::onRead, this );
-	mSession->connectReadCompleteEventHandler( &TcpServerApp::onReadComplete, this );
-	mSession->connectWriteEventHandler( &TcpServerApp::onWrite, this );
-	mSession->connectCloseEventHandler([&] {
-		console() << "Session closed" << endl;
-	} );
-
-	// Start reading data from the client. 
-	mSession->read();
-}
-
 void TcpServerApp::onError( string err, size_t bytesTransferred )
 {
-	mText = "Error";
+	string text = "Error";
 	if ( !err.empty() ) {
-		mText += ": " + err;
+		text += ": " + err;
 	}
-	console() << mText << endl;
+	 mText.push_back( text );
 }
 
 void TcpServerApp::onRead( ci::Buffer buffer )
 {
-	mText = toString( buffer.getDataSize() ) + " bytes read";
-	console() << mText << endl;
+	mText.push_back( toString( buffer.getDataSize() ) + " bytes read" );
 
-	
 	// Data is packaged as a ci::Buffer. This allows 
 	// you to send any kind of data. Because it's more common to
-	// work with strings, the session object has convenience methods
-	// for converting between std::string and ci::Buffer.
+	// work with strings, the session object has static convenience 
+	// methods for converting between std::string and ci::Buffer.
 	string response	= TcpSession::bufferToString( buffer );
-	console() << response << endl;
+	mText.push_back( response );
 	
 	// We're simply echoing what the client sent us. Write the response
 	// back to them to acknowledge the succesful communication.
@@ -150,6 +182,8 @@ void TcpServerApp::onRead( ci::Buffer buffer )
 // a round of communication is complete.
 void TcpServerApp::onReadComplete()
 {
+	mText.push_back( "Read complete" );
+
 	// Close the session.
 	mSession->close();
 
@@ -161,29 +195,24 @@ void TcpServerApp::onReadComplete()
 
 void TcpServerApp::onWrite( size_t bytesTransferred )
 {
-	mText = toString( bytesTransferred ) + " bytes written";
-	console() << mText << endl;
+	mText.push_back( toString( bytesTransferred ) + " bytes written" );
 	
-	// Read after writing to look for a EOF, or disconnect signal
+	// Read after writing to look for an EOF, or disconnect signal
 	// from the client.
 	mSession->read();
 }
 
 void TcpServerApp::setup()
 {	
-	mFrameRate	= 0.0f;
-	mFullScreen	= false;
-	
+	gl::enableAlphaBlending();
 	gl::enable( GL_TEXTURE_2D );
 
+	mFont		= Font( "Georgia", 24 );
+	mFrameRate	= 0.0f;
+	mFullScreen	= false;
 	mPort		= 2000;
 	mPortPrev	= mPort;
 	
-	mFont		= Font( "Georgia", 50 );
-	mText		= "";
-	mTextPrev	= mText;
-	mTextSize	= Vec2f( getWindowSize() );
-
 	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 110 ) );
 	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
 	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
@@ -194,7 +223,7 @@ void TcpServerApp::setup()
 	// Initialize a server by passing a boost::asio::io_service to it.
 	// ci::App already has one that it polls on update, so we'll use that.
 	// You can use your own io_service, but you will have to manage it 
-	// manually (ie , call poll(), poll_one(), run(), etc).
+	// manually (i.e., call poll(), poll_one(), run(), etc).
 	mServer = TcpServer::create( io_service() );
 
 	// Add callbacks to work with the server asynchronously.
@@ -202,7 +231,7 @@ void TcpServerApp::setup()
 	mServer->connectCancelEventHandler( &TcpServerApp::onCancel, this );
 	mServer->connectErrorEventHandler( &TcpServerApp::onError, this );
 	
-	// Start listening
+	// Start listening.
 	accept();
 }
 
@@ -218,24 +247,27 @@ void TcpServerApp::update()
 	
 	// Close the connection when the port changes. This will 
 	// automatically reset the server to listen on the new port.
-	// See the onClose method.
+	// See the onCancel method.
 	if ( mPortPrev != mPort ) {
-		mServer->cancel();
 		mPortPrev = mPort;
+		mServer->cancel();
+		// NOTE: IIS (Windows) returns an error message during this operation.
+		//		 It can be ignored. Your server will still work after 
+		//		 switching ports.
 	}
 
-	// Update text.
-	if ( mTextPrev != mText ) {
-		mTextPrev = mText;
-		if ( mText.empty() ) {
-			mTexture.reset();
-		} else {
-			TextBox tbox = TextBox().alignment( TextBox::CENTER ).font( mFont ).size( Vec2i( mTextSize.x, TextBox::GROW ) ).text( mText );
-			tbox.setColor( ColorAf( 1.0f, 0.8f, 0.75f, 1.0f ) );
-			tbox.setBackgroundColor( ColorAf::black() );
-			tbox.setPremultiplied( false );
-			mTextSize.y	= tbox.measure().y;
-			mTexture	= gl::Texture( tbox.render() );
+	// Render text.
+	if ( !mText.empty() ) {
+		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( Vec2i( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
+		for ( vector<string>::const_reverse_iterator iter = mText.rbegin(); iter != mText.rend(); ++iter ) {
+			tbox.appendText( "> " + *iter + "\n" );
+		}
+		tbox.setColor( ColorAf( 1.0f, 0.8f, 0.75f, 1.0f ) );
+		tbox.setBackgroundColor( ColorAf::black() );
+		tbox.setPremultiplied( false );
+		mTexture = gl::Texture::create( tbox.render() );
+		while ( mText.size() > 75 ) {
+			mText.erase( mText.begin() );
 		}
 	}
 }

@@ -3,7 +3,7 @@
 #include "ServerInterface.h"
 #include "UdpSession.h"
 
-typedef std::shared_ptr<class UdpServer>			UdpServerRef;
+typedef std::shared_ptr<class UdpServer> UdpServerRef;
 
 class UdpServer : public ServerInterface, public std::enable_shared_from_this<UdpServer>
 {

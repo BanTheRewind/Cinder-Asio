@@ -16,13 +16,13 @@
     <Filter Include="Blocks\Cinder-Asio">
       <UniqueIdentifier>{04862b34-f4de-4713-b6a9-05c481111dd5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{efa5588e-22c4-46b6-ab94-84395aaff046}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\TcpServerApp.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\TcpServer.cpp">
+      <Filter>Blocks\Cinder-Asio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\ClientInterface.cpp">
       <Filter>Blocks\Cinder-Asio</Filter>
@@ -36,6 +36,9 @@
     <ClCompile Include="..\..\..\src\SessionInterface.cpp">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\TcpClient.cpp">
+      <Filter>Blocks\Cinder-Asio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\TcpServer.cpp">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClCompile>
@@ -45,13 +48,13 @@
     <ClCompile Include="..\..\..\src\UdpClient.cpp">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\UdpServer.cpp">
+      <Filter>Blocks\Cinder-Asio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\src\UdpSession.cpp">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\WaitTimer.cpp">
-      <Filter>Blocks\Cinder-Asio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\TcpServer.cpp">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,6 +69,9 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\TcpServer.h">
+      <Filter>Blocks\Cinder-Asio</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\src\ClientInterface.h">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClInclude>
@@ -78,6 +84,9 @@
     <ClInclude Include="..\..\..\src\SessionInterface.h">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\TcpClient.h">
+      <Filter>Blocks\Cinder-Asio</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\src\TcpServer.h">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClInclude>
@@ -87,13 +96,13 @@
     <ClInclude Include="..\..\..\src\UdpClient.h">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\UdpServer.h">
+      <Filter>Blocks\Cinder-Asio</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\src\UdpSession.h">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\WaitTimer.h">
-      <Filter>Blocks\Cinder-Asio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\TcpServer.h">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClInclude>
   </ItemGroup>
