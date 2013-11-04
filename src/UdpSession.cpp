@@ -1,3 +1,40 @@
+/*
+* 
+* Copyright (c) 2013, Wieden+Kennedy, 
+* Stephen Schieberl, Michael Latzoni
+* All rights reserved.
+* 
+* Redistribution and use in source and binary forms, with or 
+* without modification, are permitted provided that the following 
+* conditions are met:
+* 
+* Redistributions of source code must retain the above copyright 
+* notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright 
+* notice, this list of conditions and the following disclaimer in 
+* the documentation and/or other materials provided with the 
+* distribution.
+* 
+* Neither the name of the Ban the Rewind nor the names of its 
+* contributors may be used to endorse or promote products 
+* derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
+* COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+* ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+* 
+*/
+
 #include "UdpSession.h"
 
 using namespace ci;
@@ -10,32 +47,13 @@ UdpSessionRef UdpSession::create( boost::asio::io_service& io )
 }
 
 UdpSession::UdpSession( boost::asio::io_service& io )
-: SessionInterface( io )
+	: SessionInterface( io )
 {
 	mSocket = UdpSocketRef( new udp::socket( io ) );
 }
 
 UdpSession::~UdpSession()
 {
-	close();
-}
-
-void UdpSession::close()
-{
-	if ( mSocket && mSocket->is_open() ) {
-		boost::system::error_code err;
-		mSocket->shutdown( boost::asio::socket_base::shutdown_both, err );
-		if ( err ) {
-			mErrorEventHandler( err.message(), 0 );
-		} else { 
-			mSocket->close( err );
-			if ( err ) {
-				mErrorEventHandler( err.message(), 0 );
-			} else {
-				mCloseEventHandler();
-			}
-		}
-	}
 }
 
 void UdpSession::read()
@@ -45,6 +63,7 @@ void UdpSession::read()
 
 void UdpSession::read( size_t bufferSize )
 {
+	mBufferSize = bufferSize;
 	mSocket->async_receive( mResponse.prepare( bufferSize ), 
 		boost::bind( &UdpSession::onRead, shared_from_this(), 
 			boost::asio::placeholders::error, 
