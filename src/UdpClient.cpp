@@ -53,6 +53,11 @@ UdpClient::UdpClient( boost::asio::io_service& io )
 {
 }
 
+UdpClient::~UdpClient()
+{
+	mConnectEventHandler = nullptr;
+}
+
 void UdpClient::connect( const string& host, uint16_t port )
 {
 	connect( host, toString( port ) );

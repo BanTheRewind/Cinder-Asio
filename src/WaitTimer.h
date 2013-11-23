@@ -45,6 +45,7 @@ class WaitTimer : public DispatcherInterface, public std::enable_shared_from_thi
 {
 public:
 	static WaitTimerRef			create( boost::asio::io_service& io );
+	~WaitTimer();
 
 	virtual void				wait( size_t millis, bool repeat );
 

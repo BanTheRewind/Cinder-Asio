@@ -51,13 +51,16 @@ Buffer SessionInterface::stringToBuffer( string& value )
 }
 
 SessionInterface::SessionInterface( boost::asio::io_service& io )
-	: DispatcherInterface( io ), mBufferSize( 0 ), mReadEventHandler( nullptr ), 
-	mReadCompleteEventHandler( nullptr ), mWriteEventHandler( nullptr )
+: DispatcherInterface( io ), mBufferSize( 0 ), mReadCompleteEventHandler( nullptr ), 
+mReadEventHandler( nullptr ), mWriteEventHandler( nullptr )
 {
 }
 
 SessionInterface::~SessionInterface()
 {
+	mReadCompleteEventHandler	= nullptr;
+	mReadEventHandler			= nullptr;
+	mWriteEventHandler			= nullptr;
 	mRequest.consume( mRequest.size() );
 	mResponse.consume( mResponse.size() );
 }

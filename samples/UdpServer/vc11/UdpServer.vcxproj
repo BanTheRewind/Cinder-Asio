@@ -64,11 +64,11 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>"..\..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\include;..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-v110_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\..\..\lib;..\..\..\..\..\lib\msw\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -91,11 +91,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>"..\..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\..\..\include;..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-v110.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\..\..\lib;..\..\..\..\..\lib\msw\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder-$(PlatformToolset).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>

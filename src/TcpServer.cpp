@@ -55,6 +55,8 @@ TcpServer::TcpServer( boost::asio::io_service& io )
 
 TcpServer::~TcpServer()
 {
+	mAcceptEventHandler = nullptr;
+	mCancelEventHandler = nullptr;
 	cancel();
 }
 
@@ -69,15 +71,17 @@ void TcpServer::accept( uint16_t port )
 
 void TcpServer::cancel()
 {
-	boost::system::error_code err;
-	mAcceptor->cancel( err );
-	if ( err ) {
-		if ( mErrorEventHandler != nullptr ) {
-			mErrorEventHandler( err.message(), 0 );
-		}
-	} else {
-		if ( mCancelEventHandler != nullptr ) {
-			mCancelEventHandler();
+	if ( mAcceptor ) {
+		boost::system::error_code err;
+		mAcceptor->cancel( err );
+		if ( err ) {
+			if ( mErrorEventHandler != nullptr ) {
+				mErrorEventHandler( err.message(), 0 );
+			}
+		} else {
+			if ( mCancelEventHandler != nullptr ) {
+				mCancelEventHandler();
+			}
 		}
 	}
 }

@@ -43,7 +43,8 @@ DispatcherInterface::DispatcherInterface( boost::asio::io_service& io )
 }
 
 DispatcherInterface::~DispatcherInterface()
-{	
+{
+	mErrorEventHandler = nullptr;
 }
 
 void DispatcherInterface::connectErrorEventHandler( const std::function<void( std::string, size_t )>& eventHandler )

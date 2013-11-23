@@ -82,9 +82,9 @@ protected:
 	size_t					mBufferSize;
 	boost::asio::streambuf	mRequest;
 	boost::asio::streambuf	mResponse;
-
-	std::function<void( ci::Buffer )>	mReadEventHandler;
+	
 	std::function<void()>				mReadCompleteEventHandler;
+	std::function<void( ci::Buffer )>	mReadEventHandler;
 	std::function<void( size_t )>		mWriteEventHandler;
 };
  

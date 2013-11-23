@@ -54,6 +54,7 @@ TcpSession::TcpSession( boost::asio::io_service& io )
 
 TcpSession::~TcpSession()
 {
+	mCloseEventHandler = nullptr;
 	close();
 }
 
