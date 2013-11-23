@@ -47,6 +47,7 @@ class UdpClient : public ClientInterface, public std::enable_shared_from_this<Ud
 {
 public:
 	static UdpClientRef	create( boost::asio::io_service& io );
+	~UdpClient();
 
 	virtual void	connect( const std::string& host, uint16_t port );
 	virtual void	connect( const std::string& host, const std::string& protocol );

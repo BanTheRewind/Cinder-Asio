@@ -48,6 +48,11 @@ WaitTimer::WaitTimer( boost::asio::io_service& io )
 {
 }
 
+WaitTimer::~WaitTimer()
+{
+	mWaitEventHandler = nullptr;
+}
+
 void WaitTimer::wait( size_t millis, bool repeat )
 {
 	mTimerInterval	= millis;

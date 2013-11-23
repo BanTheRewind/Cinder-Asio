@@ -47,6 +47,7 @@ class TcpClient : public ClientInterface, public std::enable_shared_from_this<Tc
 {
 public:
 	static TcpClientRef	create( boost::asio::io_service& io );
+	~TcpClient();
 
 	virtual void	connect( const std::string& host, uint16_t port );
 	virtual void	connect( const std::string& host, const std::string& protocol );

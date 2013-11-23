@@ -17,6 +17,7 @@ UdpServer::UdpServer( boost::asio::io_service& io )
 
 UdpServer::~UdpServer()
 {
+	mAcceptEventHandler = nullptr;
 }
 
 void UdpServer::accept( uint16_t port )
