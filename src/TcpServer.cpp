@@ -60,6 +60,7 @@ TcpServer::~TcpServer()
 
 void TcpServer::accept( uint16_t port )
 {
+	mAcceptor.reset();
 	mAcceptor = TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port) ) );
 	TcpSessionRef session( new TcpSession( mIoService ) );
 	mAcceptor->async_accept( *session->mSocket,
