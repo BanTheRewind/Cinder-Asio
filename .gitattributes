@@ -1,0 +1,11 @@
+*		text=auto
+
+*.jpg	binary
+*.png	binary
+*.mov	binary
+
+*.h		text
+*.cpp	text
+
+# Visual Studio files should always be checked out with crlf
+*.sln text eol=crlf
