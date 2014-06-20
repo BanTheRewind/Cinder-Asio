@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2013, Wieden+Kennedy, 
+* Copyright (c) 2014, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -48,19 +48,21 @@ class UdpServer;
 class UdpSession : public SessionInterface, public std::enable_shared_from_this<UdpSession>
 {
 public:
-	static UdpSessionRef	create( boost::asio::io_service& io );
+	static UdpSessionRef					create( boost::asio::io_service& io );
 	~UdpSession();
 	
-	virtual void			read();
-	virtual void			read( size_t bufferSize );
-	virtual void			write( const ci::Buffer& buffer );
+	virtual void							read();
+	virtual void							read( size_t bufferSize );
+	virtual void							write( const ci::Buffer& buffer );
 
-	const UdpSocketRef&		getSocket() const;
+	const boost::asio::ip::udp::endpoint&	getEndpoint() const;
+	const UdpSocketRef&						getSocket() const;
 protected:
 	UdpSession( boost::asio::io_service& io );
 
-	UdpSocketRef			mSocket;
+	boost::asio::ip::udp::endpoint			mEndpoint;
+	UdpSocketRef							mSocket;
 
-	friend class			UdpClient;
-	friend class			UdpServer;
+	friend class							UdpClient;
+	friend class							UdpServer;
 };

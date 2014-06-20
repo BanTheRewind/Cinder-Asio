@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2013, Wieden+Kennedy, 
+* Copyright (c) 2014, Wieden+Kennedy,
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -36,6 +36,7 @@
 */
 
 #include "cinder/app/AppBasic.h"
+#include "cinder/Font.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/params/Params.h"
 
@@ -79,6 +80,7 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
+#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -103,7 +105,7 @@ void UdpServerApp::accept()
 
 void UdpServerApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
+	gl::viewport( getWindowSize() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 	

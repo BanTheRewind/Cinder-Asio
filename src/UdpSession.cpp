@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2013, Wieden+Kennedy, 
+* Copyright (c) 2014, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -64,7 +64,7 @@ void UdpSession::read()
 void UdpSession::read( size_t bufferSize )
 {
 	mBufferSize = bufferSize;
-	mSocket->async_receive( mResponse.prepare( bufferSize ), 
+	mSocket->async_receive_from( mResponse.prepare( bufferSize ), mEndpoint,
 		boost::bind( &UdpSession::onRead, shared_from_this(), 
 			boost::asio::placeholders::error, 
 			boost::asio::placeholders::bytes_transferred ) );
@@ -79,6 +79,11 @@ void UdpSession::write( const Buffer& buffer )
 			boost::asio::placeholders::error, 
 			boost::asio::placeholders::bytes_transferred ) );
 	mRequest.consume( mRequest.size() );
+}
+
+const boost::asio::ip::udp::endpoint& UdpSession::getEndpoint() const
+{
+	return mEndpoint;
 }
 
 const UdpSocketRef& UdpSession::getSocket() const

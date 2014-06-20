@@ -1,0 +1,425 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0091D8F80E81B9330029341E /* OpenGL.framework */; };
+		00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784AF0FF439BC000DE1D7 /* Accelerate.framework */; };
+		00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
+		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
+		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
+		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
+		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
+		7E4A872327E74278A324742A /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 781F8FC38938472492487A11 /* CinderApp.icns */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A708C215EF1345EAAB1B29D8 /* UdpServerMultiApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C35B5FA18FCE405E88A8A842 /* UdpServerMultiApp.cpp */; };
+		AE5FE7E519536B5B00B12686 /* ClientInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */; };
+		AE5FE7E619536B5B00B12686 /* DispatcherInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7C819536B5B00B12686 /* DispatcherInterface.cpp */; };
+		AE5FE7E719536B5B00B12686 /* ServerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7CB19536B5B00B12686 /* ServerInterface.cpp */; };
+		AE5FE7E819536B5B00B12686 /* SessionInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7CE19536B5B00B12686 /* SessionInterface.cpp */; };
+		AE5FE7E919536B5B00B12686 /* TcpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D019536B5B00B12686 /* TcpClient.cpp */; };
+		AE5FE7EA19536B5B00B12686 /* TcpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D319536B5B00B12686 /* TcpServer.cpp */; };
+		AE5FE7EB19536B5B00B12686 /* TcpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D619536B5B00B12686 /* TcpSession.cpp */; };
+		AE5FE7EC19536B5B00B12686 /* UdpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D919536B5B00B12686 /* UdpClient.cpp */; };
+		AE5FE7ED19536B5B00B12686 /* UdpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */; };
+		AE5FE7EE19536B5B00B12686 /* UdpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */; };
+		AE5FE7EF19536B5B00B12686 /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */; };
+		AE5FE7F21953712D00B12686 /* UdpSessionEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7F01953712D00B12686 /* UdpSessionEventHandler.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0091D8F80E81B9330029341E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		00B784AF0FF439BC000DE1D7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
+		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
+		781F8FC38938472492487A11 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* UdpServerMulti.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UdpServerMulti.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE5FE7C419536B5B00B12686 /* ClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientEventHandlerInterface.h; path = ../../../src/ClientEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientInterface.cpp; path = ../../../src/ClientInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7C619536B5B00B12686 /* ClientInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientInterface.h; path = ../../../src/ClientInterface.h; sourceTree = "<group>"; };
+		AE5FE7C719536B5B00B12686 /* DispatcherEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DispatcherEventHandlerInterface.h; path = ../../../src/DispatcherEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7C819536B5B00B12686 /* DispatcherInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DispatcherInterface.cpp; path = ../../../src/DispatcherInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7C919536B5B00B12686 /* DispatcherInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DispatcherInterface.h; path = ../../../src/DispatcherInterface.h; sourceTree = "<group>"; };
+		AE5FE7CA19536B5B00B12686 /* ServerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerEventHandlerInterface.h; path = ../../../src/ServerEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7CB19536B5B00B12686 /* ServerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerInterface.cpp; path = ../../../src/ServerInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7CC19536B5B00B12686 /* ServerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerInterface.h; path = ../../../src/ServerInterface.h; sourceTree = "<group>"; };
+		AE5FE7CD19536B5B00B12686 /* SessionEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SessionEventHandlerInterface.h; path = ../../../src/SessionEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7CE19536B5B00B12686 /* SessionInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SessionInterface.cpp; path = ../../../src/SessionInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7CF19536B5B00B12686 /* SessionInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SessionInterface.h; path = ../../../src/SessionInterface.h; sourceTree = "<group>"; };
+		AE5FE7D019536B5B00B12686 /* TcpClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpClient.cpp; path = ../../../src/TcpClient.cpp; sourceTree = "<group>"; };
+		AE5FE7D119536B5B00B12686 /* TcpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpClient.h; path = ../../../src/TcpClient.h; sourceTree = "<group>"; };
+		AE5FE7D219536B5B00B12686 /* TcpClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpClientEventHandlerInterface.h; path = ../../../src/TcpClientEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7D319536B5B00B12686 /* TcpServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpServer.cpp; path = ../../../src/TcpServer.cpp; sourceTree = "<group>"; };
+		AE5FE7D419536B5B00B12686 /* TcpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpServer.h; path = ../../../src/TcpServer.h; sourceTree = "<group>"; };
+		AE5FE7D519536B5B00B12686 /* TcpServerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpServerEventHandlerInterface.h; path = ../../../src/TcpServerEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7D619536B5B00B12686 /* TcpSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpSession.cpp; path = ../../../src/TcpSession.cpp; sourceTree = "<group>"; };
+		AE5FE7D719536B5B00B12686 /* TcpSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpSession.h; path = ../../../src/TcpSession.h; sourceTree = "<group>"; };
+		AE5FE7D819536B5B00B12686 /* TcpSessionEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpSessionEventHandlerInterface.h; path = ../../../src/TcpSessionEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7D919536B5B00B12686 /* UdpClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpClient.cpp; path = ../../../src/UdpClient.cpp; sourceTree = "<group>"; };
+		AE5FE7DA19536B5B00B12686 /* UdpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpClient.h; path = ../../../src/UdpClient.h; sourceTree = "<group>"; };
+		AE5FE7DB19536B5B00B12686 /* UdpClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpClientEventHandlerInterface.h; path = ../../../src/UdpClientEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpServer.cpp; path = ../../../src/UdpServer.cpp; sourceTree = "<group>"; };
+		AE5FE7DD19536B5B00B12686 /* UdpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpServer.h; path = ../../../src/UdpServer.h; sourceTree = "<group>"; };
+		AE5FE7DE19536B5B00B12686 /* UdpServerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpServerEventHandlerInterface.h; path = ../../../src/UdpServerEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpSession.cpp; path = ../../../src/UdpSession.cpp; sourceTree = "<group>"; };
+		AE5FE7E019536B5B00B12686 /* UdpSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSession.h; path = ../../../src/UdpSession.h; sourceTree = "<group>"; };
+		AE5FE7E119536B5B00B12686 /* UdpSessionEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSessionEventHandlerInterface.h; path = ../../../src/UdpSessionEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaitTimer.cpp; path = ../../../src/WaitTimer.cpp; sourceTree = "<group>"; };
+		AE5FE7E319536B5B00B12686 /* WaitTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimer.h; path = ../../../src/WaitTimer.h; sourceTree = "<group>"; };
+		AE5FE7E419536B5B00B12686 /* WaitTimerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimerEventHandlerInterface.h; path = ../../../src/WaitTimerEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7F01953712D00B12686 /* UdpSessionEventHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpSessionEventHandler.cpp; path = ../src/UdpSessionEventHandler.cpp; sourceTree = "<group>"; };
+		AE5FE7F11953712D00B12686 /* UdpSessionEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSessionEventHandler.h; path = ../src/UdpSessionEventHandler.h; sourceTree = "<group>"; };
+		C12D84FDE5B741CE9769DFCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C35B5FA18FCE405E88A8A842 /* UdpServerMultiApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UdpServerMultiApp.cpp; path = ../src/UdpServerMultiApp.cpp; sourceTree = "<group>"; };
+		FB7031ED04F54002B2EC66D6 /* UdpServerMulti_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UdpServerMulti_Prefix.pch; sourceTree = "<group>"; };
+		FD35D04F7ED740C8B13F3B17 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
+				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
+				5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */,
+				00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */,
+				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
+				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
+				00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		01B97315FEAEA392516A2CEA /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				AE03AB42182AD55D00F10969 /* Cinder-Asio */,
+			);
+			name = Blocks;
+			sourceTree = "<group>";
+		};
+		080E96DDFE201D6D7F000001 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				C35B5FA18FCE405E88A8A842 /* UdpServerMultiApp.cpp */,
+				AE5FE7F01953712D00B12686 /* UdpSessionEventHandler.cpp */,
+				AE5FE7F11953712D00B12686 /* UdpSessionEventHandler.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				00B784AF0FF439BC000DE1D7 /* Accelerate.framework */,
+				00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */,
+				00B784B10FF439BC000DE1D7 /* AudioUnit.framework */,
+				00B784B20FF439BC000DE1D7 /* CoreAudio.framework */,
+				5323E6B50EAFCA7E003A9687 /* QTKit.framework */,
+				5323E6B10EAFCA74003A9687 /* CoreVideo.framework */,
+				0091D8F80E81B9330029341E /* OpenGL.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* UdpServerMulti.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* UdpServer */ = {
+			isa = PBXGroup;
+			children = (
+				01B97315FEAEA392516A2CEA /* Blocks */,
+				29B97315FDCFA39411CA2CEA /* Headers */,
+				080E96DDFE201D6D7F000001 /* Source */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = UdpServer;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				FD35D04F7ED740C8B13F3B17 /* Resources.h */,
+				FB7031ED04F54002B2EC66D6 /* UdpServerMulti_Prefix.pch */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				781F8FC38938472492487A11 /* CinderApp.icns */,
+				C12D84FDE5B741CE9769DFCA /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AE03AB42182AD55D00F10969 /* Cinder-Asio */ = {
+			isa = PBXGroup;
+			children = (
+				AE5FE7C419536B5B00B12686 /* ClientEventHandlerInterface.h */,
+				AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */,
+				AE5FE7C619536B5B00B12686 /* ClientInterface.h */,
+				AE5FE7C719536B5B00B12686 /* DispatcherEventHandlerInterface.h */,
+				AE5FE7C819536B5B00B12686 /* DispatcherInterface.cpp */,
+				AE5FE7C919536B5B00B12686 /* DispatcherInterface.h */,
+				AE5FE7CA19536B5B00B12686 /* ServerEventHandlerInterface.h */,
+				AE5FE7CB19536B5B00B12686 /* ServerInterface.cpp */,
+				AE5FE7CC19536B5B00B12686 /* ServerInterface.h */,
+				AE5FE7CD19536B5B00B12686 /* SessionEventHandlerInterface.h */,
+				AE5FE7CE19536B5B00B12686 /* SessionInterface.cpp */,
+				AE5FE7CF19536B5B00B12686 /* SessionInterface.h */,
+				AE5FE7D019536B5B00B12686 /* TcpClient.cpp */,
+				AE5FE7D119536B5B00B12686 /* TcpClient.h */,
+				AE5FE7D219536B5B00B12686 /* TcpClientEventHandlerInterface.h */,
+				AE5FE7D319536B5B00B12686 /* TcpServer.cpp */,
+				AE5FE7D419536B5B00B12686 /* TcpServer.h */,
+				AE5FE7D519536B5B00B12686 /* TcpServerEventHandlerInterface.h */,
+				AE5FE7D619536B5B00B12686 /* TcpSession.cpp */,
+				AE5FE7D719536B5B00B12686 /* TcpSession.h */,
+				AE5FE7D819536B5B00B12686 /* TcpSessionEventHandlerInterface.h */,
+				AE5FE7D919536B5B00B12686 /* UdpClient.cpp */,
+				AE5FE7DA19536B5B00B12686 /* UdpClient.h */,
+				AE5FE7DB19536B5B00B12686 /* UdpClientEventHandlerInterface.h */,
+				AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */,
+				AE5FE7DD19536B5B00B12686 /* UdpServer.h */,
+				AE5FE7DE19536B5B00B12686 /* UdpServerEventHandlerInterface.h */,
+				AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */,
+				AE5FE7E019536B5B00B12686 /* UdpSession.h */,
+				AE5FE7E119536B5B00B12686 /* UdpSessionEventHandlerInterface.h */,
+				AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */,
+				AE5FE7E319536B5B00B12686 /* WaitTimer.h */,
+				AE5FE7E419536B5B00B12686 /* WaitTimerEventHandlerInterface.h */,
+			);
+			name = "Cinder-Asio";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* UdpServerMulti */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "UdpServerMulti" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UdpServerMulti;
+			productInstallPath = "$(HOME)/Applications";
+			productName = UdpServer;
+			productReference = 8D1107320486CEB800E47090 /* UdpServerMulti.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "UdpServerMulti" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* UdpServer */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* UdpServerMulti */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E4A872327E74278A324742A /* CinderApp.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE5FE7EC19536B5B00B12686 /* UdpClient.cpp in Sources */,
+				AE5FE7E919536B5B00B12686 /* TcpClient.cpp in Sources */,
+				AE5FE7ED19536B5B00B12686 /* UdpServer.cpp in Sources */,
+				AE5FE7E719536B5B00B12686 /* ServerInterface.cpp in Sources */,
+				AE5FE7EB19536B5B00B12686 /* TcpSession.cpp in Sources */,
+				AE5FE7EE19536B5B00B12686 /* UdpSession.cpp in Sources */,
+				AE5FE7E519536B5B00B12686 /* ClientInterface.cpp in Sources */,
+				A708C215EF1345EAAB1B29D8 /* UdpServerMultiApp.cpp in Sources */,
+				AE5FE7EF19536B5B00B12686 /* WaitTimer.cpp in Sources */,
+				AE5FE7EA19536B5B00B12686 /* TcpServer.cpp in Sources */,
+				AE5FE7E619536B5B00B12686 /* DispatcherInterface.cpp in Sources */,
+				AE5FE7F21953712D00B12686 /* UdpSessionEventHandler.cpp in Sources */,
+				AE5FE7E819536B5B00B12686 /* SessionInterface.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = UdpServerMulti_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
+				PRODUCT_NAME = UdpServerMulti;
+				SYMROOT = ./build;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_FAST_MATH = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = UdpServerMulti_Prefix.pch;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
+				PRODUCT_NAME = UdpServerMulti;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = ./build;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CINDER_PATH = ../../../../..;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CINDER_PATH = ../../../../..;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "UdpServerMulti" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "UdpServerMulti" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

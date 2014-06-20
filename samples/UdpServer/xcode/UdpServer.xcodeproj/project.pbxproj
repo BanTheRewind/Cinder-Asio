@@ -17,17 +17,17 @@
 		7E4A872327E74278A324742A /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 781F8FC38938472492487A11 /* CinderApp.icns */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A708C215EF1345EAAB1B29D8 /* UdpServerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C35B5FA18FCE405E88A8A842 /* UdpServerApp.cpp */; };
-		AE03AB59182AD56C00F10969 /* ClientInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB43182AD56C00F10969 /* ClientInterface.cpp */; };
-		AE03AB5A182AD56C00F10969 /* DispatcherInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB45182AD56C00F10969 /* DispatcherInterface.cpp */; };
-		AE03AB5B182AD56C00F10969 /* ServerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB47182AD56C00F10969 /* ServerInterface.cpp */; };
-		AE03AB5C182AD56C00F10969 /* SessionInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB49182AD56C00F10969 /* SessionInterface.cpp */; };
-		AE03AB5D182AD56C00F10969 /* TcpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB4B182AD56C00F10969 /* TcpClient.cpp */; };
-		AE03AB5E182AD56C00F10969 /* TcpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB4D182AD56C00F10969 /* TcpServer.cpp */; };
-		AE03AB5F182AD56C00F10969 /* TcpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB4F182AD56C00F10969 /* TcpSession.cpp */; };
-		AE03AB60182AD56C00F10969 /* UdpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB51182AD56C00F10969 /* UdpClient.cpp */; };
-		AE03AB61182AD56C00F10969 /* UdpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB53182AD56C00F10969 /* UdpServer.cpp */; };
-		AE03AB62182AD56C00F10969 /* UdpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB55182AD56C00F10969 /* UdpSession.cpp */; };
-		AE03AB63182AD56C00F10969 /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB57182AD56C00F10969 /* WaitTimer.cpp */; };
+		AE5FE7E519536B5B00B12686 /* ClientInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */; };
+		AE5FE7E619536B5B00B12686 /* DispatcherInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7C819536B5B00B12686 /* DispatcherInterface.cpp */; };
+		AE5FE7E719536B5B00B12686 /* ServerInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7CB19536B5B00B12686 /* ServerInterface.cpp */; };
+		AE5FE7E819536B5B00B12686 /* SessionInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7CE19536B5B00B12686 /* SessionInterface.cpp */; };
+		AE5FE7E919536B5B00B12686 /* TcpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D019536B5B00B12686 /* TcpClient.cpp */; };
+		AE5FE7EA19536B5B00B12686 /* TcpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D319536B5B00B12686 /* TcpServer.cpp */; };
+		AE5FE7EB19536B5B00B12686 /* TcpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D619536B5B00B12686 /* TcpSession.cpp */; };
+		AE5FE7EC19536B5B00B12686 /* UdpClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7D919536B5B00B12686 /* UdpClient.cpp */; };
+		AE5FE7ED19536B5B00B12686 /* UdpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */; };
+		AE5FE7EE19536B5B00B12686 /* UdpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */; };
+		AE5FE7EF19536B5B00B12686 /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,28 +43,39 @@
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		781F8FC38938472492487A11 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* UdpServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UdpServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE03AB43182AD56C00F10969 /* ClientInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientInterface.cpp; path = ../../../src/ClientInterface.cpp; sourceTree = "<group>"; };
-		AE03AB44182AD56C00F10969 /* ClientInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientInterface.h; path = ../../../src/ClientInterface.h; sourceTree = "<group>"; };
-		AE03AB45182AD56C00F10969 /* DispatcherInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DispatcherInterface.cpp; path = ../../../src/DispatcherInterface.cpp; sourceTree = "<group>"; };
-		AE03AB46182AD56C00F10969 /* DispatcherInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DispatcherInterface.h; path = ../../../src/DispatcherInterface.h; sourceTree = "<group>"; };
-		AE03AB47182AD56C00F10969 /* ServerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerInterface.cpp; path = ../../../src/ServerInterface.cpp; sourceTree = "<group>"; };
-		AE03AB48182AD56C00F10969 /* ServerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerInterface.h; path = ../../../src/ServerInterface.h; sourceTree = "<group>"; };
-		AE03AB49182AD56C00F10969 /* SessionInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SessionInterface.cpp; path = ../../../src/SessionInterface.cpp; sourceTree = "<group>"; };
-		AE03AB4A182AD56C00F10969 /* SessionInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SessionInterface.h; path = ../../../src/SessionInterface.h; sourceTree = "<group>"; };
-		AE03AB4B182AD56C00F10969 /* TcpClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpClient.cpp; path = ../../../src/TcpClient.cpp; sourceTree = "<group>"; };
-		AE03AB4C182AD56C00F10969 /* TcpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpClient.h; path = ../../../src/TcpClient.h; sourceTree = "<group>"; };
-		AE03AB4D182AD56C00F10969 /* TcpServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpServer.cpp; path = ../../../src/TcpServer.cpp; sourceTree = "<group>"; };
-		AE03AB4E182AD56C00F10969 /* TcpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpServer.h; path = ../../../src/TcpServer.h; sourceTree = "<group>"; };
-		AE03AB4F182AD56C00F10969 /* TcpSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpSession.cpp; path = ../../../src/TcpSession.cpp; sourceTree = "<group>"; };
-		AE03AB50182AD56C00F10969 /* TcpSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpSession.h; path = ../../../src/TcpSession.h; sourceTree = "<group>"; };
-		AE03AB51182AD56C00F10969 /* UdpClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpClient.cpp; path = ../../../src/UdpClient.cpp; sourceTree = "<group>"; };
-		AE03AB52182AD56C00F10969 /* UdpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpClient.h; path = ../../../src/UdpClient.h; sourceTree = "<group>"; };
-		AE03AB53182AD56C00F10969 /* UdpServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpServer.cpp; path = ../../../src/UdpServer.cpp; sourceTree = "<group>"; };
-		AE03AB54182AD56C00F10969 /* UdpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpServer.h; path = ../../../src/UdpServer.h; sourceTree = "<group>"; };
-		AE03AB55182AD56C00F10969 /* UdpSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpSession.cpp; path = ../../../src/UdpSession.cpp; sourceTree = "<group>"; };
-		AE03AB56182AD56C00F10969 /* UdpSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSession.h; path = ../../../src/UdpSession.h; sourceTree = "<group>"; };
-		AE03AB57182AD56C00F10969 /* WaitTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaitTimer.cpp; path = ../../../src/WaitTimer.cpp; sourceTree = "<group>"; };
-		AE03AB58182AD56C00F10969 /* WaitTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimer.h; path = ../../../src/WaitTimer.h; sourceTree = "<group>"; };
+		AE5FE7C419536B5B00B12686 /* ClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientEventHandlerInterface.h; path = ../../../src/ClientEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientInterface.cpp; path = ../../../src/ClientInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7C619536B5B00B12686 /* ClientInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientInterface.h; path = ../../../src/ClientInterface.h; sourceTree = "<group>"; };
+		AE5FE7C719536B5B00B12686 /* DispatcherEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DispatcherEventHandlerInterface.h; path = ../../../src/DispatcherEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7C819536B5B00B12686 /* DispatcherInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DispatcherInterface.cpp; path = ../../../src/DispatcherInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7C919536B5B00B12686 /* DispatcherInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DispatcherInterface.h; path = ../../../src/DispatcherInterface.h; sourceTree = "<group>"; };
+		AE5FE7CA19536B5B00B12686 /* ServerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerEventHandlerInterface.h; path = ../../../src/ServerEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7CB19536B5B00B12686 /* ServerInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ServerInterface.cpp; path = ../../../src/ServerInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7CC19536B5B00B12686 /* ServerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServerInterface.h; path = ../../../src/ServerInterface.h; sourceTree = "<group>"; };
+		AE5FE7CD19536B5B00B12686 /* SessionEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SessionEventHandlerInterface.h; path = ../../../src/SessionEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7CE19536B5B00B12686 /* SessionInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SessionInterface.cpp; path = ../../../src/SessionInterface.cpp; sourceTree = "<group>"; };
+		AE5FE7CF19536B5B00B12686 /* SessionInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SessionInterface.h; path = ../../../src/SessionInterface.h; sourceTree = "<group>"; };
+		AE5FE7D019536B5B00B12686 /* TcpClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpClient.cpp; path = ../../../src/TcpClient.cpp; sourceTree = "<group>"; };
+		AE5FE7D119536B5B00B12686 /* TcpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpClient.h; path = ../../../src/TcpClient.h; sourceTree = "<group>"; };
+		AE5FE7D219536B5B00B12686 /* TcpClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpClientEventHandlerInterface.h; path = ../../../src/TcpClientEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7D319536B5B00B12686 /* TcpServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpServer.cpp; path = ../../../src/TcpServer.cpp; sourceTree = "<group>"; };
+		AE5FE7D419536B5B00B12686 /* TcpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpServer.h; path = ../../../src/TcpServer.h; sourceTree = "<group>"; };
+		AE5FE7D519536B5B00B12686 /* TcpServerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpServerEventHandlerInterface.h; path = ../../../src/TcpServerEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7D619536B5B00B12686 /* TcpSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TcpSession.cpp; path = ../../../src/TcpSession.cpp; sourceTree = "<group>"; };
+		AE5FE7D719536B5B00B12686 /* TcpSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpSession.h; path = ../../../src/TcpSession.h; sourceTree = "<group>"; };
+		AE5FE7D819536B5B00B12686 /* TcpSessionEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TcpSessionEventHandlerInterface.h; path = ../../../src/TcpSessionEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7D919536B5B00B12686 /* UdpClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpClient.cpp; path = ../../../src/UdpClient.cpp; sourceTree = "<group>"; };
+		AE5FE7DA19536B5B00B12686 /* UdpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpClient.h; path = ../../../src/UdpClient.h; sourceTree = "<group>"; };
+		AE5FE7DB19536B5B00B12686 /* UdpClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpClientEventHandlerInterface.h; path = ../../../src/UdpClientEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpServer.cpp; path = ../../../src/UdpServer.cpp; sourceTree = "<group>"; };
+		AE5FE7DD19536B5B00B12686 /* UdpServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpServer.h; path = ../../../src/UdpServer.h; sourceTree = "<group>"; };
+		AE5FE7DE19536B5B00B12686 /* UdpServerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpServerEventHandlerInterface.h; path = ../../../src/UdpServerEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UdpSession.cpp; path = ../../../src/UdpSession.cpp; sourceTree = "<group>"; };
+		AE5FE7E019536B5B00B12686 /* UdpSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSession.h; path = ../../../src/UdpSession.h; sourceTree = "<group>"; };
+		AE5FE7E119536B5B00B12686 /* UdpSessionEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSessionEventHandlerInterface.h; path = ../../../src/UdpSessionEventHandlerInterface.h; sourceTree = "<group>"; };
+		AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaitTimer.cpp; path = ../../../src/WaitTimer.cpp; sourceTree = "<group>"; };
+		AE5FE7E319536B5B00B12686 /* WaitTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimer.h; path = ../../../src/WaitTimer.h; sourceTree = "<group>"; };
+		AE5FE7E419536B5B00B12686 /* WaitTimerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimerEventHandlerInterface.h; path = ../../../src/WaitTimerEventHandlerInterface.h; sourceTree = "<group>"; };
 		C12D84FDE5B741CE9769DFCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C35B5FA18FCE405E88A8A842 /* UdpServerApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = UdpServerApp.cpp; path = ../src/UdpServerApp.cpp; sourceTree = "<group>"; };
 		FB7031ED04F54002B2EC66D6 /* UdpServer_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = UdpServer_Prefix.pch; sourceTree = "<group>"; };
@@ -181,28 +192,39 @@
 		AE03AB42182AD55D00F10969 /* Cinder-Asio */ = {
 			isa = PBXGroup;
 			children = (
-				AE03AB43182AD56C00F10969 /* ClientInterface.cpp */,
-				AE03AB44182AD56C00F10969 /* ClientInterface.h */,
-				AE03AB45182AD56C00F10969 /* DispatcherInterface.cpp */,
-				AE03AB46182AD56C00F10969 /* DispatcherInterface.h */,
-				AE03AB47182AD56C00F10969 /* ServerInterface.cpp */,
-				AE03AB48182AD56C00F10969 /* ServerInterface.h */,
-				AE03AB49182AD56C00F10969 /* SessionInterface.cpp */,
-				AE03AB4A182AD56C00F10969 /* SessionInterface.h */,
-				AE03AB4B182AD56C00F10969 /* TcpClient.cpp */,
-				AE03AB4C182AD56C00F10969 /* TcpClient.h */,
-				AE03AB4D182AD56C00F10969 /* TcpServer.cpp */,
-				AE03AB4E182AD56C00F10969 /* TcpServer.h */,
-				AE03AB4F182AD56C00F10969 /* TcpSession.cpp */,
-				AE03AB50182AD56C00F10969 /* TcpSession.h */,
-				AE03AB51182AD56C00F10969 /* UdpClient.cpp */,
-				AE03AB52182AD56C00F10969 /* UdpClient.h */,
-				AE03AB53182AD56C00F10969 /* UdpServer.cpp */,
-				AE03AB54182AD56C00F10969 /* UdpServer.h */,
-				AE03AB55182AD56C00F10969 /* UdpSession.cpp */,
-				AE03AB56182AD56C00F10969 /* UdpSession.h */,
-				AE03AB57182AD56C00F10969 /* WaitTimer.cpp */,
-				AE03AB58182AD56C00F10969 /* WaitTimer.h */,
+				AE5FE7C419536B5B00B12686 /* ClientEventHandlerInterface.h */,
+				AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */,
+				AE5FE7C619536B5B00B12686 /* ClientInterface.h */,
+				AE5FE7C719536B5B00B12686 /* DispatcherEventHandlerInterface.h */,
+				AE5FE7C819536B5B00B12686 /* DispatcherInterface.cpp */,
+				AE5FE7C919536B5B00B12686 /* DispatcherInterface.h */,
+				AE5FE7CA19536B5B00B12686 /* ServerEventHandlerInterface.h */,
+				AE5FE7CB19536B5B00B12686 /* ServerInterface.cpp */,
+				AE5FE7CC19536B5B00B12686 /* ServerInterface.h */,
+				AE5FE7CD19536B5B00B12686 /* SessionEventHandlerInterface.h */,
+				AE5FE7CE19536B5B00B12686 /* SessionInterface.cpp */,
+				AE5FE7CF19536B5B00B12686 /* SessionInterface.h */,
+				AE5FE7D019536B5B00B12686 /* TcpClient.cpp */,
+				AE5FE7D119536B5B00B12686 /* TcpClient.h */,
+				AE5FE7D219536B5B00B12686 /* TcpClientEventHandlerInterface.h */,
+				AE5FE7D319536B5B00B12686 /* TcpServer.cpp */,
+				AE5FE7D419536B5B00B12686 /* TcpServer.h */,
+				AE5FE7D519536B5B00B12686 /* TcpServerEventHandlerInterface.h */,
+				AE5FE7D619536B5B00B12686 /* TcpSession.cpp */,
+				AE5FE7D719536B5B00B12686 /* TcpSession.h */,
+				AE5FE7D819536B5B00B12686 /* TcpSessionEventHandlerInterface.h */,
+				AE5FE7D919536B5B00B12686 /* UdpClient.cpp */,
+				AE5FE7DA19536B5B00B12686 /* UdpClient.h */,
+				AE5FE7DB19536B5B00B12686 /* UdpClientEventHandlerInterface.h */,
+				AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */,
+				AE5FE7DD19536B5B00B12686 /* UdpServer.h */,
+				AE5FE7DE19536B5B00B12686 /* UdpServerEventHandlerInterface.h */,
+				AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */,
+				AE5FE7E019536B5B00B12686 /* UdpSession.h */,
+				AE5FE7E119536B5B00B12686 /* UdpSessionEventHandlerInterface.h */,
+				AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */,
+				AE5FE7E319536B5B00B12686 /* WaitTimer.h */,
+				AE5FE7E419536B5B00B12686 /* WaitTimerEventHandlerInterface.h */,
 			);
 			name = "Cinder-Asio";
 			sourceTree = "<group>";
@@ -270,18 +292,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE03AB60182AD56C00F10969 /* UdpClient.cpp in Sources */,
-				AE03AB5D182AD56C00F10969 /* TcpClient.cpp in Sources */,
-				AE03AB61182AD56C00F10969 /* UdpServer.cpp in Sources */,
-				AE03AB5B182AD56C00F10969 /* ServerInterface.cpp in Sources */,
-				AE03AB5F182AD56C00F10969 /* TcpSession.cpp in Sources */,
-				AE03AB62182AD56C00F10969 /* UdpSession.cpp in Sources */,
-				AE03AB59182AD56C00F10969 /* ClientInterface.cpp in Sources */,
+				AE5FE7EC19536B5B00B12686 /* UdpClient.cpp in Sources */,
+				AE5FE7E919536B5B00B12686 /* TcpClient.cpp in Sources */,
+				AE5FE7ED19536B5B00B12686 /* UdpServer.cpp in Sources */,
+				AE5FE7E719536B5B00B12686 /* ServerInterface.cpp in Sources */,
+				AE5FE7EB19536B5B00B12686 /* TcpSession.cpp in Sources */,
+				AE5FE7EE19536B5B00B12686 /* UdpSession.cpp in Sources */,
+				AE5FE7E519536B5B00B12686 /* ClientInterface.cpp in Sources */,
 				A708C215EF1345EAAB1B29D8 /* UdpServerApp.cpp in Sources */,
-				AE03AB63182AD56C00F10969 /* WaitTimer.cpp in Sources */,
-				AE03AB5E182AD56C00F10969 /* TcpServer.cpp in Sources */,
-				AE03AB5A182AD56C00F10969 /* DispatcherInterface.cpp in Sources */,
-				AE03AB5C182AD56C00F10969 /* SessionInterface.cpp in Sources */,
+				AE5FE7EF19536B5B00B12686 /* WaitTimer.cpp in Sources */,
+				AE5FE7EA19536B5B00B12686 /* TcpServer.cpp in Sources */,
+				AE5FE7E619536B5B00B12686 /* DispatcherInterface.cpp in Sources */,
+				AE5FE7E819536B5B00B12686 /* SessionInterface.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
