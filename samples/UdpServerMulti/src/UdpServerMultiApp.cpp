@@ -198,12 +198,12 @@ void UdpServerMultiApp::update()
 		if ( eventHandler.isReadComplete() ) {
 			if ( session ) {
 				boost::system::error_code err;
-				string host = session->getEndpoint().address().to_string( err );
+				string host = session->getRemoteEndpoint().address().to_string( err );
 				if ( err ) {
 					mText.push_back( "Unable to read remote endpoint's address ( " + toString( err ) + " )" );
 					console() << mText.back() << endl;
 				}
-				uint16_t port = session->getEndpoint().port();
+				uint16_t port = session->getRemoteEndpoint().port();
 				
 				string request	= eventHandler.getResponse();
 				mText.push_back( "Received request from " + host + ":" + toString( port ) + ": " + request );

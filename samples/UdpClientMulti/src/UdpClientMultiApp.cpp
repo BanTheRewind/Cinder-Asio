@@ -63,9 +63,11 @@ public:
 	void						setup();
 	void						update();
 private:
+	void						accept();
 	UdpClientRef				mClient;
 	std::string					mHost;
-	int32_t						mPort;
+	int32_t						mPortLocal;
+	int32_t						mPortRemote;
 	std::string					mRequest;
 	UdpServerRef				mServer;
 	UdpSessionRef				mSessionRead;
@@ -97,6 +99,14 @@ private:
 using namespace ci;
 using namespace ci::app;
 using namespace std;
+
+void UdpClientMultiApp::accept()
+{
+	if ( mServer ) {
+		mServer->accept( (uint16_t)mPortLocal );
+		mText.push_back( "Listening on port: " + toString( mPortLocal ) );
+	}
+}
 
 void UdpClientMultiApp::draw()
 {
@@ -174,14 +184,15 @@ void UdpClientMultiApp::setup()
 	mFrameRate	= 0.0f;
 	mFullScreen	= false;
 	mHost		= "127.0.0.1";
-	mPort		= 2000;
+	mPortLocal	= 0;
+	mPortRemote	= 2000;
 	mRequest	= "Hello, server!";
 		
 	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 150 ) );
 	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
 	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
 	mParams->addParam( "Host",			&mHost );
-	mParams->addParam( "Port",			&mPort,
+	mParams->addParam( "Port",			&mPortRemote,
 					  "min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
 	mParams->addParam( "Request",		&mRequest );
 	mParams->addButton( "Write", bind(	&UdpClientMultiApp::write, this ),	"key=w" );
@@ -229,9 +240,12 @@ void UdpClientMultiApp::write()
 	if ( mSessionWrite && mSessionWrite->getSocket()->is_open() ) {
 		Buffer buffer = UdpSession::stringToBuffer( mRequest );
 		mSessionWrite->write( buffer );
+		
+		mPortLocal = (int32_t)mSessionWrite->getLocalEndpoint().port();
+		accept();
 	} else {
-		mText.push_back( "Connecting to: " + mHost + ":" + toString( mPort ) );
-		mClient->connect( mHost, (uint16_t)mPort );
+		mText.push_back( "Connecting to: " + mHost + ":" + toString( mPortRemote ) );
+		mClient->connect( mHost, (uint16_t)mPortRemote );
 	}
 }
 

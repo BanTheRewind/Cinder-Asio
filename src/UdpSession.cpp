@@ -64,7 +64,7 @@ void UdpSession::read()
 void UdpSession::read( size_t bufferSize )
 {
 	mBufferSize = bufferSize;
-	mSocket->async_receive_from( mResponse.prepare( bufferSize ), mEndpoint,
+	mSocket->async_receive_from( mResponse.prepare( bufferSize ), mEndpointRemote,
 		boost::bind( &UdpSession::onRead, shared_from_this(), 
 			boost::asio::placeholders::error, 
 			boost::asio::placeholders::bytes_transferred ) );
@@ -78,12 +78,19 @@ void UdpSession::write( const Buffer& buffer )
 		boost::bind( &UdpSession::onWrite, shared_from_this(), 
 			boost::asio::placeholders::error, 
 			boost::asio::placeholders::bytes_transferred ) );
+	mEndpointLocal = mSocket->local_endpoint();
 	mRequest.consume( mRequest.size() );
 }
 
-const boost::asio::ip::udp::endpoint& UdpSession::getEndpoint() const
+
+const boost::asio::ip::udp::endpoint& UdpSession::getLocalEndpoint() const
 {
-	return mEndpoint;
+	return mEndpointLocal;
+}
+
+const boost::asio::ip::udp::endpoint& UdpSession::getRemoteEndpoint() const
+{
+	return mEndpointRemote;
 }
 
 const UdpSocketRef& UdpSession::getSocket() const

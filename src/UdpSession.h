@@ -55,12 +55,14 @@ public:
 	virtual void							read( size_t bufferSize );
 	virtual void							write( const ci::Buffer& buffer );
 
-	const boost::asio::ip::udp::endpoint&	getEndpoint() const;
+	const boost::asio::ip::udp::endpoint&	getLocalEndpoint() const;
+	const boost::asio::ip::udp::endpoint&	getRemoteEndpoint() const;
 	const UdpSocketRef&						getSocket() const;
 protected:
 	UdpSession( boost::asio::io_service& io );
 
-	boost::asio::ip::udp::endpoint			mEndpoint;
+	boost::asio::ip::udp::endpoint			mEndpointLocal;
+	boost::asio::ip::udp::endpoint			mEndpointRemote;
 	UdpSocketRef							mSocket;
 
 	friend class							UdpClient;
