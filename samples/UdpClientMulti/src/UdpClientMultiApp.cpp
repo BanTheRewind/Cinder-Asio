@@ -41,6 +41,7 @@
 #include "cinder/params/Params.h"
 
 #include "UdpClient.h"
+#include "UdpServer.h"
 
 /*
  * This application demonstrates how to create a basic UDP
@@ -63,6 +64,7 @@ private:
 	std::string					mHost;
 	int32_t						mPort;
 	std::string					mRequest;
+	UdpServerRef				mServer;
 	UdpSessionRef				mSession;
 	void						write();
 

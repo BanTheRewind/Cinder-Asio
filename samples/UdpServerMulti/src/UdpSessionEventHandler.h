@@ -45,8 +45,8 @@ class UdpSessionEventHandler : public UdpSessionEventHandlerInterface
 public:
 	UdpSessionEventHandler();
 	
-	const ci::Buffer&		getBuffer();
 	const std::string&		getError() const;
+	const std::string&		getResponse();
 	bool					isReadComplete() const;
 	bool					isWriteComplete() const;
 	
@@ -55,8 +55,8 @@ public:
 	void					onReadComplete();
 	void					onWrite( size_t bytesTransferred );
 protected:
-	ci::Buffer				mBuffer;
 	std::string				mError;
+	std::string				mResponse;
 	bool					mReadComplete;
 	bool					mWriteComplete;
 };

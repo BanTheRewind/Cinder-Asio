@@ -211,9 +211,11 @@ void UdpServerMultiApp::update()
 				}
 				uint16_t port = session->getEndpoint().port();
 				
-				string request = SessionInterface::bufferToString( eventHandler.getBuffer() );
+				string request	= eventHandler.getResponse();
 				mText.push_back( "Received request from " + host + ":" + toString( port ) + ": " + request );
 				console() << mText.back() << endl;
+				
+				mClient->connect( host, port );
 			}
 			
 			iter = mUdpSessionEventHandlerMap.erase( iter );

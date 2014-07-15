@@ -41,18 +41,18 @@ using namespace ci;
 using namespace std;
 
 UdpSessionEventHandler::UdpSessionEventHandler()
-: mError( "" ), mReadComplete( false ), mWriteComplete( false )
+: mError( "" ), mReadComplete( false ), mResponse( "" ), mWriteComplete( false )
 {
-}
-
-const Buffer& UdpSessionEventHandler::getBuffer()
-{
-	return mBuffer;
 }
 
 const string& UdpSessionEventHandler::getError() const
 {
 	return mError;
+}
+
+const string& UdpSessionEventHandler::getResponse()
+{
+	return mResponse;
 }
 
 bool UdpSessionEventHandler::isReadComplete() const
@@ -65,14 +65,14 @@ bool UdpSessionEventHandler::isWriteComplete() const
 	return mWriteComplete;
 }
 
-void UdpSessionEventHandler::onError( std::string err, size_t bytesTransferred )
+void UdpSessionEventHandler::onError( string err, size_t bytesTransferred )
 {
 	mError = err;
 }
 
-void UdpSessionEventHandler::onRead( ci::Buffer buffer )
+void UdpSessionEventHandler::onRead( Buffer buffer )
 {
-	mBuffer = buffer;
+	mResponse = SessionInterface::bufferToString( buffer );
 }
 
 void UdpSessionEventHandler::onReadComplete()

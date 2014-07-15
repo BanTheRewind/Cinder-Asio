@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:UdpClient.xcodeproj">
+      location = "self:UdpClientMulti.xcodeproj">
    </FileRef>
 </Workspace>
