@@ -41,19 +41,22 @@
 #include "cinder/params/Params.h"
 
 #include "UdpClient.h"
+#include "UdpClientEventHandlerInterface.h"
 #include "UdpServer.h"
+#include "UdpServerEventHandlerInterface.h"
+#include "UdpSessionEventHandlerInterface.h"
 
 /*
- * This application demonstrates how to create a basic UDP
- * client. This is meant to communicate with the UdpServer
- * sample running on the same machine.
- *
- * To communicate with a host, you must create a client and add a
- * connect event callback. Once connected, the client will pass a 
- * session object through the callback. Use the session to communicate
- * by setting callbacks on it.
+ * This application demonstrates how to extend event handlers 
+ * to create a UDP client which can send and receive data. 
+ * This is meant to communicate with the UdpServerMulti sample 
+ * running on the same machine.
  */ 
-class UdpClientApp : public ci::app::AppBasic
+class UdpClientMultiApp :
+public ci::app::AppBasic,
+public UdpClientEventHandlerInterface,
+public UdpServerEventHandlerInterface,
+public UdpSessionEventHandlerInterface
 {
 public:
 	void						draw();
@@ -65,11 +68,17 @@ private:
 	int32_t						mPort;
 	std::string					mRequest;
 	UdpServerRef				mServer;
-	UdpSessionRef				mSession;
+	UdpSessionRef				mSessionRead;
+	UdpSessionRef				mSessionWrite;
 	void						write();
 
+	// These methods implement event handlers
+	void						onAccept( UdpSessionRef session );
 	void						onConnect( UdpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
+	void						onRead( ci::Buffer buffer );
+	void						onReadComplete();
+	void						onResolve();
 	void						onWrite( size_t bytesTransferred );
 
 	ci::Font					mFont;
@@ -89,7 +98,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-void UdpClientApp::draw()
+void UdpClientMultiApp::draw()
 {
 	gl::viewport( getWindowSize() );
 	gl::clear( Colorf::black() );
@@ -102,20 +111,28 @@ void UdpClientApp::draw()
 	mParams->draw();
 }
 
-void UdpClientApp::onConnect( UdpSessionRef session )
+void UdpClientMultiApp::onAccept( UdpSessionRef session )
+{
+	mSessionRead = session;
+	mSessionRead->connectErrorEventHandler( &UdpClientMultiApp::onError, this );
+	mSessionRead->connectReadCompleteEventHandler( &UdpClientMultiApp::onReadComplete, this );
+	mSessionRead->connectReadEventHandler( &UdpClientMultiApp::onRead, this );
+	
+	mSessionRead->read();
+}
+
+void UdpClientMultiApp::onConnect( UdpSessionRef session )
 {
 	mText.push_back( "Connected" );
 
-	// Get the session from the argument and set callbacks.
-	// Note that you can use lambdas.
-	mSession = session;
-	mSession->connectErrorEventHandler( &UdpClientApp::onError, this );
-	mSession->connectWriteEventHandler( &UdpClientApp::onWrite, this );
+	mSessionWrite = session;
+	mSessionWrite->connectErrorEventHandler( &UdpClientMultiApp::onError, this );
+	mSessionWrite->connectWriteEventHandler( &UdpClientMultiApp::onWrite, this );
 
 	write();
 }
 
-void UdpClientApp::onError( string err, size_t bytesTransferred )
+void UdpClientMultiApp::onError( string err, size_t bytesTransferred )
 {
 	string text = "Error";
 	if ( !err.empty() ) {
@@ -124,12 +141,31 @@ void UdpClientApp::onError( string err, size_t bytesTransferred )
 	 mText.push_back( text );
 }
 
-void UdpClientApp::onWrite( size_t bytesTransferred )
+void UdpClientMultiApp::onRead( Buffer buffer )
+{
+	string text = "Response received: " + SessionInterface::bufferToString( buffer );
+	console() << text << endl;
+	mText.push_back( text );
+}
+
+void UdpClientMultiApp::onReadComplete()
+{
+	string text = "Read complete";
+	console() << text << endl;
+	mText.push_back( text );
+}
+
+void UdpClientMultiApp::onResolve()
+{
+	mText.push_back( "Endpoint resolved" );
+}
+
+void UdpClientMultiApp::onWrite( size_t bytesTransferred )
 {
 	mText.push_back( toString( bytesTransferred ) + " bytes written" );
 }
 
-void UdpClientApp::setup()
+void UdpClientMultiApp::setup()
 {
 	gl::enableAlphaBlending();
 	gl::enable( GL_TEXTURE_2D );
@@ -148,26 +184,21 @@ void UdpClientApp::setup()
 	mParams->addParam( "Port",			&mPort,
 					  "min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
 	mParams->addParam( "Request",		&mRequest );
-	mParams->addButton( "Write", bind(	&UdpClientApp::write, this ),	"key=w" );
-	mParams->addButton( "Quit", bind(	&UdpClientApp::quit, this ),	"key=q" );
+	mParams->addButton( "Write", bind(	&UdpClientMultiApp::write, this ),	"key=w" );
+	mParams->addButton( "Quit", bind(	&UdpClientMultiApp::quit, this ),	"key=q" );
 
-	// Initialize a client by passing a boost::asio::io_service to it.
-	// ci::App already has one that it polls on update, so we'll use that.
-	// You can use your own io_service, but you will have to manage it 
-	// manually (i.e., call poll(), poll_one(), run(), etc).
 	mClient = UdpClient::create( io_service() );
+	mServer = UdpServer::create( io_service() );
 
-	// Add callbacks to work with the client asynchronously.
-	// Note that you can use lambdas.
-	mClient->connectConnectEventHandler( &UdpClientApp::onConnect, this );
-	mClient->connectErrorEventHandler( &UdpClientApp::onError, this );
-	mClient->connectResolveEventHandler( [ & ]() 
-	{
-		mText.push_back( "Endpoint resolved" );
-	} );
+	mClient->connectConnectEventHandler( &UdpClientMultiApp::onConnect, this );
+	mClient->connectErrorEventHandler( &UdpClientMultiApp::onError, this );
+	mClient->connectResolveEventHandler( &UdpClientMultiApp::onResolve, this );
+
+	mServer->connectAcceptEventHandler( &UdpClientMultiApp::onAccept, this );
+	mServer->connectErrorEventHandler( &UdpClientMultiApp::onError, this );
 }
 
-void UdpClientApp::update()
+void UdpClientMultiApp::update()
 {	
 	mFrameRate = getFrameRate();
 	
@@ -193,23 +224,16 @@ void UdpClientApp::update()
 	}
 }
 
-void UdpClientApp::write()
+void UdpClientMultiApp::write()
 {
-	// This sample is meant to work with only one session at a time.
-	if ( mSession && mSession->getSocket()->is_open() ) {
-		// Write data is packaged as a ci::Buffer. This allows 
-		// you to send any kind of data. Because it's more common to
-		// work with strings, the session object has static convenience 
-		// methods for converting between std::string and ci::Buffer.
+	if ( mSessionWrite && mSessionWrite->getSocket()->is_open() ) {
 		Buffer buffer = UdpSession::stringToBuffer( mRequest );
-		mSession->write( buffer );
+		mSessionWrite->write( buffer );
 	} else {
-		// Before we can write, we need to establish a connection 
-		// and create a session. Check out the onConnect method.
 		mText.push_back( "Connecting to: " + mHost + ":" + toString( mPort ) );
 		mClient->connect( mHost, (uint16_t)mPort );
 	}
 }
 
-CINDER_APP_BASIC( UdpClientApp, RendererGl )
+CINDER_APP_BASIC( UdpClientMultiApp, RendererGl )
  

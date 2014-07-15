@@ -49,13 +49,8 @@
 /*
  * This application demonstrates how to extend event handlers
  * to create a UDP server which can speak to multiple clients. 
- * This is meant to communicate with the UdpClient sample running 
+ * This is meant to communicate with the UdpClientMulti sample running
  * on the same machine.
- *
- * To communicate with a client, you must create a server and add a
- * connect event callback. Once connected, the server will pass a 
- * session object through the callback. Use the session to communicate
- * by setting callbacks on it.
  */
 class UdpServerMultiApp :
 public ci::app::AppBasic,
@@ -202,7 +197,6 @@ void UdpServerMultiApp::update()
 		UdpSessionRef session				= iter->first;
 		if ( eventHandler.isReadComplete() ) {
 			if ( session ) {
-				
 				boost::system::error_code err;
 				string host = session->getEndpoint().address().to_string( err );
 				if ( err ) {
