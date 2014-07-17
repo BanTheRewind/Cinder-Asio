@@ -71,7 +71,7 @@ private:
 	UdpServerRef				mServer;
 	UdpSessionEventHandlerMap	mUdpSessionEventHandlerMap;
 	
-	// These methods implement event handlers
+	// These methods implement event handler interfaces
 	void						onAccept( UdpSessionRef session );
 	void						onConnect( UdpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
@@ -131,6 +131,10 @@ void MultiUdpServerApp::onConnect( UdpSessionRef session )
 {
 	string response = "OK";
 	Buffer buffer = SessionInterface::stringToBuffer( response );
+	session->connectWriteEventHandler( [ & ]( size_t bytesTransferred )
+	{
+		accept();
+	} );
 	session->write( buffer );
 	
 	mText.push_back( "Response sent" );
@@ -171,6 +175,8 @@ void MultiUdpServerApp::setup()
 	mClient = UdpClient::create( io_service() );
 	mServer = UdpServer::create( io_service() );
 
+	mClient->connectConnectEventHandler( &MultiUdpServerApp::onConnect, this );
+	
 	mServer->connectAcceptEventHandler( &MultiUdpServerApp::onAccept, this );
 	mServer->connectErrorEventHandler( &MultiUdpServerApp::onError, this );
 	

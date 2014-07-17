@@ -85,6 +85,8 @@ void TcpClient::onConnect( TcpSessionRef session, const boost::system::error_cod
 		}
 	} else {
 		if ( mConnectEventHandler != nullptr ) {
+			session->mSocket->set_option( boost::asio::socket_base::broadcast( true ) );
+			session->mSocket->set_option( boost::asio::socket_base::reuse_address( true ) );
 			mConnectEventHandler( session );
 		}
 	}

@@ -85,6 +85,7 @@ void UdpClient::onConnect( UdpSessionRef session, const boost::system::error_cod
 		}
 	} else {
 		if ( mConnectEventHandler != nullptr ) {
+			session->mSocket->set_option( boost::asio::socket_base::reuse_address( true ) );
 			mConnectEventHandler( session );
 		}
 	}
@@ -101,7 +102,7 @@ void UdpClient::onResolve( const boost::system::error_code& err,
 		if ( mResolveEventHandler != nullptr ) {
 			mResolveEventHandler();
 		}
-		UdpSessionRef session( new UdpSession( mIoService ) );
+		UdpSessionRef session = UdpSession::create( mIoService );
 		boost::asio::async_connect( *session->mSocket, iter, mStrand.wrap( boost::bind( &UdpClient::onConnect, 
 			shared_from_this(), session, boost::asio::placeholders::error ) ) );
 	}

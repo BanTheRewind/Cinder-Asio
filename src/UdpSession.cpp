@@ -78,6 +78,7 @@ void UdpSession::write( const Buffer& buffer )
 		boost::bind( &UdpSession::onWrite, shared_from_this(), 
 			boost::asio::placeholders::error, 
 			boost::asio::placeholders::bytes_transferred ) );
+	mSocket->set_option( boost::asio::socket_base::broadcast( true ) );
 	mEndpointLocal = mSocket->local_endpoint();
 	mRequest.consume( mRequest.size() );
 }

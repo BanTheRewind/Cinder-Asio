@@ -62,8 +62,10 @@ TcpServer::~TcpServer()
 
 void TcpServer::accept( uint16_t port )
 {
-	mAcceptor = TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port) ) );
-	TcpSessionRef session( new TcpSession( mIoService ) );
+	mAcceptor				= TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port) ) );
+	TcpSessionRef session	= TcpSession::create( mIoService );
+	session->mSocket->set_option( boost::asio::socket_base::reuse_address( true ) );
+
 	mAcceptor->async_accept( *session->mSocket, 
 		mStrand.wrap( boost::bind( &TcpServer::onAccept, shared_from_this(), 
 			session, boost::asio::placeholders::error ) ) );

@@ -32,6 +32,7 @@ void UdpServer::accept( uint16_t port )
 			mErrorEventHandler( errCode.message(), 0 );
 		}
 	} else {
+		session->mSocket->set_option( boost::asio::socket_base::reuse_address( true ) );
 		session->mSocket->bind( udp::endpoint( udp::v4(), port ), errCode );
 		if ( errCode ) {
 			if ( mErrorEventHandler != nullptr ) {

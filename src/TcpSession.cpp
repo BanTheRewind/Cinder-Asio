@@ -82,6 +82,7 @@ void TcpSession::read()
 		boost::bind( &TcpSession::onRead, shared_from_this(), 
 			boost::asio::placeholders::error, 
 			boost::asio::placeholders::bytes_transferred ) );
+	mSocket->set_option( boost::asio::socket_base::reuse_address( true ) );
 }
 
 void TcpSession::read( const std::string& delim )
