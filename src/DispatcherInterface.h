@@ -37,6 +37,8 @@
 
 #pragma once
 
+#define BOOST_REGEX_NO_LIB
+
 #include "boost/asio.hpp"
 #include "boost/bind.hpp"
 
