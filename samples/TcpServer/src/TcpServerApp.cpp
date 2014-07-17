@@ -84,7 +84,6 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
-#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -106,10 +105,9 @@ void TcpServerApp::accept()
 
 void TcpServerApp::draw()
 {
-	gl::viewport( getWindowSize() );
+	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
-
 	
 	if ( mTexture ) {
 		gl::draw( mTexture, Vec2i( 250, 20 ) );
