@@ -1,7 +1,7 @@
 /*
 * 
 * Copyright (c) 2014, Wieden+Kennedy,
-* Stephen Schieberl
+* Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
 * Redistribution and use in source and binary forms, with or 
@@ -44,39 +44,45 @@
 #include "UdpClientEventHandlerInterface.h"
 #include "UdpServer.h"
 #include "UdpServerEventHandlerInterface.h"
-#include "UdpSessionEventHandler.h"
+#include "UdpSessionEventHandlerInterface.h"
 
 /*
- * This application demonstrates how to extend event handlers
- * to create a UDP server which can speak to multiple clients. 
- * This is meant to communicate with the UdpClientMulti sample running
- * on the same machine.
- */
-class UdpServerMultiApp :
+ * This application demonstrates how to extend event handlers 
+ * to create a UDP client which can send and receive data. 
+ * This is meant to communicate with the UdpMultiServer sample 
+ * running on the same machine.
+ */ 
+class MultiUdpClientApp :
 public ci::app::AppBasic,
 public UdpClientEventHandlerInterface,
-public UdpServerEventHandlerInterface
+public UdpServerEventHandlerInterface,
+public UdpSessionEventHandlerInterface
 {
 public:
 	void						draw();
 	void						setup();
 	void						update();
 private:
-	typedef std::map<UdpSessionRef, UdpSessionEventHandler> UdpSessionEventHandlerMap;
-
 	void						accept();
-	int32_t						mPort;
-	int32_t						mPortPrev;
 	UdpClientRef				mClient;
+	std::string					mHost;
+	int32_t						mPortLocal;
+	int32_t						mPortRemote;
+	std::string					mRequest;
 	UdpServerRef				mServer;
-	UdpSessionEventHandlerMap	mUdpSessionEventHandlerMap;
-	
+	UdpSessionRef				mSessionRead;
+	UdpSessionRef				mSessionWrite;
+	void						write();
+
 	// These methods implement event handlers
 	void						onAccept( UdpSessionRef session );
 	void						onConnect( UdpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
+	void						onRead( ci::Buffer buffer );
+	void						onReadComplete();
 	void						onResolve();
-	
+	void						onWrite( size_t bytesTransferred );
+
 	ci::Font					mFont;
 	std::vector<std::string>	mText;
 	ci::gl::TextureRef			mTexture;
@@ -94,20 +100,20 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-void UdpServerMultiApp::accept()
+void MultiUdpClientApp::accept()
 {
 	if ( mServer ) {
-		mServer->accept( (uint16_t)mPort );
-		mText.push_back( "Listening on port: " + toString( mPort ) );
+		mServer->accept( (uint16_t)mPortLocal );
+		mText.push_back( "Listening on port: " + toString( mPortLocal ) );
 	}
 }
 
-void UdpServerMultiApp::draw()
+void MultiUdpClientApp::draw()
 {
 	gl::viewport( getWindowSize() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
-	
+
 	if ( mTexture ) {
 		gl::draw( mTexture, Vec2i( 250, 20 ) );
 	}
@@ -115,109 +121,105 @@ void UdpServerMultiApp::draw()
 	mParams->draw();
 }
 
-void UdpServerMultiApp::onAccept( UdpSessionRef session ) 
+void MultiUdpClientApp::onAccept( UdpSessionRef session )
 {
-	mUdpSessionEventHandlerMap[ session ]	= UdpSessionEventHandler();
-	UdpSessionEventHandler& eventHandler	= mUdpSessionEventHandlerMap.at( session );
+	mSessionRead = session;
+	mSessionRead->connectErrorEventHandler( &MultiUdpClientApp::onError, this );
+	mSessionRead->connectReadCompleteEventHandler( &MultiUdpClientApp::onReadComplete, this );
+	mSessionRead->connectReadEventHandler( &MultiUdpClientApp::onRead, this );
 	
-	session->connectErrorEventHandler( &UdpSessionEventHandler::onError, &eventHandler );
-	session->connectReadCompleteEventHandler( &UdpSessionEventHandler::onReadComplete, &eventHandler );
-	session->connectReadEventHandler( &UdpSessionEventHandler::onRead, &eventHandler );
-
-	session->read();
+	mSessionRead->read();
 }
 
-void UdpServerMultiApp::onConnect( UdpSessionRef session )
+void MultiUdpClientApp::onConnect( UdpSessionRef session )
 {
-	string response = "OK";
-	Buffer buffer = SessionInterface::stringToBuffer( response );
-	session->write( buffer );
-	
-	mText.push_back( "Response sent" );
-	console() << mText.back() << endl;
+	mText.push_back( "Connected" );
+
+	mSessionWrite = session;
+	mSessionWrite->connectErrorEventHandler( &MultiUdpClientApp::onError, this );
+	mSessionWrite->connectWriteEventHandler( &MultiUdpClientApp::onWrite, this );
+
+	write();
 }
 
-void UdpServerMultiApp::onError( string err, size_t bytesTransferred )
+void MultiUdpClientApp::onError( string err, size_t bytesTransferred )
 {
 	string text = "Error";
 	if ( !err.empty() ) {
 		text += ": " + err;
 	}
-	mText.push_back( text );
-	console() << mText.back() << endl;
+	 mText.push_back( text );
 }
 
-void UdpServerMultiApp::onResolve()
+void MultiUdpClientApp::onRead( Buffer buffer )
 {
+	string text = "Response received: " + SessionInterface::bufferToString( buffer );
+	console() << text << endl;
+	mText.push_back( text );
 }
 
-void UdpServerMultiApp::setup()
+void MultiUdpClientApp::onReadComplete()
+{
+	string text = "Read complete";
+	console() << text << endl;
+	mText.push_back( text );
+}
+
+void MultiUdpClientApp::onResolve()
+{
+	mText.push_back( "Endpoint resolved" );
+}
+
+void MultiUdpClientApp::onWrite( size_t bytesTransferred )
+{
+	mText.push_back( toString( bytesTransferred ) + " bytes written" );
+}
+
+void MultiUdpClientApp::setup()
 {
 	gl::enableAlphaBlending();
 	gl::enable( GL_TEXTURE_2D );
-
+	
 	mFont		= Font( "Georgia", 24 );
 	mFrameRate	= 0.0f;
 	mFullScreen	= false;
-	mPort		= 2000;
-	mPortPrev	= mPort;
-	
-	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 110 ) );
-	mParams->addParam( "Frame rate",	&mFrameRate,			"", true );
-	mParams->addParam( "Full screen",	&mFullScreen,			"key=f" );
-	mParams->addParam( "Port",			&mPort,					"min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
-	mParams->addButton( "Quit",			[ & ]() { quit(); },	"key=q" );
-	
+	mHost		= "127.0.0.1";
+	mPortLocal	= 0;
+	mPortRemote	= 2000;
+	mRequest	= "Hello, server!";
+		
+	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 150 ) );
+	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
+	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
+	mParams->addParam( "Host",			&mHost );
+	mParams->addParam( "Port",			&mPortRemote,
+					  "min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
+	mParams->addParam( "Request",		&mRequest );
+	mParams->addButton( "Write", bind(	&MultiUdpClientApp::write, this ),	"key=w" );
+	mParams->addButton( "Quit", bind(	&MultiUdpClientApp::quit, this ),	"key=q" );
+
 	mClient = UdpClient::create( io_service() );
 	mServer = UdpServer::create( io_service() );
 
-	mServer->connectAcceptEventHandler( &UdpServerMultiApp::onAccept, this );
-	mServer->connectErrorEventHandler( &UdpServerMultiApp::onError, this );
-	
-	accept();
+	mClient->connectConnectEventHandler( &MultiUdpClientApp::onConnect, this );
+	mClient->connectErrorEventHandler( &MultiUdpClientApp::onError, this );
+	mClient->connectResolveEventHandler( &MultiUdpClientApp::onResolve, this );
+
+	mServer->connectAcceptEventHandler( &MultiUdpClientApp::onAccept, this );
+	mServer->connectErrorEventHandler( &MultiUdpClientApp::onError, this );
 }
 
-void UdpServerMultiApp::update()
-{
+void MultiUdpClientApp::update()
+{	
 	mFrameRate = getFrameRate();
 	
+	// Toggle full screen.
 	if ( mFullScreen != isFullScreen() ) {
 		setFullScreen( mFullScreen );
 		mFullScreen = isFullScreen();
 	}
-	
-	if ( mPortPrev != mPort ) {
-		mPortPrev = mPort;
-		accept();
-	}
 
-	for ( UdpSessionEventHandlerMap::iterator iter = mUdpSessionEventHandlerMap.begin();
-		 iter != mUdpSessionEventHandlerMap.end(); ) {
-		UdpSessionEventHandler eventHandler = iter->second;
-		UdpSessionRef session				= iter->first;
-		if ( eventHandler.isReadComplete() ) {
-			if ( session ) {
-				boost::system::error_code err;
-				string host = session->getRemoteEndpoint().address().to_string( err );
-				if ( err ) {
-					mText.push_back( "Unable to read remote endpoint's address ( " + toString( err ) + " )" );
-					console() << mText.back() << endl;
-				}
-				uint16_t port = session->getRemoteEndpoint().port();
-				
-				string request	= eventHandler.getResponse();
-				mText.push_back( "Received request from " + host + ":" + toString( port ) + ": " + request );
-				console() << mText.back() << endl;
-				
-				mClient->connect( host, port );
-			}
-			
-			iter = mUdpSessionEventHandlerMap.erase( iter );
-		} else {
-			++iter;
-		}
-	}
-	
+	// Render text.
 	if ( !mText.empty() ) {
 		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( Vec2i( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
 		for ( vector<string>::const_reverse_iterator iter = mText.rbegin(); iter != mText.rend(); ++iter ) {
@@ -233,4 +235,19 @@ void UdpServerMultiApp::update()
 	}
 }
 
-CINDER_APP_BASIC( UdpServerMultiApp, RendererGl )
+void MultiUdpClientApp::write()
+{
+	if ( mSessionWrite && mSessionWrite->getSocket()->is_open() ) {
+		Buffer buffer = UdpSession::stringToBuffer( mRequest );
+		mSessionWrite->write( buffer );
+		
+		mPortLocal = (int32_t)mSessionWrite->getLocalEndpoint().port();
+		accept();
+	} else {
+		mText.push_back( "Connecting to: " + mHost + ":" + toString( mPortRemote ) );
+		mClient->connect( mHost, (uint16_t)mPortRemote );
+	}
+}
+
+CINDER_APP_BASIC( MultiUdpClientApp, RendererGl )
+ 
