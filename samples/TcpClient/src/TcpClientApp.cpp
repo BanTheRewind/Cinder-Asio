@@ -36,6 +36,7 @@
 */
 
 #include "cinder/app/AppBasic.h"
+#include "cinder/Font.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/params/Params.h"
 
@@ -81,6 +82,7 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
+#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -90,7 +92,7 @@ using namespace std;
 
 void TcpClientApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
+	gl::viewport( getWindowSize() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 	
