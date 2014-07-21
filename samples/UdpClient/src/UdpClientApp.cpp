@@ -88,7 +88,6 @@ using namespace std;
 
 void UdpClientApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 

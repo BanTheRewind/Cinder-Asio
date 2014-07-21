@@ -103,7 +103,6 @@ void MultiUdpServerApp::accept()
 
 void MultiUdpServerApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 	

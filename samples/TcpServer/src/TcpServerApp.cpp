@@ -105,7 +105,6 @@ void TcpServerApp::accept()
 
 void TcpServerApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 	

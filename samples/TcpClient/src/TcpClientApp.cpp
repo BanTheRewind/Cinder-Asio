@@ -91,7 +91,6 @@ using namespace std;
 
 void TcpClientApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 	

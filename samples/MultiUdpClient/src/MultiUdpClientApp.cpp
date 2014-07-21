@@ -109,7 +109,6 @@ void MultiUdpClientApp::accept()
 
 void MultiUdpClientApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 

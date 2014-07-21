@@ -104,7 +104,6 @@ void UdpServerApp::accept()
 
 void UdpServerApp::draw()
 {
-	gl::setViewport( getWindowBounds() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 	
