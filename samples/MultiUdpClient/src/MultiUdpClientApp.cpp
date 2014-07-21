@@ -92,7 +92,6 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
-#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -110,7 +109,6 @@ void MultiUdpClientApp::accept()
 
 void MultiUdpClientApp::draw()
 {
-	gl::viewport( getWindowSize() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 

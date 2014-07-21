@@ -80,7 +80,6 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
-#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -105,7 +104,6 @@ void UdpServerApp::accept()
 
 void UdpServerApp::draw()
 {
-	gl::viewport( getWindowSize() );
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
 	
