@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{817F3F14-C81A-40C0-894B-7DC3EDF7CC40}</ProjectGuid>
-    <RootNamespace>UdpServer</RootNamespace>
+    <RootNamespace>MultiUdpServer</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -215,7 +215,8 @@
     <ClCompile Include="..\..\..\src\UdpServer.cpp" />
     <ClCompile Include="..\..\..\src\UdpSession.cpp" />
     <ClCompile Include="..\..\..\src\WaitTimer.cpp" />
-    <ClCompile Include="..\src\UdpServerApp.cpp" />
+    <ClCompile Include="..\src\MultiUdpServerApp.cpp" />
+    <ClCompile Include="..\src\UdpSessionEventHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\ClientEventHandlerInterface.h" />
@@ -241,6 +242,7 @@
     <ClInclude Include="..\..\..\src\WaitTimer.h" />
     <ClInclude Include="..\..\..\src\WaitTimerEventHandlerInterface.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\UdpSessionEventHandler.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
