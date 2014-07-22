@@ -107,7 +107,6 @@ void TcpServerApp::draw()
 {
 	gl::clear( Colorf::black() );
 	gl::setMatricesWindow( getWindowSize() );
-
 	
 	if ( mTexture ) {
 		gl::draw( mTexture, Vec2i( 250, 20 ) );
