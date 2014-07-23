@@ -42,7 +42,11 @@ using namespace std;
 
 string SessionInterface::bufferToString( const Buffer& buffer )
 {
-	return string( static_cast<const char*>( buffer.getData() ) );
+	string s( static_cast<const char*>( buffer.getData() ) );
+	if ( s.length() > buffer.getDataSize() ) {
+		s = string( static_cast<const char*>( buffer.getData() ), buffer.getDataSize() );
+	}
+	return s;
 }
 
 Buffer SessionInterface::stringToBuffer( string& value )
