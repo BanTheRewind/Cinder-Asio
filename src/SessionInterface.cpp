@@ -44,7 +44,7 @@ string SessionInterface::bufferToString( const Buffer& buffer )
 {
 	string s( static_cast<const char*>( buffer.getData() ) );
 	if ( s.length() > buffer.getDataSize() ) {
-		s = string( static_cast<const char*>( buffer.getData() ), buffer.getDataSize() );
+		s.resize( buffer.getDataSize() );
 	}
 	return s;
 }
