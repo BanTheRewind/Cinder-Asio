@@ -73,7 +73,9 @@ void UdpSession::read( size_t bufferSize )
 void UdpSession::write( const Buffer& buffer )
 {
 	ostream stream( &mRequest );
-	stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	if ( buffer && buffer.getDataSize() > 0 ) {
+		stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	}
 	mSocket->async_send( mRequest.data(), 
 		boost::bind( &UdpSession::onWrite, shared_from_this(), 
 			boost::asio::placeholders::error, 

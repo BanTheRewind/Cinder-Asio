@@ -104,7 +104,9 @@ void TcpSession::read( size_t bufferSize )
 void TcpSession::write( const Buffer& buffer )
 {
 	ostream stream( &mRequest );
-	stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	if ( buffer && buffer.getDataSize() > 0 ) {
+		stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	}
 	boost::asio::async_write( *mSocket, mRequest, 
 		mStrand.wrap( boost::bind( &TcpSession::onWrite, shared_from_this(), 
 			boost::asio::placeholders::error, 
