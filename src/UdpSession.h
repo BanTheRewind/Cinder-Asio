@@ -53,7 +53,7 @@ public:
 	
 	virtual void							read();
 	virtual void							read( size_t bufferSize );
-	virtual void							write( const ci::Buffer& buffer );
+	virtual void							write( const ci::Buffer& buffer = ci::Buffer() );
 
 	const boost::asio::ip::udp::endpoint&	getLocalEndpoint() const;
 	const boost::asio::ip::udp::endpoint&	getRemoteEndpoint() const;
