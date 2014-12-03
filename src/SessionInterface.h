@@ -44,7 +44,7 @@ class SessionInterface : public DispatcherInterface
 {
 public:
 	static std::string		bufferToString( const ci::Buffer& buffer );
-	static ci::Buffer		stringToBuffer( std::string& value );
+	static ci::Buffer		stringToBuffer( const std::string& value );
 
 	~SessionInterface();
 

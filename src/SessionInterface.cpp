@@ -49,9 +49,11 @@ string SessionInterface::bufferToString( const Buffer& buffer )
 	return s;
 }
 
-Buffer SessionInterface::stringToBuffer( string& value )
+Buffer SessionInterface::stringToBuffer( const string& value )
 {
-	return Buffer( &value[ 0 ], value.size() );
+	Buffer buf( value.size() );
+	buf.copyFrom( (char*)&value[ 0 ], value.size() );
+	return buf;
 }
 
 SessionInterface::SessionInterface( boost::asio::io_service& io )
