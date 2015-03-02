@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -39,14 +39,14 @@
 
 using namespace ci;
 using namespace std;
-using boost::asio::ip::udp;
+using asio::ip::udp;
 
-UdpSessionRef UdpSession::create( boost::asio::io_service& io )
+UdpSessionRef UdpSession::create( asio::io_service& io )
 {
 	return UdpSessionRef( new UdpSession( io ) )->shared_from_this();
 }
 
-UdpSession::UdpSession( boost::asio::io_service& io )
+UdpSession::UdpSession( asio::io_service& io )
 	: SessionInterface( io )
 {
 	mSocket = UdpSocketRef( new udp::socket( io ) );
@@ -65,9 +65,9 @@ void UdpSession::read( size_t bufferSize )
 {
 	mBufferSize = bufferSize;
 	mSocket->async_receive_from( mResponse.prepare( bufferSize ), mEndpointRemote,
-		boost::bind( &UdpSession::onRead, shared_from_this(), 
-			boost::asio::placeholders::error, 
-			boost::asio::placeholders::bytes_transferred ) );
+		mStrand.wrap( boost::bind( &UdpSession::onRead, shared_from_this(), 
+			asio::placeholders::error, 
+			asio::placeholders::bytes_transferred ) ) );
 }
 
 void UdpSession::write( const Buffer& buffer )
@@ -77,21 +77,21 @@ void UdpSession::write( const Buffer& buffer )
 		stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
 	}
 	mSocket->async_send( mRequest.data(), 
-		boost::bind( &UdpSession::onWrite, shared_from_this(), 
-			boost::asio::placeholders::error, 
-			boost::asio::placeholders::bytes_transferred ) );
-	mSocket->set_option( boost::asio::socket_base::broadcast( true ) );
+		mStrand.wrap( boost::bind( &UdpSession::onWrite, shared_from_this(), 
+			asio::placeholders::error, 
+			asio::placeholders::bytes_transferred ) ) );
+	mSocket->set_option( asio::socket_base::broadcast( true ) );
 	mEndpointLocal = mSocket->local_endpoint();
 	mRequest.consume( mRequest.size() );
 }
 
 
-const boost::asio::ip::udp::endpoint& UdpSession::getLocalEndpoint() const
+const asio::ip::udp::endpoint& UdpSession::getLocalEndpoint() const
 {
 	return mEndpointLocal;
 }
 
-const boost::asio::ip::udp::endpoint& UdpSession::getRemoteEndpoint() const
+const asio::ip::udp::endpoint& UdpSession::getRemoteEndpoint() const
 {
 	return mEndpointRemote;
 }

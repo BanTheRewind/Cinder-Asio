@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -37,11 +37,9 @@
 
 #pragma once
 
-#define BOOST_REGEX_NO_LIB
+#include "CinderAsio.h"
 
-#include "boost/asio.hpp"
 #include "boost/bind.hpp"
-
 #include <string>
 #include <functional>
 
@@ -51,16 +49,16 @@ public:
 	~DispatcherInterface();
 
 	template< typename T, typename Y >
-	inline void		connectErrorEventHandler( T eventHandler, Y* eventHandlerObject )
+	inline void			connectErrorEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
 		connectErrorEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1, std::placeholders::_2 ) );
 	}
-	void			connectErrorEventHandler( const std::function<void( std::string, size_t )>& eventHandler );
+	void				connectErrorEventHandler( const std::function<void( std::string, size_t )>& eventHandler );
 protected:
-	DispatcherInterface( boost::asio::io_service& io );
+	DispatcherInterface( asio::io_service& io );
 
-	boost::asio::io_service&					mIoService;
-	boost::asio::strand							mStrand;
+	asio::io_service&	mIoService;
+	asio::strand		mStrand;
 
 	std::function<void( std::string, size_t )>	mErrorEventHandler;
 };

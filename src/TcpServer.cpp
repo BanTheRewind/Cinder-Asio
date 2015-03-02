@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -41,14 +41,14 @@
 
 using namespace ci;
 using namespace std;
-using boost::asio::ip::tcp;
+using asio::ip::tcp;
 
-TcpServerRef TcpServer::create( boost::asio::io_service& io )
+TcpServerRef TcpServer::create( asio::io_service& io )
 {
 	return TcpServerRef( new TcpServer( io ) )->shared_from_this();
 }
 
-TcpServer::TcpServer( boost::asio::io_service& io )
+TcpServer::TcpServer( asio::io_service& io )
 	: ServerInterface( io ), mAcceptEventHandler( nullptr ), mCancelEventHandler( nullptr )
 {
 }
@@ -70,13 +70,13 @@ void TcpServer::accept( uint16_t port )
 	
 	mAcceptor->async_accept( *session->mSocket, 
 		mStrand.wrap( boost::bind( &TcpServer::onAccept, shared_from_this(), 
-			session, boost::asio::placeholders::error ) ) );
+			session, asio::placeholders::error ) ) );
 }
 
 void TcpServer::cancel()
 {
 	if ( mAcceptor ) {
-		boost::system::error_code err;
+		asio::error_code err;
 		mAcceptor->cancel( err );
 		if ( err ) {
 			if ( mErrorEventHandler != nullptr ) {
@@ -100,12 +100,12 @@ void TcpServer::connectAcceptEventHandler( const std::function<void( TcpSessionR
 	mAcceptEventHandler = eventHandler;
 }
 
-void TcpServer::connectCancelEventHandler( const std::function<void()>& eventHandler )
+void TcpServer::connectCancelEventHandler( const std::function<void ()>& eventHandler )
 {
 	mCancelEventHandler = eventHandler;
 }
 
-void TcpServer::onAccept( TcpSessionRef session, const boost::system::error_code& err )
+void TcpServer::onAccept( TcpSessionRef session, const asio::error_code& err )
 {
 	if ( err ) {
 		if ( mErrorEventHandler != nullptr ) {

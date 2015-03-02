@@ -8,7 +8,7 @@ typedef std::shared_ptr<class UdpServer> UdpServerRef;
 class UdpServer : public ServerInterface, public std::enable_shared_from_this<UdpServer>
 {
 public:
-	static UdpServerRef create( boost::asio::io_service& io );
+	static UdpServerRef create( asio::io_service& io );
 	~UdpServer();
 
 	template< typename T, typename Y >
@@ -20,7 +20,7 @@ public:
 	
 	virtual void		accept( uint16_t port );
 protected:
-	UdpServer( boost::asio::io_service& io );
+	UdpServer( asio::io_service& io );
 
 	std::function<void( UdpSessionRef )>	mAcceptEventHandler;
 };

@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy,
+* Copyright (c) 2015, Wieden+Kennedy,
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -34,6 +34,8 @@
 * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * 
 */
+
+#include "CinderAsio.h"
 
 #include "cinder/app/AppBasic.h"
 #include "cinder/Font.h"
@@ -92,6 +94,7 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
+#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -113,7 +116,7 @@ void MultiUdpClientApp::draw()
 	gl::setMatricesWindow( getWindowSize() );
 
 	if ( mTexture ) {
-		gl::draw( mTexture, Vec2i( 250, 20 ) );
+		gl::draw( mTexture, ivec2( 250, 20 ) );
 	}
 
 	mParams->draw();
@@ -186,7 +189,7 @@ void MultiUdpClientApp::setup()
 	mPortRemote	= 2000;
 	mRequest	= "Hello, server!";
 		
-	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 150 ) );
+	mParams = params::InterfaceGl::create( "Params", ivec2( 200, 150 ) );
 	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
 	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
 	mParams->addParam( "Host",			&mHost );
@@ -219,7 +222,7 @@ void MultiUdpClientApp::update()
 
 	// Render text.
 	if ( !mText.empty() ) {
-		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( Vec2i( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
+		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( ivec2( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
 		for ( vector<string>::const_reverse_iterator iter = mText.rbegin(); iter != mText.rend(); ++iter ) {
 			tbox.appendText( "> " + *iter + "\n" );
 		}

@@ -219,6 +219,7 @@
     <ClCompile Include="..\src\UdpSessionEventHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\CinderAsio.h" />
     <ClInclude Include="..\..\..\src\ClientEventHandlerInterface.h" />
     <ClInclude Include="..\..\..\src\ClientInterface.h" />
     <ClInclude Include="..\..\..\src\DispatcherEventHandlerInterface.h" />

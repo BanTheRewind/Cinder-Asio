@@ -37,13 +37,8 @@
 
 #pragma once
 
-#include "DispatcherInterface.h"
+// On Windows, this file must be included before the Cinder library.
 
-class ServerInterface : public DispatcherInterface
-{
-public:
-	virtual void	accept( uint16_t port ) = 0;
-protected:
-	ServerInterface( asio::io_service& io );
-};
-	
+#define BOOST_REGEX_NO_LIB
+#include "asio/asio.hpp"
+ 

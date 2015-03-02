@@ -227,6 +227,7 @@
     <ClInclude Include="..\..\..\src\ClientInterface.h" />
     <ClInclude Include="..\..\..\src\DispatcherEventHandlerInterface.h" />
     <ClInclude Include="..\..\..\src\DispatcherInterface.h" />
+    <ClInclude Include="..\..\..\src\CinderAsio.h" />
     <ClInclude Include="..\..\..\src\ServerEventHandlerInterface.h" />
     <ClInclude Include="..\..\..\src\ServerInterface.h" />
     <ClInclude Include="..\..\..\src\SessionEventHandlerInterface.h" />

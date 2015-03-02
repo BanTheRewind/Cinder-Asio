@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -39,8 +39,8 @@
 
 #include "SessionInterface.h"
 
-typedef std::shared_ptr<class UdpSession>				UdpSessionRef;
-typedef std::shared_ptr<boost::asio::ip::udp::socket>	UdpSocketRef;
+typedef std::shared_ptr<class UdpSession>		UdpSessionRef;
+typedef std::shared_ptr<asio::ip::udp::socket>	UdpSocketRef;
 
 class UdpClient;
 class UdpServer;
@@ -48,23 +48,23 @@ class UdpServer;
 class UdpSession : public SessionInterface, public std::enable_shared_from_this<UdpSession>
 {
 public:
-	static UdpSessionRef					create( boost::asio::io_service& io );
+	static UdpSessionRef			create( asio::io_service& io );
 	~UdpSession();
 	
-	virtual void							read();
-	virtual void							read( size_t bufferSize );
-	virtual void							write( const ci::Buffer& buffer = ci::Buffer() );
+	virtual void					read();
+	virtual void					read( size_t bufferSize );
+	virtual void					write( const ci::Buffer& buffer = ci::Buffer() );
 
-	const boost::asio::ip::udp::endpoint&	getLocalEndpoint() const;
-	const boost::asio::ip::udp::endpoint&	getRemoteEndpoint() const;
-	const UdpSocketRef&						getSocket() const;
+	const asio::ip::udp::endpoint&	getLocalEndpoint() const;
+	const asio::ip::udp::endpoint&	getRemoteEndpoint() const;
+	const UdpSocketRef&				getSocket() const;
 protected:
-	UdpSession( boost::asio::io_service& io );
+	UdpSession( asio::io_service& io );
 
-	boost::asio::ip::udp::endpoint			mEndpointLocal;
-	boost::asio::ip::udp::endpoint			mEndpointRemote;
-	UdpSocketRef							mSocket;
+	asio::ip::udp::endpoint			mEndpointLocal;
+	asio::ip::udp::endpoint			mEndpointRemote;
+	UdpSocketRef					mSocket;
 
-	friend class							UdpClient;
-	friend class							UdpServer;
+	friend class					UdpClient;
+	friend class					UdpServer;
 };

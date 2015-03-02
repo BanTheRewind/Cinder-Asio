@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -37,7 +37,7 @@
 
 #include "ServerInterface.h"
 
-ServerInterface::ServerInterface( boost::asio::io_service& io )
+ServerInterface::ServerInterface( asio::io_service& io )
 	: DispatcherInterface( io )
 {
 }

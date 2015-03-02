@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy,
+* Copyright (c) 2015, Wieden+Kennedy,
 * Stephen Schieberl
 * All rights reserved.
 * 
@@ -34,6 +34,8 @@
 * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * 
 */
+
+#include "CinderAsio.h"
 
 #include "cinder/app/AppBasic.h"
 #include "cinder/Font.h"
@@ -86,6 +88,7 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
+#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -107,7 +110,7 @@ void MultiUdpServerApp::draw()
 	gl::setMatricesWindow( getWindowSize() );
 	
 	if ( mTexture ) {
-		gl::draw( mTexture, Vec2i( 250, 20 ) );
+		gl::draw( mTexture, ivec2( 250, 20 ) );
 	}
 
 	mParams->draw();
@@ -164,7 +167,7 @@ void MultiUdpServerApp::setup()
 	mPort		= 2000;
 	mPortPrev	= mPort;
 	
-	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 110 ) );
+	mParams = params::InterfaceGl::create( "Params", ivec2( 200, 110 ) );
 	mParams->addParam( "Frame rate",	&mFrameRate,			"", true );
 	mParams->addParam( "Full screen",	&mFullScreen,			"key=f" );
 	mParams->addParam( "Port",			&mPort,					"min=0 max=65535 step=1 keyDecr=p keyIncr=P" );
@@ -201,7 +204,7 @@ void MultiUdpServerApp::update()
 		UdpSessionRef session				= iter->first;
 		if ( eventHandler.isReadComplete() ) {
 			if ( session ) {
-				boost::system::error_code err;
+				asio::error_code err;
 				string host = session->getRemoteEndpoint().address().to_string( err );
 				if ( err ) {
 					mText.push_back( "Unable to read remote endpoint's address ( " + toString( err ) + " )" );
@@ -223,7 +226,7 @@ void MultiUdpServerApp::update()
 	}
 	
 	if ( !mText.empty() ) {
-		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( Vec2i( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
+		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( ivec2( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
 		for ( vector<string>::const_reverse_iterator iter = mText.rbegin(); iter != mText.rend(); ++iter ) {
 			tbox.appendText( "> " + *iter + "\n" );
 		}

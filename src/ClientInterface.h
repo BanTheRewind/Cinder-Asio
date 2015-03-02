@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -53,10 +53,10 @@ public:
 		connectResolveEventHandler( std::bind( eventHandler, eventHandlerObject ) );
 	}
 
-	void				connectResolveEventHandler( const std::function<void()>& eventHandler );
+	void				connectResolveEventHandler( const std::function<void ()>& eventHandler );
 
 protected:
-	ClientInterface( boost::asio::io_service& io );
+	ClientInterface( asio::io_service& io );
 	
-	std::function<void()>	mResolveEventHandler;
+	std::function<void ()>	mResolveEventHandler;
 };

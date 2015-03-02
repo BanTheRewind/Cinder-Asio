@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -54,7 +54,7 @@ Buffer SessionInterface::stringToBuffer( string& value )
 	return Buffer( &value[ 0 ], value.size() );
 }
 
-SessionInterface::SessionInterface( boost::asio::io_service& io )
+SessionInterface::SessionInterface( asio::io_service& io )
 : DispatcherInterface( io ), mBufferSize( 0 ), mReadCompleteEventHandler( nullptr ), 
 mReadEventHandler( nullptr ), mWriteEventHandler( nullptr )
 {
@@ -69,10 +69,10 @@ SessionInterface::~SessionInterface()
 	mResponse.consume( mResponse.size() );
 }
 
-void SessionInterface::onRead( const boost::system::error_code& err, size_t bytesTransferred )
+void SessionInterface::onRead( const asio::error_code& err, size_t bytesTransferred )
 {
 	if ( err ) {
-		if ( err == boost::asio::error::eof ) {
+		if ( err == asio::error::eof ) {
 			if ( mReadCompleteEventHandler != nullptr ) {
 				mReadCompleteEventHandler();
 			}
@@ -99,7 +99,7 @@ void SessionInterface::onRead( const boost::system::error_code& err, size_t byte
 	mResponse.consume( mResponse.size() );
 }
 
-void SessionInterface::onWrite( const boost::system::error_code& err, size_t bytesTransferred )
+void SessionInterface::onWrite( const asio::error_code& err, size_t bytesTransferred )
 {
 	if ( err ) {
 		if ( mErrorEventHandler != nullptr ) {
@@ -117,7 +117,7 @@ void SessionInterface::connectReadEventHandler( const std::function<void( ci::Bu
 	mReadEventHandler = eventHandler;
 }
 
-void SessionInterface::connectReadCompleteEventHandler( const std::function<void()>& eventHandler )
+void SessionInterface::connectReadCompleteEventHandler( const std::function<void ()>& eventHandler )
 {
 	mReadCompleteEventHandler = eventHandler;
 }

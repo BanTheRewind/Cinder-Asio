@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -37,7 +37,7 @@
 
 #include "ClientInterface.h"
 
-ClientInterface::ClientInterface( boost::asio::io_service& io )
+ClientInterface::ClientInterface( asio::io_service& io )
 	: DispatcherInterface( io ), mResolveEventHandler( nullptr )
 {
 }
@@ -47,7 +47,7 @@ ClientInterface::~ClientInterface()
 	mResolveEventHandler = nullptr;
 }
 
-void ClientInterface::connectResolveEventHandler( const std::function<void()>& eventHandler )
+void ClientInterface::connectResolveEventHandler( const std::function<void ()>& eventHandler )
 {
 	mResolveEventHandler = eventHandler;
 }

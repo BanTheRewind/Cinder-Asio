@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -39,14 +39,14 @@
 
 using namespace ci;
 using namespace std;
-using boost::asio::ip::tcp;
+using asio::ip::tcp;
 
-TcpSessionRef TcpSession::create( boost::asio::io_service& io )
+TcpSessionRef TcpSession::create( asio::io_service& io )
 {
 	return TcpSessionRef( new TcpSession( io ) )->shared_from_this();
 }
 
-TcpSession::TcpSession( boost::asio::io_service& io )
+TcpSession::TcpSession( asio::io_service& io )
 	: SessionInterface( io ), mCloseEventHandler( nullptr )
 {
 	mSocket = TcpSocketRef( new tcp::socket( io ) );
@@ -61,7 +61,7 @@ TcpSession::~TcpSession()
 void TcpSession::close()
 {
 	if ( mSocket && mSocket->is_open() ) {
-		boost::system::error_code err;
+		asio::error_code err;
 		mSocket->close( err );
 		if ( err ) {
 			if ( mErrorEventHandler != nullptr ) {
@@ -77,28 +77,28 @@ void TcpSession::close()
 
 void TcpSession::read()
 {
-	boost::asio::async_read( *mSocket, mResponse, 
-		boost::asio::transfer_at_least( 1 ), 
-		boost::bind( &TcpSession::onRead, shared_from_this(), 
-			boost::asio::placeholders::error, 
-			boost::asio::placeholders::bytes_transferred ) );
-	mSocket->set_option( boost::asio::socket_base::reuse_address( true ) );
+	asio::async_read( *mSocket, mResponse, 
+		asio::transfer_at_least( 1 ), 
+		mStrand.wrap( boost::bind( &TcpSession::onRead, shared_from_this(), 
+			asio::placeholders::error, 
+			asio::placeholders::bytes_transferred ) ) );
+	mSocket->set_option( asio::socket_base::reuse_address( true ) );
 }
 
 void TcpSession::read( const std::string& delim )
 {
-	boost::asio::async_read_until( *mSocket, mResponse, delim, 
+	asio::async_read_until( *mSocket, mResponse, delim, 
 		mStrand.wrap( boost::bind( &TcpSession::onRead, shared_from_this(), 
-		boost::asio::placeholders::error, 
-		boost::asio::placeholders::bytes_transferred ) ) );
+			asio::placeholders::error, 
+			asio::placeholders::bytes_transferred ) ) );
 }
 
 void TcpSession::read( size_t bufferSize )
 {
 	mSocket->async_read_some( mResponse.prepare( bufferSize ), 
 		mStrand.wrap( boost::bind( &TcpSession::onRead, shared_from_this(), 
-			boost::asio::placeholders::error, 
-			boost::asio::placeholders::bytes_transferred ) ) );
+			asio::placeholders::error, 
+			asio::placeholders::bytes_transferred ) ) );
 }
 
 void TcpSession::write( const Buffer& buffer )
@@ -107,10 +107,10 @@ void TcpSession::write( const Buffer& buffer )
 	if ( buffer && buffer.getDataSize() > 0 ) {
 		stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
 	}
-	boost::asio::async_write( *mSocket, mRequest, 
+	asio::async_write( *mSocket, mRequest, 
 		mStrand.wrap( boost::bind( &TcpSession::onWrite, shared_from_this(), 
-			boost::asio::placeholders::error, 
-			boost::asio::placeholders::bytes_transferred ) ) );
+			asio::placeholders::error, 
+			asio::placeholders::bytes_transferred ) ) );
 	mRequest.consume( mRequest.size() );
 }
 
@@ -119,12 +119,12 @@ const TcpSocketRef& TcpSession::getSocket() const
 	return mSocket;
 }
 
-void TcpSession::connectCloseEventHandler( const std::function<void()>& eventHandler )
+void TcpSession::connectCloseEventHandler( const std::function<void ()>& eventHandler )
 {
 	mCloseEventHandler = eventHandler;
 }
 
-void TcpSession::onClose( const boost::system::error_code& err )
+void TcpSession::onClose( const asio::error_code& err )
 {
 	if ( err ) {
 		if ( mErrorEventHandler != nullptr ) {

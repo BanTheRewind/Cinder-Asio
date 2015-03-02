@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -40,13 +40,13 @@
 #include "ClientInterface.h"
 #include "TcpSession.h"
 
-typedef std::shared_ptr<class TcpClient>				TcpClientRef;
-typedef std::shared_ptr<boost::asio::ip::tcp::resolver>	TcpResolverRef;
+typedef std::shared_ptr<class TcpClient>			TcpClientRef;
+typedef std::shared_ptr<asio::ip::tcp::resolver>	TcpResolverRef;
 
 class TcpClient : public ClientInterface, public std::enable_shared_from_this<TcpClient>
 {
 public:
-	static TcpClientRef	create( boost::asio::io_service& io );
+	static TcpClientRef	create( asio::io_service& io );
 	~TcpClient();
 
 	virtual void	connect( const std::string& host, uint16_t port );
@@ -62,11 +62,10 @@ public:
 
 	TcpResolverRef	getResolver() const;
 protected:
-	TcpClient( boost::asio::io_service& io );
+	TcpClient( asio::io_service& io );
 	
-	virtual void	onConnect( TcpSessionRef session, const boost::system::error_code& err );
-	virtual void	onResolve( const boost::system::error_code& err, 
-							  boost::asio::ip::tcp::resolver::iterator iter );
+	virtual void	onConnect( TcpSessionRef session, const asio::error_code& err );
+	virtual void	onResolve( const asio::error_code& err, asio::ip::tcp::resolver::iterator iter );
 
 	TcpResolverRef	mResolver;
 

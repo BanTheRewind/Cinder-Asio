@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -41,14 +41,14 @@
 
 using namespace ci;
 using namespace std;
-using boost::asio::ip::udp;
+using asio::ip::udp;
 
-UdpClientRef UdpClient::create( boost::asio::io_service& io )
+UdpClientRef UdpClient::create( asio::io_service& io )
 {
 	return UdpClientRef( new UdpClient( io ) )->shared_from_this();
 }
 
-UdpClient::UdpClient( boost::asio::io_service& io )
+UdpClient::UdpClient( asio::io_service& io )
 	: ClientInterface( io ), mConnectEventHandler( nullptr )
 {
 }
@@ -69,7 +69,7 @@ void UdpClient::connect( const string& host, const string& protocol )
 	mResolver = UdpResolverRef( new udp::resolver( mStrand.get_io_service() ) );
 	mResolver->async_resolve( query, 
 		mStrand.wrap( boost::bind( &UdpClient::onResolve, shared_from_this(), 
-			boost::asio::placeholders::error, boost::asio::placeholders::iterator ) ) );
+			asio::placeholders::error, asio::placeholders::iterator ) ) );
 }
 
 UdpResolverRef UdpClient::getResolver() const
@@ -77,7 +77,7 @@ UdpResolverRef UdpClient::getResolver() const
 	return mResolver;
 }
 
-void UdpClient::onConnect( UdpSessionRef session, const boost::system::error_code& err )
+void UdpClient::onConnect( UdpSessionRef session, const asio::error_code& err )
 {
 	if ( err ) {
 		if ( mErrorEventHandler != nullptr ) {
@@ -85,13 +85,13 @@ void UdpClient::onConnect( UdpSessionRef session, const boost::system::error_cod
 		}
 	} else {
 		if ( mConnectEventHandler != nullptr ) {
-			session->mSocket->set_option( boost::asio::socket_base::reuse_address( true ) );
+			session->mSocket->set_option( asio::socket_base::reuse_address( true ) );
 			mConnectEventHandler( session );
 		}
 	}
 }
 
-void UdpClient::onResolve( const boost::system::error_code& err,
+void UdpClient::onResolve( const asio::error_code& err,
 						  udp::resolver::iterator iter )
 {
 	if ( err ) {
@@ -103,8 +103,8 @@ void UdpClient::onResolve( const boost::system::error_code& err,
 			mResolveEventHandler();
 		}
 		UdpSessionRef session = UdpSession::create( mIoService );
-		boost::asio::async_connect( *session->mSocket, iter, mStrand.wrap( boost::bind( &UdpClient::onConnect, 
-			shared_from_this(), session, boost::asio::placeholders::error ) ) );
+		asio::async_connect( *session->mSocket, iter, mStrand.wrap( boost::bind( &UdpClient::onConnect, 
+			shared_from_this(), session, asio::placeholders::error ) ) );
 	}
 }
 

@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -39,8 +39,8 @@
 
 #include "SessionInterface.h"
 
-typedef std::shared_ptr<class TcpSession>				TcpSessionRef;
-typedef std::shared_ptr<boost::asio::ip::tcp::socket>	TcpSocketRef;
+typedef std::shared_ptr<class TcpSession>		TcpSessionRef;
+typedef std::shared_ptr<asio::ip::tcp::socket>	TcpSocketRef;
 
 class TcpClient;
 class TcpServer;
@@ -48,7 +48,7 @@ class TcpServer;
 class TcpSession : public SessionInterface, public std::enable_shared_from_this<TcpSession>
 {
 public:
-	static TcpSessionRef	create( boost::asio::io_service& io );
+	static TcpSessionRef	create( asio::io_service& io );
 	~TcpSession();
 	
 	void					close();
@@ -68,13 +68,13 @@ public:
 	}
 	void					connectCloseEventHandler( const std::function<void ()>& eventHandler );
 protected:
-	TcpSession( boost::asio::io_service& io );
+	TcpSession( asio::io_service& io );
 
-	virtual void			onClose( const boost::system::error_code& err );
+	virtual void			onClose( const asio::error_code& err );
 
 	TcpSocketRef			mSocket;
 
-	std::function<void()>	mCloseEventHandler;
+	std::function<void ()>	mCloseEventHandler;
 
 	friend class			TcpClient;
 	friend class			TcpServer;

@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2014, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -40,13 +40,13 @@
 #include "ServerInterface.h"
 #include "TcpSession.h"
 
-typedef std::shared_ptr<boost::asio::ip::tcp::acceptor>	TcpAcceptorRef;
-typedef std::shared_ptr<class TcpServer>				TcpServerRef;
+typedef std::shared_ptr<asio::ip::tcp::acceptor>	TcpAcceptorRef;
+typedef std::shared_ptr<class TcpServer>			TcpServerRef;
 
 class TcpServer : public ServerInterface, public std::enable_shared_from_this<TcpServer>
 {
 public:
-	static TcpServerRef	create( boost::asio::io_service& io );
+	static TcpServerRef	create( asio::io_service& io );
 	~TcpServer();
 	
 	template< typename T, typename Y >
@@ -61,18 +61,18 @@ public:
 	{
 		connectCancelEventHandler( std::bind( eventHandler, eventHandlerObject ) );
 	}
-	void				connectCancelEventHandler( const std::function<void()>& eventHandler );
+	void				connectCancelEventHandler( const std::function<void ()>& eventHandler );
 
 	virtual void		accept( uint16_t port );
 	void				cancel();
 
 	TcpAcceptorRef		getAcceptor() const;
 protected:
-	TcpServer( boost::asio::io_service& io );
+	TcpServer( asio::io_service& io );
 
-	void				onAccept( TcpSessionRef session, const boost::system::error_code& err );
+	void				onAccept( TcpSessionRef session, const asio::error_code& err );
 	
 	TcpAcceptorRef		mAcceptor;
 	std::function<void( TcpSessionRef )>	mAcceptEventHandler;
-	std::function<void()>					mCancelEventHandler;
+	std::function<void ()>					mCancelEventHandler;
 };

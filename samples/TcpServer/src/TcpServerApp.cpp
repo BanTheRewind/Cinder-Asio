@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2013, Wieden+Kennedy, 
+* Copyright (c) 2015, Wieden+Kennedy, 
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
 * 
@@ -34,6 +34,8 @@
 * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 * 
 */
+
+#include "CinderAsio.h"
 
 #include "cinder/app/AppBasic.h"
 #include "cinder/Font.h"
@@ -84,6 +86,7 @@ private:
 	ci::params::InterfaceGlRef	mParams;
 };
 
+#include "cinder/app/RendererGl.h"
 #include "cinder/Text.h"
 #include "cinder/Utilities.h"
 
@@ -109,7 +112,7 @@ void TcpServerApp::draw()
 	gl::setMatricesWindow( getWindowSize() );
 	
 	if ( mTexture ) {
-		gl::draw( mTexture, Vec2i( 250, 20 ) );
+		gl::draw( mTexture, ivec2( 250, 20 ) );
 	}
 
 	mParams->draw();
@@ -156,7 +159,7 @@ void TcpServerApp::onError( string err, size_t bytesTransferred )
 	if ( !err.empty() ) {
 		text += ": " + err;
 	}
-	 mText.push_back( text );
+	mText.push_back( text );
 }
 
 void TcpServerApp::onRead( ci::Buffer buffer )
@@ -212,7 +215,7 @@ void TcpServerApp::setup()
 	mPort		= 2000;
 	mPortPrev	= mPort;
 	
-	mParams = params::InterfaceGl::create( "Params", Vec2i( 200, 110 ) );
+	mParams = params::InterfaceGl::create( "Params", ivec2( 200, 110 ) );
 	mParams->addParam( "Frame rate",	&mFrameRate,					"", true );
 	mParams->addParam( "Full screen",	&mFullScreen,					"key=f" );
 	mParams->addParam( "Port",			&mPort,
@@ -257,7 +260,7 @@ void TcpServerApp::update()
 
 	// Render text.
 	if ( !mText.empty() ) {
-		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( Vec2i( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
+		TextBox tbox = TextBox().alignment( TextBox::LEFT ).font( mFont ).size( ivec2( getWindowWidth() - 250, TextBox::GROW ) ).text( "" );
 		for ( vector<string>::const_reverse_iterator iter = mText.rbegin(); iter != mText.rend(); ++iter ) {
 			tbox.appendText( "> " + *iter + "\n" );
 		}

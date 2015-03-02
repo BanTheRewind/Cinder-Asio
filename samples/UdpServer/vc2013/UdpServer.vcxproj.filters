@@ -134,6 +134,9 @@
     <ClInclude Include="..\..\..\src\WaitTimerEventHandlerInterface.h">
       <Filter>Blocks\Cinder-Asio</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\CinderAsio.h">
+      <Filter>Blocks\Cinder-Asio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">

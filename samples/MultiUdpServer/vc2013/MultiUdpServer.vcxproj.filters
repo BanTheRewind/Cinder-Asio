@@ -137,6 +137,9 @@
     <ClInclude Include="..\src\UdpSessionEventHandler.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\CinderAsio.h">
+      <Filter>Blocks\Cinder-Asio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc">
