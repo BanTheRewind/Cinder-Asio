@@ -57,9 +57,9 @@
 class UdpClientApp : public ci::app::App
 {
 public:
-	void						draw();
-	void						setup();
-	void						update();
+	void						draw() override;
+	void						setup() override;
+	void						update() override;
 private:
 	UdpClientRef				mClient;
 	std::string					mHost;

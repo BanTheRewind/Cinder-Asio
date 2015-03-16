@@ -57,9 +57,9 @@
 class UdpServerApp : public ci::app::App
 {
 public:
-	void						draw();
-	void						setup();
-	void						update();
+	void						draw() override;
+	void						setup() override;
+	void						update() override;
 private:
 	void						accept();
 	int32_t						mPort;

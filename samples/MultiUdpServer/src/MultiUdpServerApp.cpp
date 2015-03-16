@@ -60,9 +60,9 @@ public UdpClientEventHandlerInterface,
 public UdpServerEventHandlerInterface
 {
 public:
-	void						draw();
-	void						setup();
-	void						update();
+	void						draw() override;
+	void						setup() override;
+	void						update() override;
 private:
 	typedef std::map<UdpSessionRef, UdpSessionEventHandler> UdpSessionEventHandlerMap;
 
