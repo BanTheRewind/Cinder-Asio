@@ -37,7 +37,7 @@
 
 #include "CinderAsio.h"
 
-#include "cinder/app/AppBasic.h"
+#include "cinder/app/App.h"
 #include "cinder/Font.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/params/Params.h"
@@ -55,7 +55,7 @@
  * on the same machine.
  */
 class MultiUdpServerApp :
-public ci::app::AppBasic,
+public ci::app::App,
 public UdpClientEventHandlerInterface,
 public UdpServerEventHandlerInterface
 {
@@ -240,4 +240,4 @@ void MultiUdpServerApp::update()
 	}
 }
 
-CINDER_APP_BASIC( MultiUdpServerApp, RendererGl )
+CINDER_APP( MultiUdpServerApp, RendererGl )

@@ -37,7 +37,7 @@
 
 #include "CinderAsio.h"
 
-#include "cinder/app/AppBasic.h"
+#include "cinder/app/App.h"
 #include "cinder/Font.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/params/Params.h"
@@ -56,7 +56,7 @@
  * by setting callbacks on it. Close the session when you no longer 
  * need it.
  */ 
-class TcpClientApp : public ci::app::AppBasic 
+class TcpClientApp : public ci::app::App 
 {
 public:
 	void						draw();
@@ -242,4 +242,4 @@ void TcpClientApp::write()
 	}
 }
 
-CINDER_APP_BASIC( TcpClientApp, RendererGl )
+CINDER_APP( TcpClientApp, RendererGl )

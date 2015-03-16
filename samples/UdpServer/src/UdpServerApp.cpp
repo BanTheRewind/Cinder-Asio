@@ -37,7 +37,7 @@
 
 #include "CinderAsio.h"
 
-#include "cinder/app/AppBasic.h"
+#include "cinder/app/App.h"
 #include "cinder/Font.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/params/Params.h"
@@ -54,7 +54,7 @@
  * session object through the callback. Use the session to communicate
  * by setting callbacks on it.
  */ 
-class UdpServerApp : public ci::app::AppBasic
+class UdpServerApp : public ci::app::App
 {
 public:
 	void						draw();
@@ -234,4 +234,4 @@ void UdpServerApp::update()
 	}
 }
 
-CINDER_APP_BASIC( UdpServerApp, RendererGl )
+CINDER_APP( UdpServerApp, RendererGl )
