@@ -29,6 +29,8 @@
 		AE5FE7EF19536B5B00B12686 /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */; };
 		AE5FE7F21953712D00B12686 /* UdpSessionEventHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7F01953712D00B12686 /* UdpSessionEventHandler.cpp */; };
 		AEEA6F601978472A0080E5CE /* MultiUdpServerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEEA6F5F1978472A0080E5CE /* MultiUdpServerApp.cpp */; };
+		D8DF22AF1AD0D13B006E36FB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22AE1AD0D13B006E36FB /* CoreMedia.framework */; };
+		D8DF22B11AD0D140006E36FB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22B01AD0D140006E36FB /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +83,9 @@
 		AE5FE7F11953712D00B12686 /* UdpSessionEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSessionEventHandler.h; path = ../src/UdpSessionEventHandler.h; sourceTree = "<group>"; };
 		AEEA6F5F1978472A0080E5CE /* MultiUdpServerApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MultiUdpServerApp.cpp; path = ../src/MultiUdpServerApp.cpp; sourceTree = "<group>"; };
 		C12D84FDE5B741CE9769DFCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8DF22AE1AD0D13B006E36FB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		D8DF22B01AD0D140006E36FB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D8DF22B21AD0D15F006E36FB /* CinderAsio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CinderAsio.h; path = ../../../src/CinderAsio.h; sourceTree = "<group>"; };
 		FB7031ED04F54002B2EC66D6 /* MultiUdpServer_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiUdpServer_Prefix.pch; sourceTree = "<group>"; };
 		FD35D04F7ED740C8B13F3B17 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,6 +95,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8DF22B11AD0D140006E36FB /* AVFoundation.framework in Frameworks */,
+				D8DF22AF1AD0D13B006E36FB /* CoreMedia.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -125,6 +132,8 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D8DF22B01AD0D140006E36FB /* AVFoundation.framework */,
+				D8DF22AE1AD0D13B006E36FB /* CoreMedia.framework */,
 				00B784AF0FF439BC000DE1D7 /* Accelerate.framework */,
 				00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */,
 				00B784B10FF439BC000DE1D7 /* AudioUnit.framework */,
@@ -197,6 +206,7 @@
 		AE03AB42182AD55D00F10969 /* Cinder-Asio */ = {
 			isa = PBXGroup;
 			children = (
+				D8DF22B21AD0D15F006E36FB /* CinderAsio.h */,
 				AE5FE7C419536B5B00B12686 /* ClientEventHandlerInterface.h */,
 				AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */,
 				AE5FE7C619536B5B00B12686 /* ClientInterface.h */,

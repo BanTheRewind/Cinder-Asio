@@ -28,6 +28,8 @@
 		AE03AB40182AD51800F10969 /* UdpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB33182AD51800F10969 /* UdpSession.cpp */; };
 		AE03AB41182AD51800F10969 /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE03AB35182AD51800F10969 /* WaitTimer.cpp */; };
 		AEEA6F5E197846E20080E5CE /* MultiUdpClientApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AEEA6F5D197846E20080E5CE /* MultiUdpClientApp.cpp */; };
+		D8DF22AB1AD0D0D0006E36FB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22AA1AD0D0D0006E36FB /* CoreMedia.framework */; };
+		D8DF22AD1AD0D0D6006E36FB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22AC1AD0D0D6006E36FB /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +80,9 @@
 		AED3AF5619535C3200AD0C15 /* UdpSessionEventHandlerInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UdpSessionEventHandlerInterface.h; path = ../../../src/UdpSessionEventHandlerInterface.h; sourceTree = "<group>"; };
 		AED3AF5719536A5600AD0C15 /* ServerEventHandlerInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ServerEventHandlerInterface.h; path = ../../../src/ServerEventHandlerInterface.h; sourceTree = "<group>"; };
 		AEEA6F5D197846E20080E5CE /* MultiUdpClientApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MultiUdpClientApp.cpp; path = ../src/MultiUdpClientApp.cpp; sourceTree = "<group>"; };
+		D8DF22A91AD0D090006E36FB /* CinderAsio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CinderAsio.h; path = ../../../src/CinderAsio.h; sourceTree = "<group>"; };
+		D8DF22AA1AD0D0D0006E36FB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		D8DF22AC1AD0D0D6006E36FB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E52BEE02F2E84FAEBE8B5D14 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		FB54852C687E47108B73B3AB /* MultiUdpClient_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiUdpClient_Prefix.pch; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8DF22AD1AD0D0D6006E36FB /* AVFoundation.framework in Frameworks */,
+				D8DF22AB1AD0D0D0006E36FB /* CoreMedia.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -120,6 +127,8 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D8DF22AC1AD0D0D6006E36FB /* AVFoundation.framework */,
+				D8DF22AA1AD0D0D0006E36FB /* CoreMedia.framework */,
 				00B784AF0FF439BC000DE1D7 /* Accelerate.framework */,
 				00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */,
 				00B784B10FF439BC000DE1D7 /* AudioUnit.framework */,
@@ -192,6 +201,7 @@
 		AE03AB20182AD50600F10969 /* Cinder-Asio */ = {
 			isa = PBXGroup;
 			children = (
+				D8DF22A91AD0D090006E36FB /* CinderAsio.h */,
 				AED3AF4E1953587C00AD0C15 /* ClientEventHandlerInterface.h */,
 				AE03AB21182AD51800F10969 /* ClientInterface.cpp */,
 				AE03AB22182AD51800F10969 /* ClientInterface.h */,
@@ -256,6 +266,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0630;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MultiUdpClient" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -362,7 +373,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -370,6 +380,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
 			};
@@ -379,7 +390,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
