@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <cinder>
-	
+
 	<block
 		name="Asio"
-        id="asio.bantherewind.com"
+		id="com.bantherewind.cinder-asio"
 		author="Stephen Schieberl, Michael Latzoni"
 		summary="boost::asio implementation for Cinder"
 		git="git@github.com:BanTheRewind/Cinder-Asio.git"
@@ -14,9 +14,9 @@
 
 		<sourcePattern>src/*.cpp</sourcePattern>
 		<headerPattern>src/*.h</headerPattern>
-	
+
 		<includePath>src/</includePath>
-		
+
 	</block>
-	
+
 </cinder>
