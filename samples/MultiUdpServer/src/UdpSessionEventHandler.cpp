@@ -70,7 +70,7 @@ void UdpSessionEventHandler::onError( string err, size_t bytesTransferred )
 	mError = err;
 }
 
-void UdpSessionEventHandler::onRead( Buffer buffer )
+void UdpSessionEventHandler::onRead( BufferRef buffer )
 {
 	mResponse = SessionInterface::bufferToString( buffer );
 }

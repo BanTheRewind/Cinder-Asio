@@ -57,7 +57,7 @@ public:
 	virtual void			read( const std::string& delim );
 	virtual void			read( size_t bufferSize );
 	
-	virtual void			write( const ci::Buffer& buffer = ci::Buffer() );
+	virtual void			write( const ci::BufferRef& buffer );
 
 	const TcpSocketRef&		getSocket() const;
 

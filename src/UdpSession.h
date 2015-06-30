@@ -53,7 +53,7 @@ public:
 	
 	virtual void					read();
 	virtual void					read( size_t bufferSize );
-	virtual void					write( const ci::Buffer& buffer = ci::Buffer() );
+	virtual void					write( const ci::BufferRef& buffer );
 
 	const asio::ip::udp::endpoint&	getLocalEndpoint() const;
 	const asio::ip::udp::endpoint&	getRemoteEndpoint() const;

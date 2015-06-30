@@ -39,7 +39,7 @@
 
 #include "cinder/app/App.h"
 #include "cinder/Font.h"
-#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 
 #include "UdpClient.h"
@@ -131,7 +131,7 @@ void MultiUdpServerApp::onAccept( UdpSessionRef session )
 void MultiUdpServerApp::onConnect( UdpSessionRef session )
 {
 	string response = "OK";
-	Buffer buffer = SessionInterface::stringToBuffer( response );
+	BufferRef buffer = SessionInterface::stringToBuffer( response );
 	session->connectWriteEventHandler( [ & ]( size_t bytesTransferred )
 	{
 		accept();

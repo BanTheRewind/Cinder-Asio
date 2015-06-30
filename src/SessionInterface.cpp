@@ -40,18 +40,18 @@
 using namespace ci;
 using namespace std;
 
-string SessionInterface::bufferToString( const Buffer& buffer )
+string SessionInterface::bufferToString( const BufferRef& buffer )
 {
-	string s( static_cast<const char*>( buffer.getData() ) );
-	if ( s.length() > buffer.getDataSize() ) {
-		s.resize( buffer.getDataSize() );
+	string s( static_cast<const char*>( buffer->getData() ) );
+	if ( s.length() > buffer->getSize() ) {
+		s.resize( buffer->getSize() );
 	}
 	return s;
 }
 
-Buffer SessionInterface::stringToBuffer( string& value )
+BufferRef SessionInterface::stringToBuffer( string& value )
 {
-	return Buffer( &value[ 0 ], value.size() );
+	return Buffer::create( &value[ 0 ], value.size() );
 }
 
 SessionInterface::SessionInterface( asio::io_service& io )
@@ -88,7 +88,7 @@ void SessionInterface::onRead( const asio::error_code& err, size_t bytesTransfer
 			mResponse.commit( bytesTransferred );
 			istream stream( &mResponse );
 			stream.read( data, bytesTransferred );
-			mReadEventHandler( Buffer( data, bytesTransferred ) );
+			mReadEventHandler( Buffer::create( data, bytesTransferred ) );
 			delete [] data;
 		}
 		if ( mReadCompleteEventHandler != nullptr && 
@@ -112,7 +112,7 @@ void SessionInterface::onWrite( const asio::error_code& err, size_t bytesTransfe
 	}
 }
 
-void SessionInterface::connectReadEventHandler( const std::function<void( ci::Buffer )>& eventHandler )
+void SessionInterface::connectReadEventHandler( const std::function<void( ci::BufferRef )>& eventHandler )
 {
 	mReadEventHandler = eventHandler;
 }

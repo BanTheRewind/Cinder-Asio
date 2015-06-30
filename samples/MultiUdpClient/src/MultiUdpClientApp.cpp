@@ -39,7 +39,7 @@
 
 #include "cinder/app/App.h"
 #include "cinder/Font.h"
-#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 
 #include "UdpClient.h"
@@ -80,7 +80,7 @@ private:
 	void						onAccept( UdpSessionRef session );
 	void						onConnect( UdpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
-	void						onRead( ci::Buffer buffer );
+	void						onRead( ci::BufferRef buffer );
 	void						onReadComplete();
 	void						onResolve();
 	void						onWrite( size_t bytesTransferred );
@@ -152,7 +152,7 @@ void MultiUdpClientApp::onError( string err, size_t bytesTransferred )
 	 mText.push_back( text );
 }
 
-void MultiUdpClientApp::onRead( Buffer buffer )
+void MultiUdpClientApp::onRead( BufferRef buffer )
 {
 	string text = "Response received: " + SessionInterface::bufferToString( buffer );
 	console() << text << endl;
@@ -239,8 +239,7 @@ void MultiUdpClientApp::update()
 void MultiUdpClientApp::write()
 {
 	if ( mSessionWrite && mSessionWrite->getSocket()->is_open() ) {
-		Buffer buffer = UdpSession::stringToBuffer( mRequest );
-		mSessionWrite->write( buffer );
+		mSessionWrite->write( UdpSession::stringToBuffer( mRequest ) );
 		
 		mPortLocal = (int32_t)mSessionWrite->getLocalEndpoint().port();
 		accept();

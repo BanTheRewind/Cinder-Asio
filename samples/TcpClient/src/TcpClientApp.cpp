@@ -39,7 +39,7 @@
 
 #include "cinder/app/App.h"
 #include "cinder/Font.h"
-#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 
 #include "TcpClient.h"
@@ -72,7 +72,7 @@ private:
 	
 	void						onConnect( TcpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
-	void						onRead( ci::Buffer buffer );
+	void						onRead( ci::BufferRef buffer );
 	void						onWrite( size_t bytesTransferred );
 	
 	ci::Font					mFont;
@@ -135,9 +135,9 @@ void TcpClientApp::onError( string err, size_t bytesTransferred )
 	mText.push_back( text );
 }
 
-void TcpClientApp::onRead( ci::Buffer buffer )
+void TcpClientApp::onRead( ci::BufferRef buffer )
 {
-	mText.push_back( toString( buffer.getDataSize() ) + " bytes read" );
+	mText.push_back( toString( buffer->getSize() ) + " bytes read" );
 	
 	// Responses are passed in the read callback as ci::Buffer. Use
 	// a convenience method on the session object to convert it to
@@ -232,8 +232,7 @@ void TcpClientApp::write()
 		// you to send any kind of data. Because it's more common to
 		// work with strings, the session object has static convenience 
 		// methods for converting between std::string and ci::Buffer.
-		Buffer buffer = TcpSession::stringToBuffer( mRequest );
-		mSession->write( buffer );
+		mSession->write( TcpSession::stringToBuffer( mRequest ) );
 	} else {	
 		// Before we can write, we need to establish a connection 
 		// and create a session. Check out the onConnect method.

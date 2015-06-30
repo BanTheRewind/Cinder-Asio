@@ -101,11 +101,11 @@ void TcpSession::read( size_t bufferSize )
 			asio::placeholders::bytes_transferred ) ) );
 }
 
-void TcpSession::write( const Buffer& buffer )
+void TcpSession::write( const BufferRef& buffer )
 {
 	ostream stream( &mRequest );
-	if ( buffer && buffer.getDataSize() > 0 ) {
-		stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	if ( buffer && buffer->getSize() > 0 ) {
+		stream.write( (const char*)buffer->getData(), buffer->getSize() );
 	}
 	asio::async_write( *mSocket, mRequest, 
 		mStrand.wrap( boost::bind( &TcpSession::onWrite, shared_from_this(), 

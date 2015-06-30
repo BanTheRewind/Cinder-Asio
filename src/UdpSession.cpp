@@ -70,11 +70,11 @@ void UdpSession::read( size_t bufferSize )
 			asio::placeholders::bytes_transferred ) ) );
 }
 
-void UdpSession::write( const Buffer& buffer )
+void UdpSession::write( const BufferRef& buffer )
 {
 	ostream stream( &mRequest );
-	if ( buffer && buffer.getDataSize() > 0 ) {
-		stream.write( (const char*)buffer.getData(), buffer.getDataSize() );
+	if ( buffer && buffer->getSize() > 0 ) {
+		stream.write( (const char*)buffer->getData(), buffer->getSize() );
 	}
 	mSocket->async_send( mRequest.data(), 
 		mStrand.wrap( boost::bind( &UdpSession::onWrite, shared_from_this(), 

@@ -51,7 +51,7 @@ public:
 	bool				isWriteComplete() const;
 	
 	void				onError( std::string err, size_t bytesTransferred );
-	void				onRead( ci::Buffer buffer );
+	void				onRead( ci::BufferRef buffer );
 	void				onReadComplete();
 	void				onWrite( size_t bytesTransferred );
 protected:

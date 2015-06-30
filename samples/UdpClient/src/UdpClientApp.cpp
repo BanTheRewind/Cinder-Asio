@@ -39,7 +39,7 @@
 
 #include "cinder/app/App.h"
 #include "cinder/Font.h"
-#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 
 #include "UdpClient.h"
@@ -200,8 +200,7 @@ void UdpClientApp::write()
 		// you to send any kind of data. Because it's more common to
 		// work with strings, the session object has static convenience 
 		// methods for converting between std::string and ci::Buffer.
-		Buffer buffer = UdpSession::stringToBuffer( mRequest );
-		mSession->write( buffer );
+		mSession->write( UdpSession::stringToBuffer( mRequest ) );
 	} else {
 		// Before we can write, we need to establish a connection 
 		// and create a session. Check out the onConnect method.

@@ -39,7 +39,7 @@
 
 #include "cinder/app/App.h"
 #include "cinder/Font.h"
-#include "cinder/gl/Texture.h"
+#include "cinder/gl/gl.h"
 #include "cinder/params/Params.h"
 
 #include "UdpServer.h"
@@ -69,7 +69,7 @@ private:
 	
 	void						onAccept( UdpSessionRef session );
 	void						onError( std::string err, size_t bytesTransferred );
-	void						onRead( ci::Buffer buffer );
+	void						onRead( ci::BufferRef buffer );
 	void						onReadComplete();
 	void						onWrite( size_t bytesTransferred );
 
@@ -139,9 +139,9 @@ void UdpServerApp::onError( string err, size_t bytesTransferred )
 	 mText.push_back( text );
 }
 
-void UdpServerApp::onRead( ci::Buffer buffer )
+void UdpServerApp::onRead( ci::BufferRef buffer )
 {
-	mText.push_back( toString( buffer.getDataSize() ) + " bytes read" );
+	mText.push_back( toString( buffer->getSize() ) + " bytes read" );
 
 	// Data is packaged as a ci::Buffer. This allows 
 	// you to send any kind of data. Because it's more common to
