@@ -13,7 +13,6 @@
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
-		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		7E4A872327E74278A324742A /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 781F8FC38938472492487A11 /* CinderApp.icns */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A708C215EF1345EAAB1B29D8 /* UdpServerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C35B5FA18FCE405E88A8A842 /* UdpServerApp.cpp */; };
@@ -28,6 +27,8 @@
 		AE5FE7ED19536B5B00B12686 /* UdpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */; };
 		AE5FE7EE19536B5B00B12686 /* UdpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */; };
 		AE5FE7EF19536B5B00B12686 /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */; };
+		D85AF41C1B43BF4100FA2127 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85AF41B1B43BF4000FA2127 /* IOKit.framework */; };
+		D85AF41E1B43BF4500FA2127 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85AF41D1B43BF4500FA2127 /* IOSurface.framework */; };
 		D8DF22C31AD0D259006E36FB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22C21AD0D259006E36FB /* CoreMedia.framework */; };
 		D8DF22C51AD0D25D006E36FB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22C41AD0D25D006E36FB /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
@@ -42,7 +43,6 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
-		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		781F8FC38938472492487A11 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* UdpServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UdpServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE5FE7C419536B5B00B12686 /* ClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientEventHandlerInterface.h; path = ../../../src/ClientEventHandlerInterface.h; sourceTree = "<group>"; };
@@ -80,6 +80,8 @@
 		AE5FE7E419536B5B00B12686 /* WaitTimerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimerEventHandlerInterface.h; path = ../../../src/WaitTimerEventHandlerInterface.h; sourceTree = "<group>"; };
 		C12D84FDE5B741CE9769DFCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C35B5FA18FCE405E88A8A842 /* UdpServerApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = UdpServerApp.cpp; path = ../src/UdpServerApp.cpp; sourceTree = "<group>"; };
+		D85AF41B1B43BF4000FA2127 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		D85AF41D1B43BF4500FA2127 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		D8DF22C21AD0D259006E36FB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		D8DF22C41AD0D25D006E36FB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D8DF22C61AD0D270006E36FB /* CinderAsio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CinderAsio.h; path = ../../../src/CinderAsio.h; sourceTree = "<group>"; };
@@ -92,12 +94,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D85AF41E1B43BF4500FA2127 /* IOSurface.framework in Frameworks */,
+				D85AF41C1B43BF4100FA2127 /* IOKit.framework in Frameworks */,
 				D8DF22C51AD0D25D006E36FB /* AVFoundation.framework in Frameworks */,
 				D8DF22C31AD0D259006E36FB /* CoreMedia.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
-				5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */,
 				00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */,
 				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
 				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
@@ -127,13 +130,14 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D85AF41D1B43BF4500FA2127 /* IOSurface.framework */,
+				D85AF41B1B43BF4000FA2127 /* IOKit.framework */,
 				D8DF22C41AD0D25D006E36FB /* AVFoundation.framework */,
 				D8DF22C21AD0D259006E36FB /* CoreMedia.framework */,
 				00B784AF0FF439BC000DE1D7 /* Accelerate.framework */,
 				00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */,
 				00B784B10FF439BC000DE1D7 /* AudioUnit.framework */,
 				00B784B20FF439BC000DE1D7 /* CoreAudio.framework */,
-				5323E6B50EAFCA7E003A9687 /* QTKit.framework */,
 				5323E6B10EAFCA74003A9687 /* CoreVideo.framework */,
 				0091D8F80E81B9330029341E /* OpenGL.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
@@ -378,7 +382,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -395,7 +399,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";

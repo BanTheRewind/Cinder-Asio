@@ -14,7 +14,6 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		343EF4E06FF341EF9A78DA51 /* TcpClientApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3D5E373F4DE4E91A2494A2F /* TcpClientApp.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
-		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		94EE751DCA5C4F7A8CD38C63 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = B14A5DB1785B4DB99B78CED8 /* CinderApp.icns */; };
 		AE9BB10B1978609F004F06FD /* ClientInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE9BB0EB1978609F004F06FD /* ClientInterface.cpp */; };
@@ -28,6 +27,8 @@
 		AE9BB1131978609F004F06FD /* UdpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE9BB1021978609F004F06FD /* UdpServer.cpp */; };
 		AE9BB1141978609F004F06FD /* UdpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE9BB1051978609F004F06FD /* UdpSession.cpp */; };
 		AE9BB1151978609F004F06FD /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE9BB1081978609F004F06FD /* WaitTimer.cpp */; };
+		D85AF4111B43BEAB00FA2127 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85AF40F1B43BEAB00FA2127 /* IOKit.framework */; };
+		D85AF4121B43BEAB00FA2127 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85AF4101B43BEAB00FA2127 /* IOSurface.framework */; };
 		D8DF22B51AD0D190006E36FB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22B41AD0D190006E36FB /* CoreMedia.framework */; };
 		D8DF22B71AD0D194006E36FB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DF22B61AD0D194006E36FB /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
@@ -45,7 +46,6 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
-		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		8D1107320486CEB800E47090 /* TcpClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TcpClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE9BB0EA1978609F004F06FD /* ClientEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientEventHandlerInterface.h; path = ../../../src/ClientEventHandlerInterface.h; sourceTree = "<group>"; };
 		AE9BB0EB1978609F004F06FD /* ClientInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientInterface.cpp; path = ../../../src/ClientInterface.cpp; sourceTree = "<group>"; };
@@ -81,6 +81,8 @@
 		AE9BB1091978609F004F06FD /* WaitTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimer.h; path = ../../../src/WaitTimer.h; sourceTree = "<group>"; };
 		AE9BB10A1978609F004F06FD /* WaitTimerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimerEventHandlerInterface.h; path = ../../../src/WaitTimerEventHandlerInterface.h; sourceTree = "<group>"; };
 		B14A5DB1785B4DB99B78CED8 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
+		D85AF40F1B43BEAB00FA2127 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		D85AF4101B43BEAB00FA2127 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		D8DF22B31AD0D189006E36FB /* CinderAsio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CinderAsio.h; path = ../../../src/CinderAsio.h; sourceTree = "<group>"; };
 		D8DF22B41AD0D190006E36FB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		D8DF22B61AD0D194006E36FB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -92,12 +94,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D85AF4121B43BEAB00FA2127 /* IOSurface.framework in Frameworks */,
+				D85AF4111B43BEAB00FA2127 /* IOKit.framework in Frameworks */,
 				D8DF22B71AD0D194006E36FB /* AVFoundation.framework in Frameworks */,
 				D8DF22B51AD0D190006E36FB /* CoreMedia.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
-				5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */,
 				00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */,
 				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
 				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
@@ -127,13 +130,14 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D85AF4101B43BEAB00FA2127 /* IOSurface.framework */,
+				D85AF40F1B43BEAB00FA2127 /* IOKit.framework */,
 				D8DF22B61AD0D194006E36FB /* AVFoundation.framework */,
 				D8DF22B41AD0D190006E36FB /* CoreMedia.framework */,
 				00B784AF0FF439BC000DE1D7 /* Accelerate.framework */,
 				00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */,
 				00B784B10FF439BC000DE1D7 /* AudioUnit.framework */,
 				00B784B20FF439BC000DE1D7 /* CoreAudio.framework */,
-				5323E6B50EAFCA7E003A9687 /* QTKit.framework */,
 				5323E6B10EAFCA74003A9687 /* CoreVideo.framework */,
 				0091D8F80E81B9330029341E /* OpenGL.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
@@ -380,7 +384,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -397,7 +401,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src";
