@@ -80,8 +80,8 @@ void TcpSession::read()
 	asio::async_read( *mSocket, mResponse, 
 		asio::transfer_at_least( 1 ), 
 		mStrand.wrap( boost::bind( &TcpSession::onRead, shared_from_this(), 
-			asio::placeholders::error, 
-			asio::placeholders::bytes_transferred ) ) );
+			_1 /*asio::placeholders::error*/,
+			_2 /*asio::placeholders::bytes_transferred*/) ) );
 	mSocket->set_option( asio::socket_base::reuse_address( true ) );
 }
 
@@ -89,16 +89,16 @@ void TcpSession::read( const std::string& delim )
 {
 	asio::async_read_until( *mSocket, mResponse, delim, 
 		mStrand.wrap( boost::bind( &TcpSession::onRead, shared_from_this(), 
-			asio::placeholders::error, 
-			asio::placeholders::bytes_transferred ) ) );
+			_1 /*asio::placeholders::error*/,
+			_2 /*asio::placeholders::bytes_transferred*/) ) );
 }
 
 void TcpSession::read( size_t bufferSize )
 {
 	mSocket->async_read_some( mResponse.prepare( bufferSize ), 
 		mStrand.wrap( boost::bind( &TcpSession::onRead, shared_from_this(), 
-			asio::placeholders::error, 
-			asio::placeholders::bytes_transferred ) ) );
+			_1 /*asio::placeholders::error*/,
+			_2 /*asio::placeholders::bytes_transferred*/) ) );
 }
 
 void TcpSession::write( const BufferRef& buffer )
@@ -109,8 +109,8 @@ void TcpSession::write( const BufferRef& buffer )
 	}
 	asio::async_write( *mSocket, mRequest, 
 		mStrand.wrap( boost::bind( &TcpSession::onWrite, shared_from_this(), 
-			asio::placeholders::error, 
-			asio::placeholders::bytes_transferred ) ) );
+			_1 /*asio::placeholders::error*/,
+			_2 /*asio::placeholders::bytes_transferred*/) ) );
 	mRequest.consume( mRequest.size() );
 }
 
