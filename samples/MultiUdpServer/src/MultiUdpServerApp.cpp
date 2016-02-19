@@ -1,6 +1,6 @@
 /*
 * 
-* Copyright (c) 2015, Wieden+Kennedy,
+* Copyright (c) 2016, Wieden+Kennedy,
 * Stephen Schieberl
 * All rights reserved.
 * 
