@@ -70,7 +70,7 @@ void TcpServer::accept( uint16_t port )
 	
 	mAcceptor->async_accept( *session->mSocket, 
 		mStrand.wrap( boost::bind( &TcpServer::onAccept, shared_from_this(), 
-			session, asio::placeholders::error ) ) );
+			session, _1/*asio::placeholders::error*/ ) ) );
 }
 
 void TcpServer::cancel()

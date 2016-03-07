@@ -39,6 +39,8 @@
 
 #include "DispatcherInterface.h"
 
+#include "asio/deadline_timer.hpp"
+
 typedef std::shared_ptr<class WaitTimer> WaitTimerRef;
 
 class WaitTimer : public DispatcherInterface, public std::enable_shared_from_this<WaitTimer>
@@ -58,8 +60,9 @@ public:
 	void					connectWaitEventHandler( const std::function<void ()>& eventHandler );
 protected:
 	WaitTimer( asio::io_service& io );
-
+#if ASIO_HAS_BOOST_DATE_TIME
 	asio::deadline_timer	mTimer;
+#endif
 	size_t					mTimerInterval;
 	bool					mTimerRepeat;
 
