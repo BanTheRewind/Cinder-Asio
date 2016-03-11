@@ -42,5 +42,6 @@
 class SslSessionEventHandlerInterface : public SessionEventHandlerInterface
 {
 public:
-	virtual void onClose() = 0;
+	virtual void onHandshake()	= 0;
+	virtual void onClose()		= 0;
 };

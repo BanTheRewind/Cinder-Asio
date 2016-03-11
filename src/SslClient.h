@@ -49,28 +49,39 @@ public:
 	static SslClientRef	create( asio::io_service& io );
 	~SslClient();
 
-	virtual void					connect( const std::string& host, uint16_t port, 
-											asio::ssl::context_base::method version = asio::ssl::context_base::method::sslv23 );
-	virtual void					connect( const std::string& host, const std::string& protocol, 
-											asio::ssl::context_base::method version = asio::ssl::context_base::method::sslv23 );
+	virtual void	connect( const std::string& host, uint16_t port );
+	virtual void	connect( const std::string& host, const std::string& protocol );
+	virtual void	connect( const std::string& host, uint16_t port, SslMethod method, 
+							int32_t verifyMode = asio::ssl::verify_none, const ci::fs::path& verifyFile = "" );
+	virtual void	connect( const std::string& host, const std::string& protocol, 
+							SslMethod method, int32_t verifyMode = asio::ssl::verify_none, 
+							const ci::fs::path& verifyFile = "" );
 
 	template< typename T, typename Y >
-	inline void						connectConnectEventHandler( T eventHandler, Y* eventHandlerObject )
+	inline void		connectConnectEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
 		connectConnectEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
+	void			connectConnectEventHandler( const std::function<void( SslSessionRef )>& eventHandler );
 
-	void							connectConnectEventHandler( const std::function<void( SslSessionRef )>& eventHandler );
+	template< typename T, typename Y >
+	inline void		connectVerifyEventHandler( T eventHandler, Y* eventHandlerObject )
+	{
+		connectVerifyEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1, std::placeholders::_2 ) );
+	}
+	void			connectVerifyEventHandler( const std::function<bool( bool, SslContextRef )>& eventHandler );
 
-	SslResolverRef					getResolver() const;
+	SslResolverRef	getResolver() const;
 protected:
 	SslClient( asio::io_service& io );
 	
-	virtual void					onConnect( SslSessionRef session, const asio::error_code& err );
-	virtual void					onResolve( const asio::error_code& err, asio::ip::tcp::resolver::iterator iter );
+	virtual void	onConnect( SslSessionRef session, const asio::error_code& err );
+	virtual void	onResolve( SslContextRef ctx, const asio::error_code& err, 
+							  asio::ip::tcp::resolver::iterator iter );
+	virtual bool	onVerify( bool preVerified, SslContextRef ctx );
 
-	SslResolverRef					mResolver;
-	asio::ssl::context_base::method	mSslMethod;
+	SslResolverRef	mResolver;
 
-	std::function<void( SslSessionRef )>	mConnectEventHandler;
+	std::function<void( SslSessionRef )>		mConnectEventHandler;
+	std::function<bool( bool, SslContextRef )>	mVerifyEventHandler;
 };

@@ -49,7 +49,7 @@ SslClientRef SslClient::create( asio::io_service& io )
 }
 
 SslClient::SslClient( asio::io_service& io )
-	: ClientInterface( io ), mConnectEventHandler( nullptr ), mSslMethod( asio::ssl::context::method::sslv23 )
+	: ClientInterface( io ), mConnectEventHandler( nullptr ), mVerifyEventHandler( nullptr )
 {
 }
 
@@ -58,19 +58,41 @@ SslClient::~SslClient()
 	mConnectEventHandler = nullptr;
 }
 
-void SslClient::connect( const string& host, uint16_t port, asio::ssl::context_base::method method )
+void SslClient::connect( const string& host, uint16_t port )
 {
-	connect( host, toString( port ), method );
+	connect( host, toString( port ) );
 }
 
-void SslClient::connect( const string& host, const string& protocol, asio::ssl::context_base::method method )
+void SslClient::connect( const string& host, const string& protocol )
 {
-	mSslMethod = method;
+	connect( host, protocol, SslMethod::sslv23 );
+}
+
+void SslClient::connect( const string& host, uint16_t port, SslMethod method, int32_t verifyMode, const fs::path& verifyFile )
+{
+	connect( host, toString( port ), method, verifyMode, verifyFile );
+}
+
+void SslClient::connect( const string& host, const string& protocol, SslMethod method, int32_t verifyMode, const fs::path& verifyFile )
+{
+	SslContextRef ctx( new asio::ssl::context( method ) );
+	ctx->set_verify_mode( verifyMode );
+	if ( verifyMode != asio::ssl::verify_none && !verifyFile.empty() && fs::exists( verifyFile ) ) {
+		asio::error_code err;
+		ctx->load_verify_file( verifyFile.string(), err );
+		if ( err ) {
+			if ( mErrorEventHandler != nullptr ) {
+				mErrorEventHandler( err.message(), 0 );
+			}
+			return;
+		}
+	}
+
 	tcp::resolver::query query( host, protocol );
 	mResolver = SslResolverRef( new tcp::resolver( mStrand.get_io_service() ) );
 	mResolver->async_resolve( query, 
 		mStrand.wrap( boost::bind( &SslClient::onResolve, shared_from_this(), 
-		asio::placeholders::error, asio::placeholders::iterator ) ) );
+		ctx, asio::placeholders::error, asio::placeholders::iterator ) ) );
 }
 
 SslResolverRef SslClient::getResolver() const
@@ -91,7 +113,7 @@ void SslClient::onConnect( SslSessionRef session, const asio::error_code& err )
 	}
 }
 
-void SslClient::onResolve( const asio::error_code& err,
+void SslClient::onResolve( SslContextRef ctx, const asio::error_code& err,
 						  tcp::resolver::iterator iter )
 {
 	if ( err ) {
@@ -102,14 +124,34 @@ void SslClient::onResolve( const asio::error_code& err,
 		if ( mResolveEventHandler != nullptr ) {
 			mResolveEventHandler();
 		}
-		SslSessionRef session( new SslSession( mIoService, mSslMethod ) );
-		asio::async_connect( *session->mStream, iter, 
+
+		SslSessionRef session( new SslSession( mIoService, ctx ) );
+		session->mHandshakeType = SslHandshakeType::client;
+
+		session->getStream()->set_verify_callback(
+			mStrand.wrap( boost::bind( &SslClient::onVerify, shared_from_this(), 
+				std::placeholders::_1, std::placeholders::_1 ) ) );
+
+		asio::async_connect( session->getStream()->lowest_layer(), iter, 
 							mStrand.wrap( boost::bind( &SslClient::onConnect, 
 							shared_from_this(), session, asio::placeholders::error ) ) );
 	}
 }
 
-void SslClient::connectConnectEventHandler( const std::function<void( SslSessionRef )>& eventHandler )
+bool SslClient::onVerify( bool preVerified, SslContextRef ctx )
+{
+	if ( mVerifyEventHandler != nullptr ) {
+		return mVerifyEventHandler( preVerified, ctx );
+	}
+	return preVerified;
+}
+
+void SslClient::connectConnectEventHandler( const function<void( SslSessionRef )>& eventHandler )
 {
 	mConnectEventHandler = eventHandler;
+}
+
+void SslClient::connectVerifyEventHandler( const function<bool( bool, SslContextRef )>& eventHandler )
+{
+	mVerifyEventHandler = eventHandler;
 }

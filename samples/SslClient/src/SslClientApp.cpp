@@ -62,9 +62,11 @@ private:
 	void						write();
 	
 	void						onConnect( SslSessionRef session );
+	void						onHandshake();
 	void						onError( std::string err, size_t bytesTransferred );
 	void						onRead( ci::BufferRef buffer );
 	void						onWrite( size_t bytesTransferred );
+	bool						onVerify( bool preVerified, SslContextRef ctx );
 	
 	ci::Font					mFont;
 	std::vector<std::string>	mText;
@@ -107,6 +109,7 @@ void SslClientApp::onConnect( SslSessionRef session )
 		mText.push_back( "Disconnected" );
 	} );
 	mSession->connectErrorEventHandler( &SslClientApp::onError, this );
+	mSession->connectHandshakeEventHandler( &SslClientApp::onHandshake, this );
 	mSession->connectReadCompleteEventHandler( [ & ]()
 	{
 		mText.push_back( "Read complete" );
@@ -114,7 +117,9 @@ void SslClientApp::onConnect( SslSessionRef session )
 	mSession->connectReadEventHandler( &SslClientApp::onRead, this );
 	mSession->connectWriteEventHandler( &SslClientApp::onWrite, this );
 
-	write();
+	// Unlike the TCP client, we need to perform a handshake with 
+	// the server before writing.
+	mSession->handshake();
 }
 
 void SslClientApp::onError( string err, size_t bytesTransferred )
@@ -124,6 +129,17 @@ void SslClientApp::onError( string err, size_t bytesTransferred )
 		text += ": " + err;
 	}
 	mText.push_back( text );
+}
+
+void SslClientApp::onHandshake()
+{
+	mText.push_back( "Handshake successful" );
+
+	// Write data is packaged as a ci::Buffer. This allows 
+	// you to send any kind of data. Because it's more common to
+	// work with strings, the session object has static convenience 
+	// methods for converting between std::string and ci::Buffer.
+	mSession->write( SslSession::stringToBuffer( mRequest ) );
 }
 
 void SslClientApp::onRead( ci::BufferRef buffer )
@@ -140,6 +156,13 @@ void SslClientApp::onRead( ci::BufferRef buffer )
 	// of a HTTP client. To keep the connection open and continue
 	// communicating with the server, comment the line below.
 	mSession->close();
+}
+
+bool SslClientApp::onVerify( bool preVerified, SslContextRef ctx )
+{
+	// This is your opportunity to modify the verification flag
+	// if you don't like what you find in the context.
+	return preVerified;
 }
 
 void SslClientApp::onWrite( size_t bytesTransferred )
@@ -187,6 +210,7 @@ void SslClientApp::setup()
 	{
 		mText.push_back( "Endpoint resolved" );
 	} );
+	mClient->connectVerifyEventHandler( &SslClientApp::onVerify, this );
 }
 
 void SslClientApp::update()
@@ -218,13 +242,7 @@ void SslClientApp::update()
 void SslClientApp::write()
 {
 	// This sample is meant to work with only one session at a time.
-	if ( mSession && mSession->getStream() ) {
-		// Write data is packaged as a ci::Buffer. This allows 
-		// you to send any kind of data. Because it's more common to
-		// work with strings, the session object has static convenience 
-		// methods for converting between std::string and ci::Buffer.
-		mSession->write( SslSession::stringToBuffer( mRequest ) );
-	} else {	
+	if ( !mSession || !mSession->getStream() ) {
 		// Before we can write, we need to establish a connection 
 		// and create a session. Check out the onConnect method.
 		mText.push_back( "Connecting to: " + mHost + ":" + toString( mPort ) );

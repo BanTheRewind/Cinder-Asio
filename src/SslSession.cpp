@@ -41,15 +41,17 @@ using namespace ci;
 using namespace std;
 using asio::ip::tcp;
 
-SslSessionRef SslSession::create( asio::io_service& io, asio::ssl::context::method method )
+SslSessionRef SslSession::create( asio::io_service& io, SslContextRef ctx )
 {
-	return SslSessionRef( new SslSession( io, method ) )->shared_from_this();
+	return SslSessionRef( new SslSession( io, ctx ) )->shared_from_this();
 }
 
-SslSession::SslSession( asio::io_service& io, asio::ssl::context::method method )
-	: SessionInterface( io ), mCloseEventHandler( nullptr )
+SslSession::SslSession( asio::io_service& io, SslContextRef ctx )
+	: SessionInterface( io ), mCloseEventHandler( nullptr ), 
+	mHandshakeEventHandler( nullptr ), mHandshakeType( SslHandshakeType::client )
 {
-	mStream = SslStreamRef( new asio::ssl::stream<asio::ip::tcp::socket>( io, asio::ssl::context( method ) ) );
+	
+	mStream = SslStreamRef( new asio::ssl::stream<tcp::socket>( io, *ctx ) );
 }
 
 SslSession::~SslSession()
@@ -62,7 +64,19 @@ void SslSession::close()
 {
 	if ( mStream ) {
 		asio::error_code err;
-		mStream->async_shutdown( mStrand.wrap( boost::bind( &SslSession::onClose, shared_from_this(), asio::placeholders::error ) ) );
+		mStream->async_shutdown( 
+			mStrand.wrap( boost::bind( &SslSession::onClose, shared_from_this(), 
+			asio::placeholders::error ) ) );
+	}
+}
+
+void SslSession::handshake()
+{
+	if ( mStream ) {
+		asio::error_code err;
+		mStream->async_handshake( mHandshakeType, 
+			mStrand.wrap( boost::bind( &SslSession::onHandshake, shared_from_this(), 
+			asio::placeholders::error ) ) );
 	}
 }
 
@@ -73,7 +87,6 @@ void SslSession::read()
 		mStrand.wrap( boost::bind( &SslSession::onRead, shared_from_this(), 
 			asio::placeholders::error, 
 			asio::placeholders::bytes_transferred ) ) );
-	//mStream->set_option( asio::socket_base::reuse_address( true ) );
 }
 
 void SslSession::read( const std::string& delim )
@@ -115,6 +128,11 @@ void SslSession::connectCloseEventHandler( const std::function<void ()>& eventHa
 	mCloseEventHandler = eventHandler;
 }
 
+void SslSession::connectHandshakeEventHandler( const std::function<void ()>& eventHandler )
+{
+	mHandshakeEventHandler = eventHandler;
+}
+
 void SslSession::onClose( const asio::error_code& err )
 {
 	if ( err ) {
@@ -124,6 +142,19 @@ void SslSession::onClose( const asio::error_code& err )
 	} else {
 		if ( mCloseEventHandler != nullptr ) {
 			mCloseEventHandler();
+		}
+	}
+}
+
+void SslSession::onHandshake( const asio::error_code& err )
+{
+	if ( err ) {
+		if ( mErrorEventHandler != nullptr ) {
+			mErrorEventHandler( err.message(), 0 );
+		}
+	} else {
+		if ( mHandshakeEventHandler != nullptr ) {
+			mHandshakeEventHandler();
 		}
 	}
 }

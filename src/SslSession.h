@@ -38,17 +38,22 @@
 #pragma once
 
 #include "SessionInterface.h"
+#include "cinder/FileSystem.h"
 #include "asio/ssl.hpp"
 
+typedef std::shared_ptr<asio::ssl::context>							SslContextRef;
+typedef asio::ssl::stream_base::handshake_type						SslHandshakeType;
+typedef asio::ssl::context_base::method								SslMethod;
 typedef std::shared_ptr<class SslSession>							SslSessionRef;
 typedef std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>	SslStreamRef;
 
 class SslClient;
+// class SslServer;
 
 class SslSession : public SessionInterface, public std::enable_shared_from_this<SslSession>
 {
 public:
-	static SslSessionRef	create( asio::io_service& io, asio::ssl::context::method method = asio::ssl::context_base::method::sslv23 );
+	static SslSessionRef	create( asio::io_service& io, SslContextRef ctx );
 	~SslSession();
 	
 	void					close();
@@ -57,6 +62,7 @@ public:
 	virtual void			read( const std::string& delim );
 	virtual void			read( size_t bufferSize );
 	
+	virtual void			handshake();
 	virtual void			write( const ci::BufferRef& buffer );
 
 	const SslStreamRef&		getStream() const;
@@ -67,14 +73,25 @@ public:
 		connectCloseEventHandler( std::bind( eventHandler, eventHandlerObject ) );
 	}
 	void					connectCloseEventHandler( const std::function<void ()>& eventHandler );
-protected:
-	SslSession( asio::io_service& io, asio::ssl::context::method method );
 
+	template< typename T, typename Y >
+	inline void				connectHandshakeEventHandler( T eventHandler, Y* eventHandlerObject )
+	{
+		connectHandshakeEventHandler( std::bind( eventHandler, eventHandlerObject ) );
+	}
+	void					connectHandshakeEventHandler( const std::function<void ()>& eventHandler );
+protected:
+	SslSession( asio::io_service& io, SslContextRef ctx );
+
+	virtual void			onHandshake( const asio::error_code& err );
 	virtual void			onClose( const asio::error_code& err );
 
+	SslHandshakeType		mHandshakeType;
 	SslStreamRef			mStream;
 
 	std::function<void ()>	mCloseEventHandler;
+	std::function<void ()>	mHandshakeEventHandler;
 
 	friend class			SslClient;
+	//friend class			SslServer;
 };
