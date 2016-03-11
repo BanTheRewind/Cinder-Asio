@@ -128,9 +128,16 @@ void SslClient::onResolve( SslContextRef ctx, const asio::error_code& err,
 		SslSessionRef session( new SslSession( mIoService, ctx ) );
 		session->mHandshakeType = SslHandshakeType::client;
 
-		session->getStream()->set_verify_callback(
+		/*asio::error_code err;
+		session->getStream()->set_verify_callback( 
 			mStrand.wrap( boost::bind( &SslClient::onVerify, shared_from_this(), 
-				std::placeholders::_1, std::placeholders::_1 ) ) );
+				std::placeholders::_1, std::placeholders::_2 ) ), err );
+		if ( err ) {
+			if ( mErrorEventHandler ) {
+				mErrorEventHandler( err.message(), 0 );
+			}
+			return;
+		}*/
 
 		asio::async_connect( session->getStream()->lowest_layer(), iter, 
 							mStrand.wrap( boost::bind( &SslClient::onConnect, 
@@ -138,7 +145,7 @@ void SslClient::onResolve( SslContextRef ctx, const asio::error_code& err,
 	}
 }
 
-bool SslClient::onVerify( bool preVerified, SslContextRef ctx )
+bool SslClient::onVerify( bool preVerified, asio::ssl::verify_context& ctx )
 {
 	if ( mVerifyEventHandler != nullptr ) {
 		return mVerifyEventHandler( preVerified, ctx );
@@ -151,7 +158,7 @@ void SslClient::connectConnectEventHandler( const function<void( SslSessionRef )
 	mConnectEventHandler = eventHandler;
 }
 
-void SslClient::connectVerifyEventHandler( const function<bool( bool, SslContextRef )>& eventHandler )
+void SslClient::connectVerifyEventHandler( const function<bool( bool, asio::ssl::verify_context& )>& eventHandler )
 {
 	mVerifyEventHandler = eventHandler;
 }

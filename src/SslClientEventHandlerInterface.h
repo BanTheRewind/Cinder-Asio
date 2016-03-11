@@ -43,7 +43,7 @@
 class SslClientEventHandlerInterface : public ClientEventHandlerInterface
 {
 public:
-	virtual void onConnect( SslSessionRef session )					= 0;
-	virtual bool onVerify( bool preVerified, SslContextRef ctx )	= 0;
+	virtual void onConnect( SslSessionRef session )						= 0;
+	virtual bool onVerify( bool preVerified, asio::ssl::context ctx )	= 0;
 };
  

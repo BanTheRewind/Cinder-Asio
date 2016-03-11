@@ -66,7 +66,7 @@ private:
 	void						onError( std::string err, size_t bytesTransferred );
 	void						onRead( ci::BufferRef buffer );
 	void						onWrite( size_t bytesTransferred );
-	bool						onVerify( bool preVerified, SslContextRef ctx );
+	bool						onVerify( bool preVerified, asio::ssl::verify_context& ctx );
 	
 	ci::Font					mFont;
 	std::vector<std::string>	mText;
@@ -158,7 +158,7 @@ void SslClientApp::onRead( ci::BufferRef buffer )
 	mSession->close();
 }
 
-bool SslClientApp::onVerify( bool preVerified, SslContextRef ctx )
+bool SslClientApp::onVerify( bool preVerified, asio::ssl::verify_context& ctx )
 {
 	// This is your opportunity to modify the verification flag
 	// if you don't like what you find in the context.
@@ -183,7 +183,7 @@ void SslClientApp::setup()
 	mFrameRate	= 0.0f;
 	mFullScreen	= false;
 	mHost		= "localhost";
-	mPort		= 2000;
+	mPort		= 443;
 	mRequest	= "echo";
 		
 	mParams = params::InterfaceGl::create( "Params", ivec2( 200, 150 ) );

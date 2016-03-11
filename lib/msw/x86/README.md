@@ -1,1 +1,0 @@
-Place your OpenSSL static libraries here.

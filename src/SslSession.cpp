@@ -62,11 +62,10 @@ SslSession::~SslSession()
 
 void SslSession::close()
 {
-	if ( mStream ) {
+	if ( mStream && mStream->lowest_layer().is_open() ) {
 		asio::error_code err;
-		mStream->async_shutdown( 
-			mStrand.wrap( boost::bind( &SslSession::onClose, shared_from_this(), 
-			asio::placeholders::error ) ) );
+		mStream->lowest_layer().close( err );
+		onClose( err );
 	}
 }
 

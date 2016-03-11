@@ -69,7 +69,7 @@ public:
 	{
 		connectVerifyEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1, std::placeholders::_2 ) );
 	}
-	void			connectVerifyEventHandler( const std::function<bool( bool, SslContextRef )>& eventHandler );
+	void			connectVerifyEventHandler( const std::function<bool( bool, asio::ssl::verify_context& )>& eventHandler );
 
 	SslResolverRef	getResolver() const;
 protected:
@@ -78,10 +78,10 @@ protected:
 	virtual void	onConnect( SslSessionRef session, const asio::error_code& err );
 	virtual void	onResolve( SslContextRef ctx, const asio::error_code& err, 
 							  asio::ip::tcp::resolver::iterator iter );
-	virtual bool	onVerify( bool preVerified, SslContextRef ctx );
+	virtual bool	onVerify( bool preVerified, asio::ssl::verify_context& ctx );
 
 	SslResolverRef	mResolver;
 
-	std::function<void( SslSessionRef )>		mConnectEventHandler;
-	std::function<bool( bool, SslContextRef )>	mVerifyEventHandler;
+	std::function<void( SslSessionRef )>					mConnectEventHandler;
+	std::function<bool( bool, asio::ssl::verify_context& )>	mVerifyEventHandler;
 };
