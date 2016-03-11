@@ -63,15 +63,7 @@ void TcpSession::close()
 	if ( mSocket && mSocket->is_open() ) {
 		asio::error_code err;
 		mSocket->close( err );
-		if ( err ) {
-			if ( mErrorEventHandler != nullptr ) {
-				mErrorEventHandler( err.message(), 0 );
-			}
-		} else {
-			if ( mCloseEventHandler != nullptr ) {
-				mCloseEventHandler();
-			}
-		}
+		onClose( err );
 	}
 }
 
@@ -136,3 +128,4 @@ void TcpSession::onClose( const asio::error_code& err )
 		}
 	}
 }
+ 
