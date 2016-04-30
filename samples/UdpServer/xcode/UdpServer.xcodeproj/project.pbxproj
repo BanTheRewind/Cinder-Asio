@@ -28,6 +28,10 @@
 		AE5FE7ED19536B5B00B12686 /* UdpServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DC19536B5B00B12686 /* UdpServer.cpp */; };
 		AE5FE7EE19536B5B00B12686 /* UdpSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7DF19536B5B00B12686 /* UdpSession.cpp */; };
 		AE5FE7EF19536B5B00B12686 /* WaitTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */; };
+		B3FC7EF91CD4F63600627D85 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3FC7EF81CD4F63600627D85 /* AVFoundation.framework */; };
+		B3FC7EFB1CD4F63B00627D85 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3FC7EFA1CD4F63B00627D85 /* IOKit.framework */; };
+		B3FC7EFD1CD4F64200627D85 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3FC7EFC1CD4F64200627D85 /* CoreMedia.framework */; };
+		B3FC7EFF1CD4F64C00627D85 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3FC7EFE1CD4F64C00627D85 /* IOSurface.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +80,11 @@
 		AE5FE7E219536B5B00B12686 /* WaitTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaitTimer.cpp; path = ../../../src/WaitTimer.cpp; sourceTree = "<group>"; };
 		AE5FE7E319536B5B00B12686 /* WaitTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimer.h; path = ../../../src/WaitTimer.h; sourceTree = "<group>"; };
 		AE5FE7E419536B5B00B12686 /* WaitTimerEventHandlerInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaitTimerEventHandlerInterface.h; path = ../../../src/WaitTimerEventHandlerInterface.h; sourceTree = "<group>"; };
+		B3FC7EF81CD4F63600627D85 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		B3FC7EFA1CD4F63B00627D85 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		B3FC7EFC1CD4F64200627D85 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		B3FC7EFE1CD4F64C00627D85 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		B3FC7F001CD4F66900627D85 /* CinderAsio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CinderAsio.h; path = ../../../src/CinderAsio.h; sourceTree = "<group>"; };
 		C12D84FDE5B741CE9769DFCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C35B5FA18FCE405E88A8A842 /* UdpServerApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = UdpServerApp.cpp; path = ../src/UdpServerApp.cpp; sourceTree = "<group>"; };
 		FB7031ED04F54002B2EC66D6 /* UdpServer_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = UdpServer_Prefix.pch; sourceTree = "<group>"; };
@@ -87,6 +96,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3FC7EFF1CD4F64C00627D85 /* IOSurface.framework in Frameworks */,
+				B3FC7EFD1CD4F64200627D85 /* CoreMedia.framework in Frameworks */,
+				B3FC7EFB1CD4F63B00627D85 /* IOKit.framework in Frameworks */,
+				B3FC7EF91CD4F63600627D85 /* AVFoundation.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -183,6 +196,10 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B3FC7EFE1CD4F64C00627D85 /* IOSurface.framework */,
+				B3FC7EFC1CD4F64200627D85 /* CoreMedia.framework */,
+				B3FC7EFA1CD4F63B00627D85 /* IOKit.framework */,
+				B3FC7EF81CD4F63600627D85 /* AVFoundation.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -192,6 +209,7 @@
 		AE03AB42182AD55D00F10969 /* Cinder-Asio */ = {
 			isa = PBXGroup;
 			children = (
+				B3FC7F001CD4F66900627D85 /* CinderAsio.h */,
 				AE5FE7C419536B5B00B12686 /* ClientEventHandlerInterface.h */,
 				AE5FE7C519536B5B00B12686 /* ClientInterface.cpp */,
 				AE5FE7C619536B5B00B12686 /* ClientInterface.h */,
@@ -326,6 +344,7 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
@@ -348,6 +367,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = UdpServer_Prefix.pch;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
