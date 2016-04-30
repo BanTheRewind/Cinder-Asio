@@ -69,8 +69,8 @@ void TcpServer::accept( uint16_t port )
 	TcpSessionRef session	= TcpSession::create( mIoService );
 	
 	mAcceptor->async_accept( *session->mSocket, 
-		mStrand.wrap( boost::bind( &TcpServer::onAccept, shared_from_this(), 
-			session, _1/*asio::placeholders::error*/ ) ) );
+		mStrand.wrap( std::bind( &TcpServer::onAccept, this,
+								session, std::placeholders::_1/*asio::placeholders::error*/ ) ) );
 }
 
 void TcpServer::cancel()
