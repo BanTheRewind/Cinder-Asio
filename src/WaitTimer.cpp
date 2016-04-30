@@ -43,7 +43,7 @@ WaitTimerRef WaitTimer::create( asio::io_service& io )
 }
 
 WaitTimer::WaitTimer( asio::io_service& io )
-	: DispatcherInterface( io ), mTimer( io ), mTimerInterval( 0 ), mTimerRepeat( false ), 
+	: DispatcherInterface( io ), /*mTimer( io ),*/ mTimerInterval( 0 ), mTimerRepeat( false ),
 	mWaitEventHandler( nullptr )
 {
 }
@@ -58,10 +58,12 @@ void WaitTimer::wait( size_t millis, bool repeat )
 	mTimerInterval	= millis;
 	mTimerRepeat	= repeat;
 	if ( mTimerInterval > 0 ) {
+#if ASIO_HAS_BOOST_DATE_TIME
 		mTimer.expires_from_now( boost::posix_time::milliseconds( mTimerInterval ) );
 		mTimer.async_wait( 
 			mStrand.wrap( boost::bind( &WaitTimer::onWait, shared_from_this(), 
-			asio::placeholders::error ) ) );
+			_1 ) ) );
+#endif
 	}
 }
 
