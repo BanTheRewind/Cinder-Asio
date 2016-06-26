@@ -72,6 +72,8 @@ void TcpServer::accept( uint16_t port )
 
 void TcpServer::listen()
 {
+	if( ! mAcceptor->is_open() ) return;
+	
 	TcpSessionRef session	= TcpSession::create( mIoService );
 	
 	mAcceptor->async_accept( *session->mSocket,
@@ -93,6 +95,10 @@ void TcpServer::cancel()
 				mCancelEventHandler();
 			}
 		}
+		mAcceptor->close( err );
+		if( err )
+			if( mErrorEventHandler )
+				mErrorEventHandler( err.message(), 0 );
 	}
 }
 
