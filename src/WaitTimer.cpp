@@ -58,10 +58,10 @@ void WaitTimer::wait( size_t millis, bool repeat )
 	mTimerInterval	= millis;
 	mTimerRepeat	= repeat;
 	if ( mTimerInterval > 0 ) {
-		mTimer.expires_from_now( boost::posix_time::milliseconds( mTimerInterval ) );
+		mTimer.expires_from_now( std::chrono::milliseconds( mTimerInterval ) );
 		mTimer.async_wait( 
-			mStrand.wrap( boost::bind( &WaitTimer::onWait, shared_from_this(), 
-			asio::placeholders::error ) ) );
+			mStrand.wrap( std::bind( &WaitTimer::onWait, shared_from_this(),
+			std::placeholders::_1/*error*/ ) ) );
 	}
 }
 

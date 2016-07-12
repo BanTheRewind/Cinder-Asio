@@ -68,8 +68,8 @@ void TcpClient::connect( const string& host, const string& protocol )
 	tcp::resolver::query query( host, protocol );
 	mResolver = TcpResolverRef( new tcp::resolver( mStrand.get_io_service() ) );
 	mResolver->async_resolve( query, 
-		mStrand.wrap( boost::bind( &TcpClient::onResolve, shared_from_this(), 
-		asio::placeholders::error, asio::placeholders::iterator ) ) );
+		mStrand.wrap( std::bind( &TcpClient::onResolve, shared_from_this(),
+		std::placeholders::_1/*error*/, std::placeholders::_2/*iterator*/ ) ) );
 }
 
 TcpResolverRef TcpClient::getResolver() const
@@ -103,8 +103,8 @@ void TcpClient::onResolve( const asio::error_code& err,
 		}
 		TcpSessionRef session( new TcpSession( mIoService ) );
 		asio::async_connect( *session->mSocket, iter, 
-							 mStrand.wrap( boost::bind( &TcpClient::onConnect, 
-							 shared_from_this(), session, asio::placeholders::error ) ) );
+							 mStrand.wrap( std::bind( &TcpClient::onConnect,
+							 shared_from_this(), session, std::placeholders::_1/*error*/ ) ) );
 	}
 }
 

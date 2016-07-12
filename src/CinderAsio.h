@@ -39,7 +39,8 @@
 
 // On Windows, this file must be included before the Cinder library.
 
-#define BOOST_DATE_TIME_NO_LIB
-#define BOOST_REGEX_NO_LIB
+#if ! defined( ASIO_STANDALONE )
+#define ASIO_STANDALONE
+#endif
 #include "asio/asio.hpp"
  

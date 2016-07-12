@@ -66,11 +66,19 @@ void TcpServer::accept( uint16_t port )
 		mAcceptor.reset();
 	}
 	mAcceptor				= TcpAcceptorRef( new tcp::acceptor( mIoService, tcp::endpoint( tcp::v4(), port) ) );
+	
+	listen();
+}
+
+void TcpServer::listen()
+{
+	if( ! mAcceptor->is_open() ) return;
+	
 	TcpSessionRef session	= TcpSession::create( mIoService );
 	
-	mAcceptor->async_accept( *session->mSocket, 
-		mStrand.wrap( boost::bind( &TcpServer::onAccept, shared_from_this(), 
-			session, asio::placeholders::error ) ) );
+	mAcceptor->async_accept( *session->mSocket,
+							mStrand.wrap( std::bind( &TcpServer::onAccept, shared_from_this(),
+													session, std::placeholders::_1/*error*/ ) ) );
 }
 
 void TcpServer::cancel()
@@ -87,6 +95,10 @@ void TcpServer::cancel()
 				mCancelEventHandler();
 			}
 		}
+		mAcceptor->close( err );
+		if( err )
+			if( mErrorEventHandler )
+				mErrorEventHandler( err.message(), 0 );
 	}
 }
 
@@ -115,5 +127,6 @@ void TcpServer::onAccept( TcpSessionRef session, const asio::error_code& err )
 		if ( mAcceptEventHandler != nullptr ) {
 			mAcceptEventHandler( session );
 		}
+		listen();
 	}
 }

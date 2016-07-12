@@ -69,7 +69,8 @@ public:
 	TcpAcceptorRef		getAcceptor() const;
 protected:
 	TcpServer( asio::io_service& io );
-
+	
+	void				listen();
 	void				onAccept( TcpSessionRef session, const asio::error_code& err );
 	
 	TcpAcceptorRef		mAcceptor;

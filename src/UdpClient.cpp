@@ -68,8 +68,8 @@ void UdpClient::connect( const string& host, const string& protocol )
 	udp::resolver::query query( host, protocol );
 	mResolver = UdpResolverRef( new udp::resolver( mStrand.get_io_service() ) );
 	mResolver->async_resolve( query, 
-		mStrand.wrap( boost::bind( &UdpClient::onResolve, shared_from_this(), 
-			asio::placeholders::error, asio::placeholders::iterator ) ) );
+		mStrand.wrap( std::bind( &UdpClient::onResolve, shared_from_this(),
+			std::placeholders::_1/*error*/, std::placeholders::_2/*iterator*/ ) ) );
 }
 
 UdpResolverRef UdpClient::getResolver() const
@@ -103,8 +103,8 @@ void UdpClient::onResolve( const asio::error_code& err,
 			mResolveEventHandler();
 		}
 		UdpSessionRef session = UdpSession::create( mIoService );
-		asio::async_connect( *session->mSocket, iter, mStrand.wrap( boost::bind( &UdpClient::onConnect, 
-			shared_from_this(), session, asio::placeholders::error ) ) );
+		asio::async_connect( *session->mSocket, iter, mStrand.wrap( std::bind( &UdpClient::onConnect,
+			shared_from_this(), session, std::placeholders::_1/*error*/ ) ) );
 	}
 }
 

@@ -65,9 +65,9 @@ void UdpSession::read( size_t bufferSize )
 {
 	mBufferSize = bufferSize;
 	mSocket->async_receive_from( mResponse.prepare( bufferSize ), mEndpointRemote,
-		mStrand.wrap( boost::bind( &UdpSession::onRead, shared_from_this(), 
-			asio::placeholders::error, 
-			asio::placeholders::bytes_transferred ) ) );
+		mStrand.wrap( std::bind( &UdpSession::onRead, shared_from_this(),
+			std::placeholders::_1 /*error*/,
+			std::placeholders::_2 /*bytes_transferred*/ ) ) );
 }
 
 void UdpSession::write( const BufferRef& buffer )
@@ -77,9 +77,9 @@ void UdpSession::write( const BufferRef& buffer )
 		stream.write( (const char*)buffer->getData(), buffer->getSize() );
 	}
 	mSocket->async_send( mRequest.data(), 
-		mStrand.wrap( boost::bind( &UdpSession::onWrite, shared_from_this(), 
-			asio::placeholders::error, 
-			asio::placeholders::bytes_transferred ) ) );
+		mStrand.wrap( std::bind( &UdpSession::onWrite, shared_from_this(),
+			std::placeholders::_1/*error*/,
+			std::placeholders::_2/*bytes_transferred*/ ) ) );
 	mSocket->set_option( asio::socket_base::broadcast( true ) );
 	mEndpointLocal = mSocket->local_endpoint();
 	mRequest.consume( mRequest.size() );
