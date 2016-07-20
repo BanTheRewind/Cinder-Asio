@@ -1,38 +1,38 @@
 /*
-* 
-* Copyright (c) 2016, Wieden+Kennedy, 
+*
+* Copyright (c) 2016, Wieden+Kennedy,
 * Stephen Schieberl, Michael Latzoni
 * All rights reserved.
-* 
-* Redistribution and use in source and binary forms, with or 
-* without modification, are permitted provided that the following 
+*
+* Redistribution and use in source and binary forms, with or
+* without modification, are permitted provided that the following
 * conditions are met:
-* 
-* Redistributions of source code must retain the above copyright 
+*
+* Redistributions of source code must retain the above copyright
 * notice, this list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright 
-* notice, this list of conditions and the following disclaimer in 
-* the documentation and/or other materials provided with the 
+* Redistributions in binary form must reproduce the above copyright
+* notice, this list of conditions and the following disclaimer in
+* the documentation and/or other materials provided with the
 * distribution.
-* 
-* Neither the name of the Ban the Rewind nor the names of its 
-* contributors may be used to endorse or promote products 
-* derived from this software without specific prior written 
+*
+* Neither the name of the Ban the Rewind nor the names of its
+* contributors may be used to endorse or promote products
+* derived from this software without specific prior written
 * permission.
-* 
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE 
-* COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
 * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
-* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-* 
+*
 */
 
 #include "SslClient.h"
@@ -90,9 +90,9 @@ void SslClient::connect( const string& host, const string& protocol, SslMethod m
 
 	tcp::resolver::query query( host, protocol );
 	mResolver = SslResolverRef( new tcp::resolver( mStrand.get_io_service() ) );
-	mResolver->async_resolve( query, 
-		mStrand.wrap( boost::bind( &SslClient::onResolve, shared_from_this(), 
-		ctx, asio::placeholders::error, asio::placeholders::iterator ) ) );
+	mResolver->async_resolve( query,
+		mStrand.wrap( std::bind( &SslClient::onResolve, shared_from_this(),
+		ctx, std::placeholders::_1/*error*/, std::placeholders::_2/*iterator*/ ) ) );
 }
 
 SslResolverRef SslClient::getResolver() const
@@ -129,8 +129,8 @@ void SslClient::onResolve( SslContextRef ctx, const asio::error_code& err,
 		session->mHandshakeType = SslHandshakeType::client;
 
 		/*asio::error_code err;
-		session->getStream()->set_verify_callback( 
-			mStrand.wrap( boost::bind( &SslClient::onVerify, shared_from_this(), 
+		session->getStream()->set_verify_callback(
+			mStrand.wrap( std::bind( &SslClient::onVerify, shared_from_this(),
 				std::placeholders::_1, std::placeholders::_2 ) ), err );
 		if ( err ) {
 			if ( mErrorEventHandler ) {
@@ -139,9 +139,9 @@ void SslClient::onResolve( SslContextRef ctx, const asio::error_code& err,
 			return;
 		}*/
 
-		asio::async_connect( session->getStream()->lowest_layer(), iter, 
-							mStrand.wrap( boost::bind( &SslClient::onConnect, 
-							shared_from_this(), session, asio::placeholders::error ) ) );
+		asio::async_connect( session->getStream()->lowest_layer(), iter,
+							mStrand.wrap( std::bind( &SslClient::onConnect,
+							shared_from_this(), session, std::placeholders::_1/*error*/ ) ) );
 	}
 }
 
