@@ -35,35 +35,34 @@ void UdpSession::read( size_t bufferSize )
 
 void UdpSession::write( const BufferRef& buffer )
 {
-	mRequest.prepare( buffer->getSize() );
-	ostream stream { &mRequest };
+	ostream stream( &mRequest );
 	if ( buffer && buffer->getSize() > 0 ) {
-		stream << (const char*)buffer->getData() << flush;
+		stream.write( (const char*)buffer->getData(), buffer->getSize() );
 	}
-	mRequest.commit( buffer->getSize() );
-	mSocket->async_send( mRequest.data(),
-		mStrand.wrap( std::bind( &UdpSession::onWrite, shared_from_this(),
-			std::placeholders::_1,
-			std::placeholders::_2 ) ) );
-	mRequest.consume( buffer->getSize() );
-}
-
-void UdpSession::write( const string& str )
-{
-	size_t bufferSize { str.size() * sizeof( char ) };
-	mRequest.prepare( bufferSize );
-	ostream stream { &mRequest };
-	if ( !str.empty() ) {
-		stream << str.c_str() << flush;
-	}
-	mRequest.commit( bufferSize );
 	mSocket->async_send( mRequest.data(),
 		mStrand.wrap( std::bind( &UdpSession::onWrite, shared_from_this(),
 			std::placeholders::_1,
 			std::placeholders::_2 ) ) );
 	mSocket->set_option( asio::socket_base::broadcast( true ) );
 	mEndpointLocal = mSocket->local_endpoint();
-	mRequest.consume( bufferSize );
+	stream.clear();
+	mRequest.consume( mRequest.size() );
+}
+
+void UdpSession::write( const string& str )
+{
+	ostream stream( &mRequest );
+	if ( !str.empty() ) {
+		stream.write( (const char*)&str[ 0 ], str.size() );
+	}
+	mSocket->async_send( mRequest.data(),
+		mStrand.wrap( std::bind( &UdpSession::onWrite, shared_from_this(),
+			std::placeholders::_1,
+			std::placeholders::_2 ) ) );
+	mSocket->set_option( asio::socket_base::broadcast( true ) );
+	mEndpointLocal = mSocket->local_endpoint();
+	stream.clear();
+	mRequest.consume( mRequest.size() );
 }
 
 

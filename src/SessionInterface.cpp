@@ -70,7 +70,7 @@ void SessionInterface::onWrite( const asio::error_code& err, size_t bytesTransfe
 	}
 }
 
-void SessionInterface::connectReadEventHandler( const std::function<void( ci::BufferRef )>& eventHandler )
+void SessionInterface::connectReadEventHandler( const std::function<void( const ci::BufferRef& )>& eventHandler )
 {
 	mReadEventHandler = eventHandler;
 }

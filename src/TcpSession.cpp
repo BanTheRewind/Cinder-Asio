@@ -66,33 +66,30 @@ void TcpSession::read( size_t bufferSize )
 
 void TcpSession::write( const BufferRef& buffer )
 {
-	mRequest.prepare( buffer->getSize() );
-	ostream stream { &mRequest };
+	ostream stream( &mRequest );
 	if ( buffer && buffer->getSize() > 0 ) {
-		stream << (const char*)buffer->getData() << flush;
+		stream.write( (const char*)buffer->getData(), buffer->getSize() );
 	}
-	mRequest.commit( buffer->getSize() );
 	asio::async_write( *mSocket, mRequest,
 		mStrand.wrap( std::bind( &TcpSession::onWrite, shared_from_this(),
 			std::placeholders::_1,
 			std::placeholders::_2 ) ) );
-	mRequest.consume( buffer->getSize() );
+	stream.clear();
+	mRequest.consume( mRequest.size() );
 }
 
 void TcpSession::write( const string& str )
 {
-	size_t bufferSize { str.size() * sizeof( char ) };
-	mRequest.prepare( bufferSize );
-	ostream stream { &mRequest };
+	ostream stream( &mRequest );
 	if ( !str.empty() ) {
-		stream << str.c_str() << flush;
+		stream.write( (const char*)&str[ 0 ], str.size() );
 	}
-	mRequest.commit( bufferSize );
 	asio::async_write( *mSocket, mRequest,
 		mStrand.wrap( std::bind( &TcpSession::onWrite, shared_from_this(),
 			std::placeholders::_1,
 			std::placeholders::_2 ) ) );
-	mRequest.consume( bufferSize );
+	stream.clear();
+	mRequest.consume( mRequest.size() );
 }
 
 const TcpSocketRef& TcpSession::getSocket() const

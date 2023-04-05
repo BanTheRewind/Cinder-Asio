@@ -16,11 +16,11 @@ public:
 	virtual void	write( const std::string& str ) = 0;
 
 	template< typename T, typename Y >
-	inline void				connectReadEventHandler( T eventHandler, Y* eventHandlerObject )
+	inline void		connectReadEventHandler( T eventHandler, Y* eventHandlerObject )
 	{
 		connectReadEventHandler( std::bind( eventHandler, eventHandlerObject, std::placeholders::_1 ) );
 	}
-	void			connectReadEventHandler( const std::function<void( ci::BufferRef )>& eventHandler );
+	void			connectReadEventHandler( const std::function<void( const ci::BufferRef& )>& eventHandler );
 
 	template< typename T, typename Y >
 	inline void		connectReadCompleteEventHandler( T eventHandler, Y* eventHandlerObject )
@@ -45,8 +45,8 @@ protected:
 	asio::streambuf			mRequest;
 	asio::streambuf			mResponse;
 	
-	std::function<void()>					mReadCompleteEventHandler { nullptr };
-	std::function<void( ci::BufferRef )>	mReadEventHandler { nullptr };
-	std::function<void( size_t )>			mWriteEventHandler { nullptr };
+	std::function<void()>						mReadCompleteEventHandler { nullptr };
+	std::function<void( const ci::BufferRef& )>	mReadEventHandler { nullptr };
+	std::function<void( size_t )>				mWriteEventHandler { nullptr };
 };
  
