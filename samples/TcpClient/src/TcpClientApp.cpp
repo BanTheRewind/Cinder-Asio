@@ -186,7 +186,7 @@ void TcpClientApp::setup()
 	// ci::App already has one that it polls on update, so we'll use that.
 	// You can use your own io_service, but you will have to manage it 
 	// manually (i.e., call poll(), poll_one(), run(), etc).
-	mClient = TcpClient::create( io_service() );
+	mClient = TcpClient::create( io_context() );
 
 	// Add callbacks to work with the client asynchronously.
 	// Note that you can use lambdas.

@@ -22,6 +22,6 @@ public:
 protected:
 	UdpServer( asio::io_service& io );
 
-	std::function<void( UdpSessionRef )>	mAcceptEventHandler;
+	std::function<void( UdpSessionRef )> mAcceptEventHandler { nullptr };
 };
 	

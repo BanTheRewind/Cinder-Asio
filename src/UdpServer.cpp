@@ -7,11 +7,11 @@ using asio::ip::udp;
 
 UdpServerRef UdpServer::create( asio::io_service& io )
 {
-	return UdpServerRef( new UdpServer( io ) )->shared_from_this();
+	return UdpServerRef { new UdpServer { io } }->shared_from_this();
 }
 
 UdpServer::UdpServer( asio::io_service& io )
-	: ServerInterface( io ), mAcceptEventHandler( nullptr )
+	: ServerInterface( io )
 {
 }
 
@@ -22,7 +22,7 @@ UdpServer::~UdpServer()
 
 void UdpServer::accept( uint16_t port )
 {
-	UdpSessionRef session = UdpSession::create( mIoService );
+	UdpSessionRef session { UdpSession::create( mIoService ) };
 
 	asio::error_code errCode;
 	session->mSocket->open( asio::ip::udp::v4(), errCode );
